@@ -5,31 +5,31 @@
   
 <div id="seite">   
 
-	<div id="header">
+	<div class="header">
 	  <%= render partial: "seite", locals: { seite: @header } %>
 	</div>
 	
-	<div id="menu">
+	<div class="menu">
 	  <%= render partial: "seite", locals: { seite: @menu } %>	
 	</div>
 	
 	<% if @left %>
-	  <div id="left">
+	  <div class="left">
 	    <%= render partial: "seite", locals: { seite: @left } %>	
 	  </div>
 	<% end %>
 	
-	<div id= <%= center_class( @left, @right ) %> >
+	<div class="center <%= center_class( @left, @right ) %>" >
 	  <%= render partial: "seite", locals: { seite: @center } %>
 	</div>
 	
 	<% if @right %>
-	  <div id="right">
+	  <div class="right">
 	    <%= render partial: "seite", locals: { seite: @right } %>
 	  </div>
 	<% end %>
 	
-	<div id="footer">
+	<div class="footer">
 	  <%= render partial: "seite", locals: { seite: @footer } %>
 	</div>
 	<div class="cleardiv">

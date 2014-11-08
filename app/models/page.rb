@@ -32,10 +32,14 @@ class Page < ActiveRecord::Base
   end
   
   def display
-    
+
+    if ! self.content
+      self.content = 'empty page' 
+      self.save
+    end
+
     # parse include directive
-    c = Page.parse_include( self.content ) 
-   
+    c = Page.parse_include( self.content )  
     return c    
   end
   
