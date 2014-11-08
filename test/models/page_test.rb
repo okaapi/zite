@@ -187,5 +187,16 @@ class PageTest < ActiveSupport::TestCase
         
   end
   
+  test 'imagelink' do
+    #page = Page.find_by_name( 'imagelink')
+    #assert_equal page.content, "IMAGELINK <%= imagelink lifebetterinflipflops.jpg %>"
+    #assert_equal page.display, "IMAGELINK <a href=\"/storage/imagelink/lifebetterinflipflops.jpg\"> <img src=\"/storage/imagelink/lifebetterinflipflops.jpg \"> </a>" 
+
+    page = Page.find_by_name( 'imagelink2')
+    assert_equal page.content, "IMAGELINK2 <%= imagelink lifebetterinflipflops.jpg, width = 200 %>"
+    assert_equal page.display, "IMAGELINK2 <a href=\"/storage/imagelink2/lifebetterinflipflops.jpg\"> <img src=\"/storage/imagelink2/lifebetterinflipflops.jpg\" width = 200> </a>"
+    
+  end
+  
 end
 

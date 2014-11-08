@@ -76,6 +76,17 @@ include:
   user_id: 1
 
   
+imagelink:
+  name: imagelink
+  content: "IMAGELINK <#= imagelink lifebetterinflipflops.jpg #>"
+  user_id: 1 
+  
+  
+imagelink2:
+  name: imagelink2
+  content: "IMAGELINK2 <#= imagelink lifebetterinflipflops.jpg, width = 200 #>"
+  user_id: 1   
+    
 pagelink:
   name: pagelink
   content: "PAGELINK <#= pagelink home #>"

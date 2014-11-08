@@ -44,6 +44,7 @@ class Page < ActiveRecord::Base
     c = Page.parse_roles( c, role )  
     c = Page.parse_pagelink( c )  
     c = Page.parse_adminlink( c, role ) 
+    c = Page.parse_imagelink( c, self.name )
     return c    
     
   end
@@ -128,6 +129,20 @@ class Page < ActiveRecord::Base
     end    
     return c
   end
+
+  def self.parse_imagelink( str, pagename )
+    c = str
+    links = c.scan(/<%=\s+imagelink\s+([.=,\w\s]+?)\s+%>/)    
+    links.each do | linktext |
+      link = linktext[0].split(',')
+      link.each {|l| l[0].strip!}
+      linktarget = '/storage/' + pagename + '/' + link[0]
+      imagespecs = link[1] ? link[1] : ""
+      sub = '<a href="' + linktarget + '"> <img src="' + linktarget + '"' + imagespecs + '> </a>'
+      c = c.gsub( /<%=\s+imagelink\s+#{linktext[0]}\s+%>/, sub )
+    end    
+    return c
+  end    
   
   def self.parse_adminlink( str, role = nil )
     c = str
