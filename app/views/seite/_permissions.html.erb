@@ -1,0 +1,18 @@
+    <div id = "permission_heading"> <span>Click here to set permissions and options:</span>
+      <script>
+	    $("#permission_heading").click( function() { $("#permissions").show() } );
+      </script>		  
+      <div id="permissions">
+        <%= label_tag :visibility %>
+        <%= select_tag :visibility, options_for_select( Page.visibilities, @page.visibility ) %>
+        <%= label_tag :editability %>
+        <%= select_tag :editability, options_for_select( Page.editabilities, @page.editability ) %>
+        <%= label_tag "Show menu" %>
+        <%= select_tag :menu, options_for_select( ['true','false'], @page.menu ) %> 
+        <%= label_tag "Editor" %>
+        <%= select_tag :editor, options_for_select( ['wysiwyg','html'], @page.editor ) %> 
+        <br>
+        <%= submit_tag 'Save!'%>         
+      </div>
+    </div>
+    

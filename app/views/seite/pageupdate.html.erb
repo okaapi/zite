@@ -1,0 +1,46 @@
+<% if ( @page and @page.editor == "wysiwyg" ) %>
+  <% ckeditorclass = 'ckeditor' %>
+  <!-- load ckeditor only for this page! -->
+  <script src="../ckeditor/ckeditor.js"></script>
+<% end %>
+
+<div id="pageupdate">
+  
+  <% if @page.updated_at %>
+    <small> Last edited <%= prettyversion( @page.updated_at ) %>: </small>
+  <% else %>
+    Enter HTML here:
+  <% end %>
+  <%= form_tag page_update_save_path( name: @page.name ) do %>
+  
+    <%= text_area_tag :content, @page.content, id: "pageupdate_textarea",
+        class: ckeditorclass,
+        rows: ( @page.content.scan(/\n/).count + 2 )%>       
+        
+    <%= submit_tag 'Save!'%> 
+    <%= link_to "cancel", seite_path( seite: @page.name ) if @page.updated_at %>
+    
+    <%= render partial: "permissions" %>
+        
+  <% end %>
+  
+  <%= render partial: "versions" %>
+  
+  <div id="files_partial">
+    <%= render partial: "files", locals: { pagename: @page.name } %>  
+  </div>
+
+
+</div>
+
+<!-- this only applies to non-ckeditor -->
+<script>
+$("#pageupdate_textarea").keyup(function(e) {
+    while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) 
+        + parseFloat($(this).css("borderBottomWidth"))) {
+        $(this).height($(this).height()+1);
+    };   
+});
+</script>
+
+

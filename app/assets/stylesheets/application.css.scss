@@ -1,0 +1,98 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+@import "mixins.css.scss";
+
+// this is the background if not logged in
+.background_decoration {
+  background-image: url('freestyle.jpg');  
+  background-repeat: no-repeat;
+  background-color: #004455;  
+  background-size: 100%;
+}
+  
+body {
+  color: #333;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 16px;
+  
+  a {
+    color: $a-color;
+    text-decoration: none;
+    &:visited {
+      color: $a-color;
+    }
+    &:hover {
+      color: $a-hover-color;
+    }
+  }
+
+  // alert and notice boxes for the flash
+  #alert {
+    color: black;
+    border-radius: 5px;
+    padding: 1em;
+    margin-bottom: 1em;
+    font-weight: bold;
+    float: left;
+    border: 2px solid red;
+    background-color: rosybrown;
+  }
+  #notice { 
+    font: bold smaller sans-serif;
+    font-weight: bold;
+    color: green;
+    @include box-shadow;
+  } 
+
+  // hourglass
+  #spinner_wrapper {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    #spinner {
+      box-shadow: 0px 0px 100px 100px rgba(255,255,255,1.0);
+      background-color: white;
+      position: relative;
+      left: -50%;
+      display: none;
+    }
+  }
+  
+  .cleardiv {
+    clear:both;
+  }
+  .whitetext {
+    color: white;
+  }
+
+  // the main application
+  #application {
+    //border: 1px dotted red;
+    width: 98%;  
+    margin-top: 20px;
+    margin-left: 1%;
+    float: left;
+    @include header-block; 
+  }
+  
+  #version {
+    padding-top: 50px;
+  }
+}
+
+
+

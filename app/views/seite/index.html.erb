@@ -1,0 +1,44 @@
+
+<style type="text/css">
+  <%= @css %>
+</style>
+  
+<div id="seite">   
+
+	<div id="header">
+	  <%= render partial: "seite", locals: { seite: @header } %>
+	</div>
+	
+	<div id="menu">
+	  <%= render partial: "seite", locals: { seite: @menu } %>	
+	</div>
+	
+	<% if @left %>
+	  <div id="left">
+	    <%= render partial: "seite", locals: { seite: @left } %>	
+	  </div>
+	<% end %>
+	
+	<div id= <%= center_class( @left, @right ) %> >
+	  <%= render partial: "seite", locals: { seite: @center } %>
+	</div>
+	
+	<% if @right %>
+	  <div id="right">
+	    <%= render partial: "seite", locals: { seite: @right } %>
+	  </div>
+	<% end %>
+	
+	<div id="footer">
+	  <%= render partial: "seite", locals: { seite: @footer } %>
+	</div>
+	<div class="cleardiv">
+      <small>
+        page <%= @center.name if @center %>
+        user <%= @user.username if @user %> 
+        edit <%= editable( @center, @user ) %> view <%= viewable( @center, @user ) %>
+      </small>
+    </div> 
+  	
+</div> 
+

@@ -1,0 +1,109 @@
+// Place all the styles related to the seite controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+#seite {  
+  #header {
+    border: 1px solid blue;
+    width: 100%;
+    box-sizing: border-box;
+    float: left;    
+  }
+  #menu {
+    border: 1px solid purple;
+    width: 100%;
+    box-sizing: border-box;
+    float: left;      
+  }  
+  #left {
+    border: 1px solid green;
+    width: 15%;
+    box-sizing: border-box;
+    float: left;      
+  }   
+  #center {
+    padding: 1%;
+    border: 1px solid red;
+    width: 70%;
+    box-sizing: border-box;
+    float: left; 
+  }
+  #center_with_left_and_right { @extend #center; width: 70% } 
+  #center_with_left { @extend #center; width: 85% }   
+  #center_with_right { @extend #center; width: 85% }    
+  #center_only { @extend #center; width: 100% }      
+    
+  
+  #right {
+    border: 1px solid red;
+    width: 15%;
+    box-sizing: border-box;
+    float: right;      
+  }       
+  #footer {
+    border: 1px solid purple;
+    width: 100%;
+    box-sizing: border-box;
+    float: left;      
+  }  
+} 
+  
+#pageupdate {
+  a {
+    font-size: smaller;
+  }
+  textarea {
+    width: 100%; 
+    overflow: hidden;
+    box-sizing: border-box;
+    border: none;
+    background-color: #EEEEEE;
+  }
+  input[type=submit]:hover {
+    color: red 
+  }  
+  #version_heading {
+    span:hover { color: red }
+    margin-top: 20px;
+    #versions {
+      font-size: smaller;
+      display: none;
+    }
+  }
+  #permission_heading {
+    span:hover { color: red }  
+    margin-top: 20px;
+    #permissions {
+      font-size: smaller;
+      display: none;
+    }
+    select:hover {
+      color: red 
+    }      
+  }
+  #file_heading {
+    // border: 1px solid blue;   
+    span:hover { color: red }  
+    margin-top: 20px;
+    #files {
+      font-size: smaller;
+      display: none;
+      .grab_box { 
+        padding: 2px;
+        border: 1px solid darkgrey;
+        background: LightGoldenRodYellow; 
+        &:focus {
+          background: Azure;
+          outline: red;
+        }
+        &:hover {
+          color: red;
+        }
+      }
+    }    
+    #note { 
+      font-size: smaller;
+    }
+  }  
+}

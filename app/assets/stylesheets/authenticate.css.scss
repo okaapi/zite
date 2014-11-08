@@ -1,0 +1,67 @@
+// Place all the styles related to the Authenticate controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import "mixins.css.scss";
+
+#authentication_launchpad {
+  //border: 1px dotted red;
+  float: right;
+  @include box-shadow; 
+} 
+
+#authentication_dialogue {
+  //border: 2px dotted red;
+  position: fixed;
+  @include box-shadow; 
+  right: 15%;
+  top: 10%;
+  display: none;
+} 
+
+.authenticate {
+  clear:  both;
+
+  @include box-with-legend;
+  fieldset {
+    .label_input_div {
+      clear:both;
+      float:right
+    }
+    input {
+      //background: LightGoldenRodYellow;
+      border: 2px solid darkgrey;
+      border-radius: 5px; 
+      &:focus {
+        background: Azure;
+        outline: none;
+      }
+    }
+    input[type=submit] {
+      background: darkgrey;
+      color: teal;      
+      &:hover {
+        color: LightGoldenRodYellow;
+      }
+    }
+    a {
+      margin-right: 30px;
+    }
+    .error_explanation {
+      //border: 2px solid red;
+      border-radius: 5px;        
+      padding: 5px;
+      padding-bottom: 0;
+      margin-bottom: 20px;
+      h2 {
+        font-weight: bold;
+        padding: 0px 5px 0px 5px;
+        margin: -7px;
+        margin-bottom: 0px;
+        background-color: red;
+        color: white;
+      }     
+    }
+  }
+}
+

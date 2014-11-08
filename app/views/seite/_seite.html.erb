@@ -1,0 +1,18 @@
+
+
+  <% if viewable( seite, @user ) == true %>
+  
+    <div> <%= seite.display.html_safe %> </div>
+    
+    <%= render partial: "edit", locals: { seite: seite } %>
+    
+  <% elsif viewable( seite, @user ) == false %>
+  
+    <h1> protected content... </h1>
+    
+  <% end %>
+  
+ 
+  
+
+  

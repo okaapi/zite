@@ -1,0 +1,23 @@
+<% if @pages.count > 0 %>
+  <div id = "version_heading"> <span>Click here to select different versions:</span>
+    <script>
+	  $("#version_heading").click( function() { $("#versions").toggle() } );
+    </script>		  
+    <div id="versions">
+      <table>
+      <tr>
+      <% @pages.each_with_index do |p,i| %>
+        <td>
+        <%= link_to( prettyversion( p.updated_at), 
+             page_update_path( seite: p.name, updated_at: p.updated_at ) ) if editable( p, @user ) %>
+        &nbsp;
+        </td>
+        <% if (i+1).modulo(4) == 0 %>
+        </tr><tr>
+        <% end %>      
+      <% end %>
+      </tr>
+      </table>
+    </div>
+  </div>
+<% end %>  

@@ -1,0 +1,61 @@
+$title-color: teal;
+$title-size: 18px;
+$text-size: 15px;
+$header-text-size: 49px;
+$header-symbol-size: 29px;
+$a-color: black;
+$a-hover-color: red;
+
+@mixin box-shadow {
+  background: rgba(255,255,255,0.4);
+  box-shadow: 0px 0px 20px 10px rgba(255,255,255,0.4);
+}
+
+@mixin header-block {
+  .header {
+    //border: 1px solid purple;
+    div { 
+      //border: 1px solid green;
+      float: left; 
+      margin-bottom: 50px;
+      font-size: $header-text-size;
+      color: $title-color;
+      a { 
+        color: $title-color;
+      }
+      font-weight: bold;
+      @include box-shadow;
+      .emphasis {
+        text-decoration: underline;
+      }
+    }
+    .header_right {
+      //border: 1px solid blue;
+      float:right;
+      font-size: $header-symbol-size;
+    }
+  } 
+}
+
+@mixin box-with-legend {
+  fieldset {
+    @include box-shadow;
+	padding: 5px;
+	background: lightgrey;	 
+	border: 2px solid grey; 
+	border-radius: 10px;
+	max-width: 300px;
+	legend {	  
+	  color: $title-color;
+	  font-weight: bold;
+	  font-size: $title-size;	  
+	  background: darkgrey;
+	  padding: 0.2em .5em;
+	  border-radius: 5px;    
+	}   
+	p {
+	  margin: 0px;
+	  font-size: $text-size;
+	} 
+  }
+}

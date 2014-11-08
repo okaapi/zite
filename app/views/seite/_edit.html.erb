@@ -1,0 +1,6 @@
+  
+  <div class="cleardiv" style="float:right">
+    <% if editable( seite, @user )  %>
+      <%= link_to "edit", page_update_path( seite: seite.name ) %>
+    <% end %>
+  </div>
