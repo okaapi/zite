@@ -25,7 +25,7 @@ class SeiteController < ApplicationController
     @seiten_name = params[:seite]
       
     if ! @user
-      render :index, alert: "need to login first..."
+      redirect_to root_path, alert: "need to login first..."
       return
     end
     
@@ -61,13 +61,15 @@ class SeiteController < ApplicationController
   
   def pageupdate_save
         
-    @page = Page.new( page_params )
-    @page.user_id = @user.id
-    begin
-      @page.save
-      redirect_to seite_path( seite: @page.name ), notice: "page #{@page.name} saved..."
-    rescue Exception => e           
-      redirect_to root_path,  alert: "problems saving page... #{e}"
+    if @user
+      @page = Page.new( page_params )
+      @page.user_id = @user.id
+      begin
+        @page.save
+        redirect_to seite_path( seite: @page.name ), notice: "page #{@page.name} saved..."
+      rescue Exception => e           
+        redirect_to root_path,  alert: "problems saving page... #{e}"
+      end
     end
           
   end

@@ -1,8 +1,9 @@
 
 
   <% if viewable( seite, @user ) == true %>
-  
-    <div> <%= seite.display.html_safe %> </div>
+    
+    <% @role = @user ? @user.role : nil %>
+    <div> <%= seite.display(@role).html_safe %> </div>
     
     <%= render partial: "edit", locals: { seite: seite } %>
     

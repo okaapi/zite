@@ -4,11 +4,12 @@ class PageTest < ActiveSupport::TestCase
   
   setup do
     @wido = Auth::User.find_by_username('wido_admin')
-    Page.delete_all
-    Page.visibilities.each do |v|
-      Page.editabilities.each do |p|
-        Page.create( user_id: @wido.id, editability: p, visibility: v  )
-      end
+    # need to change <#= #> to <%= %>
+    pages = Page.all
+    pages.each do |page|
+      page.content = page.content.gsub(/<#=/,'<%=').gsub(/#>/,'%>')
+      page.user_id = @wido.id
+      page.save!  
     end
   end
   
@@ -19,7 +20,12 @@ class PageTest < ActiveSupport::TestCase
   
   test 'test visibility for different users' do
     
-    pages = Page.all
+    pages = []
+    Page.visibilities.each do |v|
+      Page.editabilities.each do |p|
+        pages << Page.new( user_id: @wido.id, editability: p, visibility: v  )
+      end
+    end
     users = Auth::User.all
     users << nil
     users.each do |user|
@@ -61,7 +67,12 @@ class PageTest < ActiveSupport::TestCase
   
   test 'test editability for different users' do
     
-    pages = Page.all
+    pages = []
+    Page.visibilities.each do |v|
+      Page.editabilities.each do |p|
+        pages << Page.new( user_id: @wido.id, editability: p, visibility: v  )
+      end
+    end
     users = Auth::User.all
     users << nil
     users.each do |user|
@@ -89,6 +100,92 @@ class PageTest < ActiveSupport::TestCase
     end
     
   end  
+  
+  test 'test include' do
+    page = Page.find_by_name( 'include')
+    assert_equal page.content, "INCLUDE <%= include home %>"
+    assert_equal page.display, "INCLUDE <h1> Home Page </h1>"
+  end
+  
+  test 'test pagelink' do
+     
+    page = Page.find_by_name( 'pagelink')
+    assert_equal page.content, "PAGELINK <%= pagelink home %>"
+    assert_equal page.display, "PAGELINK <a href=\"/home\">home</a>" 
+    
+    page = Page.find_by_name( 'pagelink2')
+    assert_equal page.content, "PAGELINK2 <%= pagelink home, link to home %>"
+    assert_equal page.display, "PAGELINK2 <a href=\"/home\"> link to home</a>"
+    
+    page = Page.find_by_name( 'pagelink3')
+    assert_equal page.content, 
+         "PAGELINK3 <%= pagelink home %> SOME TEXT <%= pagelink home, link to home %>"
+    assert_equal page.display, "PAGELINK3 <a href=\"/home\">home</a> SOME TEXT <a href=\"/home\"> link to home</a>"    
+        
+    page = Page.find_by_name( 'adminlink')
+    assert_equal page.content, "ADMINLINK <%= adminlink admin %>"
+    assert_equal page.display, "ADMINLINK "   
+        
+    page = Page.find_by_name( 'adminlink')
+    assert_equal page.content, "ADMINLINK <%= adminlink admin %>"
+    assert_equal page.display('admin'), "ADMINLINK <a href=\"/admin\">admin</a>"   
+        
+  end  
+  
+  test 'test roles' do
+    page = Page.find_by_name( 'admin' )
+    assert_equal page.content, "ADMIN <%= admin  <h1> Admin Heading</h1> to 'admin stuff' %>"
+    assert_equal page.display(  ), "ADMIN "
+    
+    page = Page.find_by_name( 'admin' )
+    assert_equal page.content, "ADMIN <%= admin  <h1> Admin Heading</h1> to 'admin stuff' %>"
+    assert_equal page.display( 'admin' ), "ADMIN <h1> Admin Heading</h1> to 'admin stuff'"  
+            
+  end
+  
+  test 'test whole page' do
+
+    header, menu, left, center, right, footer = Page.get_layout( 'home' )
+    assert_equal header.name, 'home_header'
+    assert_equal menu.name, 'home_menu'
+    assert_equal left.name, 'home_left'
+    assert_equal center.name, 'home'
+    assert_equal right.name, 'home_right'
+    assert_equal footer.name, 'home_footer'
+    
+    header, menu, left, center, right, footer = Page.get_layout( 'presentations' )
+    assert_not header
+    assert_not menu
+    assert_not left
+    assert_not right
+    assert_equal footer.name, 'footer'      
+
+  end
+  
+  test 'css' do
+    assert_equal Page.get_css, "{ color: red } "
+  end
+  
+  test 'more panels' do
+    assert_equal Page.get_panel( 'home', 'left').name, "home_left"
+    assert_not Page.get_panel( 'presentations', 'left')
+    assert_equal Page.get_panel_or_default( 'home', 'left').name, "home_left"
+    assert_equal Page.get_panel_or_default( 'presentations', 'menu').name, "menu"
+  end
+  
+  test 'display chronological' do
+    
+    Page.create( name: 'time', user_id: @wido.id, content: 'oldest')
+    Page.create( name: 'time', user_id: @wido.id,  content: 'old')
+    Page.create( name: 'time', user_id: @wido.id,  content: 'latest')
+    Page.create( name: 'time_left', user_id: @wido.id, content: 'oldest')
+    Page.create( name: 'time_left', user_id: @wido.id,   content: 'old')
+    Page.create( name: 'time_left', user_id: @wido.id,   content: 'latest')
+    header, menu, left, center, right, footer = Page.get_layout( 'time' )
+    assert_equal center.content, 'latest'
+    assert_equal left.content, 'latest'
+        
+  end
   
 end
 

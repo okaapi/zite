@@ -9,4 +9,6 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  
+  (1..10).each {puts "."}
 end

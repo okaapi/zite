@@ -17,8 +17,9 @@ class Page < ActiveRecord::Base
   
   def self.get_css
     p = Page.where( name: 'css').last
-    css = p ? p.content : ""
-    css.gsub('<p>','').gsub('</p>','').gsub('<br />','').gsub('&nbsp;',' ').gsub('<pre>','').gsub('</pre>','')
+    css = p ? p.content : ""    
+    css = css.gsub(/<p>/i,'').gsub(/<\/p>/i,'').gsub(/<br \/>/i,'')
+             .gsub(/&nbsp;/i,' ').gsub(/<pre>/i,'').gsub(/<\/pre>/i,'')
   end
   
   def self.get_panel( pagename, panelname )
@@ -31,7 +32,7 @@ class Page < ActiveRecord::Base
     return panel
   end
   
-  def display
+  def display( role = 'user' )
 
     if ! self.content
       self.content = 'empty page' 
@@ -39,8 +40,12 @@ class Page < ActiveRecord::Base
     end
 
     # parse include directive
-    c = Page.parse_include( self.content )  
+    c = Page.parse_include( self.content )
+    c = Page.parse_roles( c, role )  
+    c = Page.parse_pagelink( c )  
+    c = Page.parse_adminlink( c, role ) 
     return c    
+    
   end
   
   def self.editabilities
@@ -108,5 +113,51 @@ class Page < ActiveRecord::Base
     end    
     return c
   end
+  
+  def self.parse_pagelink( str )
+    c = str
+    links = c.scan(/<%=\s+pagelink\s+([,'"\w\s]+?)\s+%>/)      
+    links.each do | linktext |
+      link = linktext[0].split(',')
+      link.each {|l| l[0].strip!}
+      linktarget = link[0]
+      linkdisplay = link[1] ? link[1] : linktarget     
+      linkdisplay.gsub!(/"/,'')
+      sub = '<a href="/' + linktarget + '">' + linkdisplay + '</a>'
+      c = c.gsub( /<%=\s+pagelink\s+#{linktext[0]}\s+%>/, sub )
+    end    
+    return c
+  end
+  
+  def self.parse_adminlink( str, role = nil )
+    c = str
+    links = c.scan(/<%=\s+adminlink\s+([,'"\w\s]+?)\s+%>/)      
+    links.each do | linktext |
+      link = linktext[0].split(',')
+      link.each {|l| l[0].strip!}
+      linktarget = link[0]
+      linkdisplay = link[1] ? link[1] : linktarget     
+      linkdisplay.gsub!(/"/,'')
+      sub = (role == "admin") ? ('<a href="/' + linktarget + '">' + linkdisplay + '</a>') : ''
+      c = c.gsub( /<%=\s+adminlink\s+#{linktext[0]}\s+%>/, sub )
+    end    
+    return c
+  end  
     
+  def self.parse_roles( str, role = nil  )
+    
+    c = str    
+    # this could be expanded to other roles... but then admin would not see user stuff etc...
+    roles = ['admin']
+    roles.each do |roledef|
+      links = c.scan(/<%=\s+#{roledef}\s+([<>\/,'"\w\s]+?)\s+%>/)      
+      links.each do | linktext |
+        sub = (role == roledef) ? linktext[0] : ''
+        c = c.gsub( /<%=\s+#{roledef}\s+#{linktext[0]}\s+%>/, sub )
+      end 
+    end
+   
+    return c
+  end
+   
 end

@@ -1,9 +1,120 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+one_oldest:
+  name: home
+  content: "<h1> Oldest Home Page </h1>"
+  user_id: 1
+  
+one_older:
+  name: home
+  content: "<h1> Old Home Page </h1>"
+  user_id: 1
+    
 one:
   name: home
   content: "<h1> Home Page </h1>"
   user_id: 1
+   
+one_header_older:
+  name: home_header
+  content: "OLD HOME HEADER" 
 
+one_header:
+  name: home_header
+  content: "HOME HEADER"
+  user_id: 1  
+    
+one_menu:
+  name: home_menu
+  content: "HOME MENU"
+  user_id: 1  
+  
+one_left:
+  name: home_left
+  content: "HOME LEFT"
+  user_id: 1
+  
+one_menu:
+  name: home_menu
+  content: "HOME MENU"
+  user_id: 1
+  
+one_right:
+  name: home_right
+  content: "HOME RIGHT"
+  user_id: 1  
+  
+one_footer:
+  name: home_footer
+  content: "HOME FOOTER"
+  user_id: 1    
+      
+two:
+  name: presentations
+  content: "<h1> Presentations </h1>"
+  menu: 'false'
+  user_id: 1  
+  
+menu:
+  name: menu
+  content: "GENERIC MENU"
+  user_id: 1   
+  
+footer:
+  name: footer
+  content: "GENERIC FOOTER"
+  user_id: 1   
+  
+inclusion:
+  name: inclusion
+  content: "INCLUSION"
+  user_id: 1
+  
+include:
+  name: include
+  content: 'INCLUDE <#= include home #>'
+  user_id: 1
 
+  
+pagelink:
+  name: pagelink
+  content: "PAGELINK <#= pagelink home #>"
+  user_id: 1  
+  
+pagelink2:
+  name: pagelink2
+  content: "PAGELINK2 <#= pagelink home, link to home #>"
+  user_id: 1   
+
+pagelink3:
+  name: pagelink3
+  content: "PAGELINK3 <#= pagelink home #> SOME TEXT <#= pagelink home, link to home #>"
+  user_id: 1  
+  
+admin:
+  name: admin
+  content: "ADMIN <#= admin  <h1> Admin Heading</h1> to 'admin stuff' #>"
+  user_id: 1  
+  
+adminlink:
+  name: adminlink
+  content: "ADMINLINK <#= adminlink admin #>"
+  user_id: 1    
+    
+editor:
+  name: editor
+  content: "EDITOR <#= editor  <h1> Editor Heading</h1> to 'editor stuff' #>"
+  user_id: 1      
+  
+css: 
+  name: css
+  content: "<PRE></PRE><P>{ color: red }</P><BR />&nbsp;<pre></pre><p></p><br />"
+  user_id: 1
+
+user:
+  name: user
+  content: "USER <#= user  <h1> User Heading</h1> to 'user stuff' #>"
+  user_id: 1
+  
+  
 

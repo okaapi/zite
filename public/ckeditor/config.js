@@ -39,6 +39,8 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	
 	config.height = '700';
+	
+	config.protectedSource.push( /<%[\s\S]*?%>/g );
 
 };
 
