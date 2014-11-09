@@ -135,5 +135,5 @@ user:
 pin:
   name: pin
 # added ! and &
-  content: 'PIN <#= pin <h3> 4</h3> !& <p><a href= "https://pic.g?au m/11 4?a t6AE#slc="https:// #>'
+  content: 'PIN <#= pin <h3> 4</h3> (!&) <p><a href= "https://pic.g?au m/11 4?a t6AE#slc="https:// #>'
   user_id: 1

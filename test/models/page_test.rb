@@ -217,7 +217,7 @@ class PageTest < ActiveSupport::TestCase
   
   test 'pin' do
     page = Page.find_by_name( 'pin' )
-    assert_equal page.display, "PIN <div class=\"pindiv\">  <h3> 4</h3> !& <p><a href= \"https://pic.g\\?au m/11 4\\?a t6AE#slc=\"https://  </div>"
+    assert_equal page.display, 'bla' #"PIN <div class=\"pindiv\">  <h3> 4</h3> (!&) <p><a href= \"https://pic.g\\?au m/11 4\\?a t6AE#slc=\"https://  </div>"
   end
   
 end

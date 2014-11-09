@@ -185,12 +185,13 @@ class Page < ActiveRecord::Base
 
   def self.parse_pin( str )
     c = str
-    pins = c.scan(/<%=\s+pin\s+([<>\/,=:.#-_'!&"\?\w\s]+?)\s+%>/)
+    pins = c.scan(/<%=\s+pin\s+([<>\(\)\/,=:.;#-_'!&"\?\w\s]+?)\s+%>/)
     pins.each do | p |
       pintext = p[0]
       pintext = pintext.gsub(/[\?]/,'\\?')
+      pinmatch = pintext.gsub(/[\(]/,'\\(').gsub(/[\)]/,'\\)') 
       sub = '<div class="pindiv">  ' + pintext + '  </div>'
-      c = c.gsub( /<%=\s+pin\s+#{pintext}\s+%>/, sub )
+      c = c.gsub( /<%=\s+pin\s+#{pinmatch}\s+%>/, sub )
     end    
     return c
   end  
