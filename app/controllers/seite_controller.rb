@@ -79,33 +79,42 @@ class SeiteController < ApplicationController
   def file_upload
     
     @pagename = params[:seite]
+      
+    if params[:file]
           
-    # see whether there are any files associated with this
-    @files = Dir.glob( File.join( Rails.root , 'public', 'storage', @pagename, '*' ) )
-    @files.delete_if {|f| File.directory?(f) }
+      # see whether there are any files associated with this
+      @files = Dir.glob( File.join( Rails.root , 'public', 'storage', @pagename, '*' ) )
+      @files.delete_if {|f| File.directory?(f) }
           
-    # sanitize and get file/directory names
-    filename = File.basename(params[:file].original_filename).gsub(/[^\w._-]/,'').downcase
-    directory = File.join( Rails.root , 'public', 'storage', @pagename )
+      # sanitize and get file/directory names
+      filename = File.basename(params[:file].original_filename).gsub(/[^\w._-]/,'').downcase
+      directory = File.join( Rails.root , 'public', 'storage', @pagename )
 
-    # does the directory exist?
-    if ! Dir.exists? directory
-      Dir.mkdir directory
+      # does the directory exist?
+      if ! Dir.exists? directory
+        Dir.mkdir directory
+      end
+    
+      # copy the old file if necessary
+      path = File.join( directory, filename )
+      if File.exists? path
+        newfilename = File.basename(filename, File.extname(filename) ) + 
+             SecureRandom.urlsafe_base64(8)  + File.extname(filename) 
+        newpath = File.join( directory, newfilename )
+        FileUtils.cp( path, newpath )
+      end
+    
+      # write the new file
+      File.open(path, "wb") { |f| f.write(params[:file].read) }
+    
+      redirect_to page_update_path( seite: @pagename),  notice: "uploaded file"
+      
+    else
+      
+      redirect_to page_update_path( seite: @pagename)
+      
     end
     
-    # copy the old file if necessary
-    path = File.join( directory, filename )
-    if File.exists? path
-      newfilename = File.basename(filename, File.extname(filename) ) + 
-           SecureRandom.urlsafe_base64(8)  + File.extname(filename) 
-      newpath = File.join( directory, newfilename )
-      FileUtils.cp( path, newpath )
-    end
-    
-    # write the new file
-    File.open(path, "wb") { |f| f.write(params[:file].read) }
-    
-    redirect_to page_update_path( seite: @pagename),  notice: "uploaded file"
   end
   
   def file_delete

@@ -25,6 +25,12 @@ module Zite
     config.action_mailer.smtp_settings = 
       mail_config["server"].merge(mail_config["credentials"]).symbolize_keys
     config.action_mailer.raise_delivery_errors = true
-            
+
+    # attempt to use a different path for images...
+    #config.assets.paths << Rails.root.join('attachments').to_s
+       
   end
 end
+
+ 
+

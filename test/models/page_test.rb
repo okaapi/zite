@@ -176,6 +176,27 @@ class PageTest < ActiveSupport::TestCase
     assert_not left
     assert_not right
     assert_equal footer.name, 'footer'      
+           
+    header, menu, left, center, right, footer = Page.get_layout( 'talks' )
+    assert_not header
+    assert_not menu
+    assert_equal left.name, 'talks_left'
+    assert_not right
+    assert_equal footer.name, 'footer'
+        
+    header, menu, left, center, right, footer = Page.get_layout( 'talks_books' )
+    assert_not header
+    assert_not menu
+    assert_equal left.name, 'talks_left'
+    assert_not right
+    assert_equal footer.name, 'footer'    
+      
+    header, menu, left, center, right, footer = Page.get_layout( 'talks_films' )
+    assert_not header
+    assert_not menu
+    assert_equal left.name, 'talks_films_left'
+    assert_not right
+    assert_equal footer.name, 'footer'     
 
   end
   
@@ -217,7 +238,7 @@ class PageTest < ActiveSupport::TestCase
   
   test 'pin' do
     page = Page.find_by_name( 'pin' )
-    assert_equal page.display, 'bla' #"PIN <div class=\"pindiv\">  <h3> 4</h3> (!&) <p><a href= \"https://pic.g\\?au m/11 4\\?a t6AE#slc=\"https://  </div>"
+    assert_equal page.display, "PIN <div class=\"pindiv\">  <h3> 4</h3> (!&) <p><a href= \"https://pic.g\\?au m/11 4\\?a t6AE#slc=\"https://  </div>"
   end
   
 end

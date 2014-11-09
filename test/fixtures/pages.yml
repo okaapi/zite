@@ -50,10 +50,37 @@ one_footer:
   user_id: 1    
       
 two:
+  name: talks
+  content: "<h1> Talks </h1>"
+  menu: 'false'
+  user_id: 1  
+  
+two_left:
+  name: talks_left
+  content: "talks left"
+  user_id: 1    
+ 
+two_books:
+  name: talks_books
+  content: "<h1> Talks on books </h1>"
+  menu: 'false'  
+  user_id: 1
+  
+two_films:
+  name: talks_films
+  content: "<h1> Talks on films </h1>"
+  user_id: 1
+  
+two_films:
+  name: talks_films_left
+  content: "Talks on films left"
+  user_id: 1 
+  
+three:
   name: presentations
   content: "<h1> Presentations </h1>"
   menu: 'false'
-  user_id: 1  
+  user_id: 1       
   
 menu:
   name: menu

@@ -23,7 +23,7 @@
     
       <%= form_tag file_upload_path( seite: pagename ), multipart: true do %>
         <%= file_field_tag :file %>
-        <%= submit_tag 'Upload!' %> 
+        <%= submit_tag 'Upload!', data: { confirm: 'Are you sure? Your current edits will be lost...' } %> 
         <p id="note"> Note 1: you will lose your edits... save first! </p>
         <p id="note"> Note 2: all uploaded files are visible to anyone! </p>
       <% end %>

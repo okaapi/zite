@@ -10,8 +10,8 @@ class Page < ActiveRecord::Base
     center = Page.where( name: pagename ).last
     header = get_panel_or_default( pagename, 'header')
     menu = ( center and center.menu == 'true' ) ? get_panel_or_default( pagename, 'menu') : nil
-    left = get_panel( pagename, 'left')
-    right = get_panel( pagename, 'right')
+    left = get_panel_or_default( pagename, 'left')
+    right = get_panel_or_default( pagename, 'right')
     footer = get_panel_or_default( pagename, 'footer')
     return header, menu, left, center, right, footer
   end
@@ -28,8 +28,17 @@ class Page < ActiveRecord::Base
   end
   
   def self.get_panel_or_default( pagename, panelname )
+    # first we check for HOME_PAGE_LEFT
     panel = Page.where( name: pagename + '_' + panelname).last
-    panel = Page.where( name: panelname ).last if !panel
+    if ! panel
+      # if that doesn't exist, then we check for HOME_LEFT
+      rootname = pagename.split('_')[0]
+      panel = Page.where( name: rootname + '_' + panelname ).last      
+      if ! panel
+        # and if that doesn't exist we check for LEFT
+        panel = Page.where( name: panelname ).last
+      end
+    end  
     return panel
   end
   
@@ -41,7 +50,7 @@ class Page < ActiveRecord::Base
     end
 
     # parse include directive
-    c = Page.parse_include( self.content )
+    c = Page.parse_include( self.content, role )
     c = Page.parse_roles( c, role )  
     c = Page.parse_pagelink( c )  
     c = Page.parse_pin( c )  
@@ -106,12 +115,12 @@ class Page < ActiveRecord::Base
   
   # strip out <%= include pagename %> and replace 'pagename' with the content
   # of that page...
-  def self.parse_include( str )
+  def self.parse_include( str, role )
     c = str
     include_names = c.scan(/<%=\s+include\s+([\w]+)\s+%>/)      
     include_names.each do | p_name |
       page = Page.where( name: p_name).last
-      inclusion = page ? page.display : ( '<%= include ' + p_name[0] + ': not found %>' ) 
+      inclusion = page ? page.display( role ) : ( '<%= include ' + p_name[0] + ': not found %>' ) 
       c = c.gsub( /<%=\s+include\s+#{p_name[0]}\s+%>/, inclusion )
     end    
     return c
