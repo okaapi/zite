@@ -8,7 +8,8 @@ class SeiteControllerTest < ActionController::TestCase
 
   test "should get pageupdate" do
     get :pageupdate
-    assert_response :success
+    
+    assert_redirected_to '/'
   end
 
 end

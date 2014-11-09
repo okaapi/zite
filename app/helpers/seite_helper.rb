@@ -34,7 +34,8 @@ module SeiteHelper
     File.join( '/storage', pagename, File.basename( f ) )
   end
   def file_grab_target( pagename, f )
-    File.join( root_url, 'storage', pagename, File.basename( f ) )
+    #File.join( root_url, 'storage', pagename, File.basename( f ) )
+    file_target( pagename, f )
   end  
   def center_class( left, right )
     if !left and !right 

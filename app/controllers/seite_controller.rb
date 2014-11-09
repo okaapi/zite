@@ -69,7 +69,9 @@ class SeiteController < ApplicationController
         redirect_to seite_path( seite: @page.name ), notice: "page #{@page.name} saved..."
       rescue Exception => e           
         redirect_to root_path,  alert: "problems saving page... #{e}"
-      end
+      end      
+    else
+      redirect_to seite_path( seite: @page.name )
     end
           
   end

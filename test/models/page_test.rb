@@ -13,6 +13,7 @@ class PageTest < ActiveSupport::TestCase
     end
   end
   
+=begin 
   test 'visibilities and editabilities' do
     assert_equal Page.visibilities, ["any", "user", "editor", "self", "admin"]
     assert_equal Page.editabilities, ['admin', 'self', 'editor']
@@ -111,16 +112,16 @@ class PageTest < ActiveSupport::TestCase
      
     page = Page.find_by_name( 'pagelink')
     assert_equal page.content, "PAGELINK <%= pagelink home %>"
-    assert_equal page.display, "PAGELINK <a href=\"/home\">home</a>" 
+    assert_equal page.display, "PAGELINK <a href=\"/home\" class=\"pagelink\">home</a>" 
     
     page = Page.find_by_name( 'pagelink2')
     assert_equal page.content, "PAGELINK2 <%= pagelink home, link to home %>"
-    assert_equal page.display, "PAGELINK2 <a href=\"/home\"> link to home</a>"
+    assert_equal page.display, "PAGELINK2 <a href=\"/home\" class=\"pagelink\"> link to home</a>"
     
     page = Page.find_by_name( 'pagelink3')
     assert_equal page.content, 
          "PAGELINK3 <%= pagelink home %> SOME TEXT <%= pagelink home, link to home %>"
-    assert_equal page.display, "PAGELINK3 <a href=\"/home\">home</a> SOME TEXT <a href=\"/home\"> link to home</a>"    
+    assert_equal page.display, "PAGELINK3 <a href=\"/home\" class=\"pagelink\">home</a> SOME TEXT <a href=\"/home\" class=\"pagelink\"> link to home</a>"    
         
     page = Page.find_by_name( 'adminlink')
     assert_equal page.content, "ADMINLINK <%= adminlink admin %>"
@@ -128,19 +129,34 @@ class PageTest < ActiveSupport::TestCase
         
     page = Page.find_by_name( 'adminlink')
     assert_equal page.content, "ADMINLINK <%= adminlink admin %>"
-    assert_equal page.display('admin'), "ADMINLINK <a href=\"/admin\">admin</a>"   
+    assert_equal page.display('admin'), "ADMINLINK <a href=\"/admin\" class=\"adminlink\">admin</a>"   
+    
+     
         
   end  
   
   test 'test roles' do
+    
     page = Page.find_by_name( 'admin' )
     assert_equal page.content, "ADMIN <%= admin  <h1> Admin Heading</h1> to 'admin stuff' %>"
     assert_equal page.display(  ), "ADMIN "
     
     page = Page.find_by_name( 'admin' )
     assert_equal page.content, "ADMIN <%= admin  <h1> Admin Heading</h1> to 'admin stuff' %>"
-    assert_equal page.display( 'admin' ), "ADMIN <h1> Admin Heading</h1> to 'admin stuff'"  
-            
+    assert_equal page.display( 'admin' ), "ADMIN <h1> Admin Heading</h1> to 'admin stuff'" 
+    
+    page = Page.find_by_name( 'editor')
+    assert_equal page.content, "EDITOR <%= editor  <h1> Editor Heading</h1> to 'editor stuff' %>"
+    assert_equal page.display, "EDITOR "   
+    
+    page = Page.find_by_name( 'editor')
+    assert_equal page.content, "EDITOR <%= editor  <h1> Editor Heading</h1> to 'editor stuff' %>"
+    assert_equal page.display( 'editor' ), "EDITOR <h1> Editor Heading</h1> to 'editor stuff'"      
+        
+    page = Page.find_by_name( 'editor')
+    assert_equal page.content, "EDITOR <%= editor  <h1> Editor Heading</h1> to 'editor stuff' %>"
+    assert_equal page.display( 'admin' ), "EDITOR <h1> Editor Heading</h1> to 'editor stuff'" 
+                
   end
   
   test 'test whole page' do
@@ -188,14 +204,21 @@ class PageTest < ActiveSupport::TestCase
   end
   
   test 'imagelink' do
-    #page = Page.find_by_name( 'imagelink')
-    #assert_equal page.content, "IMAGELINK <%= imagelink lifebetterinflipflops.jpg %>"
-    #assert_equal page.display, "IMAGELINK <a href=\"/storage/imagelink/lifebetterinflipflops.jpg\"> <img src=\"/storage/imagelink/lifebetterinflipflops.jpg \"> </a>" 
-
+    page = Page.find_by_name( 'imagelink')
+    assert_equal page.content, "IMAGELINK <%= imagelink lifebetterinflipflops.jpg %>"
+    assert_equal page.display, "IMAGELINK <a href=\"/storage/imagelink/lifebetterinflipflops.jpg\"> <img src=\"/storage/imagelink/lifebetterinflipflops.jpg\"> </a>"
+    
     page = Page.find_by_name( 'imagelink2')
     assert_equal page.content, "IMAGELINK2 <%= imagelink lifebetterinflipflops.jpg, width = 200 %>"
     assert_equal page.display, "IMAGELINK2 <a href=\"/storage/imagelink2/lifebetterinflipflops.jpg\"> <img src=\"/storage/imagelink2/lifebetterinflipflops.jpg\" width = 200> </a>"
     
+  end
+  
+=end  
+  test 'pin' do
+    page = Page.find_by_name( 'pin' )
+    page.content = '<%= pin ontent.com/-Ty8ugO_MEEc/U_qm6SbvR5I/AAAAAAAAE3Q/fYvN9A8iDqc/s128/IMG_1402.JPG" alt="" /></a></p> %>'
+    assert_equal page.display, 'bla'
   end
   
 end

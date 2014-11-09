@@ -11,11 +11,12 @@
 
             <td> <%= link_to if_image(pagename, f), file_target( pagename, f) %></td>
             <td> <%= link_to File.basename( f ), file_target( pagename, f) %> </td>
+
+            <td class="grab_box"> <%= file_grab_target( pagename, f) %> </td>
             <td> <%= link_to 'delete', 
                       file_delete_path( seite: pagename, filename: File.basename(f) ),
                       method: :post,
-                      data: { confirm: 'Are you sure?' } %> &nbsp; </td>
-            <td class="grab_box"> <%= file_grab_target( pagename, f) %> </td>
+                      data: { confirm: 'Are you sure?' } %> &nbsp; </td>            
           </tr>
         <% end %>
       </table>

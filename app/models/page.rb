@@ -4,7 +4,8 @@ class Page < ActiveRecord::Base
   before_create :name_downcase
   before_save :name_downcase
   before_update :name_downcase
-  
+
+ 
   def self.get_layout( pagename )
     center = Page.where( name: pagename ).last
     header = get_panel_or_default( pagename, 'header')
@@ -43,6 +44,7 @@ class Page < ActiveRecord::Base
     c = Page.parse_include( self.content )
     c = Page.parse_roles( c, role )  
     c = Page.parse_pagelink( c )  
+    c = Page.parse_pin( c )  
     c = Page.parse_adminlink( c, role ) 
     c = Page.parse_imagelink( c, self.name )
     return c    
@@ -124,7 +126,7 @@ class Page < ActiveRecord::Base
       linktarget = link[0]
       linkdisplay = link[1] ? link[1] : linktarget     
       linkdisplay.gsub!(/"/,'')
-      sub = '<a href="/' + linktarget + '">' + linkdisplay + '</a>'
+      sub = '<a href="/' + linktarget + '" class="pagelink">' + linkdisplay + '</a>'
       c = c.gsub( /<%=\s+pagelink\s+#{linktext[0]}\s+%>/, sub )
     end    
     return c
@@ -146,14 +148,14 @@ class Page < ActiveRecord::Base
   
   def self.parse_adminlink( str, role = nil )
     c = str
-    links = c.scan(/<%=\s+adminlink\s+([,'"\w\s]+?)\s+%>/)      
+    links = c.scan(/<%=\s+adminlink\s+([,.'"\w\s]+?)\s+%>/)      
     links.each do | linktext |
       link = linktext[0].split(',')
       link.each {|l| l[0].strip!}
       linktarget = link[0]
       linkdisplay = link[1] ? link[1] : linktarget     
       linkdisplay.gsub!(/"/,'')
-      sub = (role == "admin") ? ('<a href="/' + linktarget + '">' + linkdisplay + '</a>') : ''
+      sub = (role == "admin") ? ('<a href="/' + linktarget + '" class="adminlink">' + linkdisplay + '</a>') : ''
       c = c.gsub( /<%=\s+adminlink\s+#{linktext[0]}\s+%>/, sub )
     end    
     return c
@@ -163,16 +165,34 @@ class Page < ActiveRecord::Base
     
     c = str    
     # this could be expanded to other roles... but then admin would not see user stuff etc...
-    roles = ['admin']
-    roles.each do |roledef|
-      links = c.scan(/<%=\s+#{roledef}\s+([<>\/,'"\w\s]+?)\s+%>/)      
+    ['admin','editor'].each do |roledef|
+      links = c.scan(/<%=\s+#{roledef}\s+([<>\/,'"\w\s]+?)\s+%>/)   
       links.each do | linktext |
-        sub = (role == roledef) ? linktext[0] : ''
+        case role
+        when 'admin'
+          sub = (roledef == 'admin' or roledef == 'editor') ? linktext[0] : ''
+        when 'editor'
+          sub = (roledef == 'editor') ? linktext[0] : ''
+        else
+          sub = ''
+        end
         c = c.gsub( /<%=\s+#{roledef}\s+#{linktext[0]}\s+%>/, sub )
       end 
     end
    
-    return c
+    return c   
   end
+
+  def self.parse_pin( str )
+    c = str
+    pins = c.scan(/<%=\s+pin\s+([<>\/,=:.#-_'"\?\w\s]+?)\s+%>/)
+    pins.each do | p |
+      pintext = p[0]
+      pintext = pintext.gsub(/[\?]/,'\\?')
+      sub = '<div class="pindiv">  ' + pintext + '  </div>'
+      c = c.gsub( /<%=\s+pin\s+#{pintext}\s+%>/, sub )
+    end    
+    return c
+  end  
    
 end
