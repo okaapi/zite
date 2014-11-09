@@ -3,7 +3,7 @@
   <% if viewable( seite, @user ) == true %>
     
     <% @role = @user ? @user.role : nil %>
-    <div> <%= seite.display(@role).html_safe %> </div>
+    <%= seite.display(@role).html_safe %>
     
     <%= render partial: "edit", locals: { seite: seite } %>
     

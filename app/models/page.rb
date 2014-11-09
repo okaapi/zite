@@ -119,7 +119,7 @@ class Page < ActiveRecord::Base
   
   def self.parse_pagelink( str )
     c = str
-    links = c.scan(/<%=\s+pagelink\s+([,'"\w\s]+?)\s+%>/)      
+    links = c.scan(/<%=\s+pagelink\s+([,.'"\w\s]+?)\s+%>/)      
     links.each do | linktext |
       link = linktext[0].split(',')
       link.each {|l| l[0].strip!}
@@ -185,7 +185,7 @@ class Page < ActiveRecord::Base
 
   def self.parse_pin( str )
     c = str
-    pins = c.scan(/<%=\s+pin\s+([<>\/,=:.#-_'"\?\w\s]+?)\s+%>/)
+    pins = c.scan(/<%=\s+pin\s+([<>\/,=:.#-_'!&"\?\w\s]+?)\s+%>/)
     pins.each do | p |
       pintext = p[0]
       pintext = pintext.gsub(/[\?]/,'\\?')

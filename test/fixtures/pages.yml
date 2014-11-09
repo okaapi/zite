@@ -94,7 +94,7 @@ pagelink:
   
 pagelink2:
   name: pagelink2
-  content: "PAGELINK2 <#= pagelink home, link to home #>"
+  content: "PAGELINK2 <#= pagelink home, link to home... #>"
   user_id: 1   
 
 pagelink3:
@@ -111,6 +111,11 @@ adminlink:
   name: adminlink
   content: "ADMINLINK <#= adminlink admin #>"
   user_id: 1    
+  
+adminlink2:
+  name: adminlink2
+  content: "ADMINLINK2 <#= adminlink admin, stuff... #>"
+  user_id: 1     
     
 editor:
   name: editor
@@ -129,6 +134,6 @@ user:
   
 pin:
   name: pin
-#  m/11 4?a t6AE#slideshow"><img src="https://lh3..com/-Ty8ug#>
-  content: 'PIN <#= pin <h3> 4</h3> <p><a href= "https://pic.g?au m/11 4?a t6AE#slc="https:// #>'
+# added ! and &
+  content: 'PIN <#= pin <h3> 4</h3> !& <p><a href= "https://pic.g?au m/11 4?a t6AE#slc="https:// #>'
   user_id: 1

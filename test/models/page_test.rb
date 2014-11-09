@@ -13,7 +13,6 @@ class PageTest < ActiveSupport::TestCase
     end
   end
   
-=begin 
   test 'visibilities and editabilities' do
     assert_equal Page.visibilities, ["any", "user", "editor", "self", "admin"]
     assert_equal Page.editabilities, ['admin', 'self', 'editor']
@@ -115,8 +114,8 @@ class PageTest < ActiveSupport::TestCase
     assert_equal page.display, "PAGELINK <a href=\"/home\" class=\"pagelink\">home</a>" 
     
     page = Page.find_by_name( 'pagelink2')
-    assert_equal page.content, "PAGELINK2 <%= pagelink home, link to home %>"
-    assert_equal page.display, "PAGELINK2 <a href=\"/home\" class=\"pagelink\"> link to home</a>"
+    assert_equal page.content, "PAGELINK2 <%= pagelink home, link to home... %>"
+    assert_equal page.display, "PAGELINK2 <a href=\"/home\" class=\"pagelink\"> link to home...</a>"
     
     page = Page.find_by_name( 'pagelink3')
     assert_equal page.content, 
@@ -131,7 +130,9 @@ class PageTest < ActiveSupport::TestCase
     assert_equal page.content, "ADMINLINK <%= adminlink admin %>"
     assert_equal page.display('admin'), "ADMINLINK <a href=\"/admin\" class=\"adminlink\">admin</a>"   
     
-     
+    page = Page.find_by_name( 'adminlink2')
+    assert_equal page.content, "ADMINLINK2 <%= adminlink admin, stuff... %>"
+    assert_equal page.display('admin'), "ADMINLINK2 <a href=\"/admin\" class=\"adminlink\"> stuff...</a>"      
         
   end  
   
@@ -153,7 +154,7 @@ class PageTest < ActiveSupport::TestCase
     assert_equal page.content, "EDITOR <%= editor  <h1> Editor Heading</h1> to 'editor stuff' %>"
     assert_equal page.display( 'editor' ), "EDITOR <h1> Editor Heading</h1> to 'editor stuff'"      
         
-    page = Page.find_by_name( 'editor')
+    page = Page.find_by_name( 'editor')  
     assert_equal page.content, "EDITOR <%= editor  <h1> Editor Heading</h1> to 'editor stuff' %>"
     assert_equal page.display( 'admin' ), "EDITOR <h1> Editor Heading</h1> to 'editor stuff'" 
                 
@@ -214,11 +215,9 @@ class PageTest < ActiveSupport::TestCase
     
   end
   
-=end  
   test 'pin' do
     page = Page.find_by_name( 'pin' )
-    page.content = '<%= pin ontent.com/-Ty8ugO_MEEc/U_qm6SbvR5I/AAAAAAAAE3Q/fYvN9A8iDqc/s128/IMG_1402.JPG" alt="" /></a></p> %>'
-    assert_equal page.display, 'bla'
+    assert_equal page.display, "PIN <div class=\"pindiv\">  <h3> 4</h3> !& <p><a href= \"https://pic.g\\?au m/11 4\\?a t6AE#slc=\"https://  </div>"
   end
   
 end
