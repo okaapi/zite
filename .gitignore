@@ -18,3 +18,7 @@
 # Ignore config files
 /config/yml
 /config/*.yml
+
+# Ignore data files
+/public/storage
+/public/oldweb
