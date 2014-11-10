@@ -22,3 +22,4 @@
 # Ignore data files
 /public/storage
 /public/oldweb
+/public/assets
