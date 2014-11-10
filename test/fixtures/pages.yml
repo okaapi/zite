@@ -18,6 +18,7 @@ one:
 one_header_older:
   name: home_header
   content: "OLD HOME HEADER" 
+  user_id: 1  
 
 one_header:
   name: home_header
@@ -53,6 +54,7 @@ two:
   name: talks
   content: "<h1> Talks </h1>"
   menu: 'false'
+  visibility: 'admin'
   user_id: 1  
   
 two_left:
@@ -68,10 +70,11 @@ two_books:
   
 two_films:
   name: talks_films
+  menu: 'false' 
   content: "<h1> Talks on films </h1>"
   user_id: 1
   
-two_films:
+two_films_left:
   name: talks_films_left
   content: "Talks on films left"
   user_id: 1 
@@ -82,6 +85,7 @@ three:
   menu: 'false'
   user_id: 1       
   
+
 menu:
   name: menu
   content: "GENERIC MENU"

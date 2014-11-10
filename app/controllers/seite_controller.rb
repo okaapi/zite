@@ -61,17 +61,32 @@ class SeiteController < ApplicationController
   
   def pageupdate_save
         
+
+    pagename = page_params[:name] || ''
+    u_p = page_params[:name].split('_')
+    if u_p.count > 1
+      if u_p[ u_p.count-1 ].casecmp('header') == 0 or u_p[ u_p.count-1 ].casecmp('menu') == 0 or 
+        u_p[ u_p.count-1 ].casecmp('left') == 0 or u_p[ u_p.count-1 ].casecmp('right') == 0 or 
+        u_p[ u_p.count-1 ].casecmp('footer') == 0 
+        returnpage = u_p[0..u_p.count-2].join('_')
+      else
+        returnpage = pagename
+      end
+    else
+      returnpage = pagename
+    end
+    
     if @user
       @page = Page.new( page_params )
       @page.user_id = @user.id
       begin
         @page.save
-        redirect_to seite_path( seite: @page.name ), notice: "page #{@page.name} saved..."
+        redirect_to seite_path( seite: returnpage ), notice: "page #{@page.name} saved..."
       rescue Exception => e           
         redirect_to root_path,  alert: "problems saving page... #{e}"
       end      
     else
-      redirect_to seite_path( seite: @page.name )
+      redirect_to seite_path( seite: returnpage )
     end
           
   end

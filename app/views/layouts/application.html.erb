@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Zite</title>
+  <title><%= @center ? @center.name : "" %></title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+  
   <%= render "auth/authenticate/layout_insert" %>
   
   <% if flash[:alert] %>
@@ -21,9 +21,21 @@
     <%= yield %>
   </div>
 
-  <div class="cleardiv" id="version">
-    Application <%= controller.controller_name %> / <%= controller.action_name %> Ruby <%= RUBY_VERSION%> Rails <%= Rails.version %> <%= Rails.env %>
-  </div>
+  <% if is_admin( @user ) %>
+	  <div class="cleardiv" id="version"> <small>
+	    Application <%= controller.controller_name %> / <%= controller.action_name %> 
+	    Ruby <%= RUBY_VERSION%> Rails <%= Rails.version %> <%= Rails.env %> <br>
+	    page <%= @center.name if @center %>
+	    user <%= @user.username if @user %> 
+	    edit <%= editable( @center, @user ).to_s[0] %> 
+	    view <%= viewable( @center, @user ).to_s[0] %> <br> <br>
+	  </small> </div>
+  <% else %>
+	  <div class="cleardiv" id="version"> <small>
+      <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> 
+      <%= editable( @center, @user ).to_s[0] %> <%= viewable( @center, @user ).to_s[0] %> 
+	  </small> </div>  	  
+  <% end %>
 
 </body>
 </html>

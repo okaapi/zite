@@ -14,6 +14,9 @@ module SeiteHelper
       nil
     end
   end  
+  def is_admin( user )
+    ( user and user.role == 'admin' )
+  end
   def prettyversion( t )
     t.getlocal.strftime("%H:%M %m-%d-%Y")
   end

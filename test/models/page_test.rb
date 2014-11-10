@@ -102,6 +102,12 @@ class PageTest < ActiveSupport::TestCase
   end  
   
   test 'test include' do
+    one = pages( :one  )
+    # make sure it's the most recent one...
+    one.id_will_change!
+    sleep( 1 )
+    one.save!    
+    #
     page = Page.find_by_name( 'include')
     assert_equal page.content, "INCLUDE <%= include home %>"
     assert_equal page.display, "INCLUDE <h1> Home Page </h1>"
@@ -214,12 +220,16 @@ class PageTest < ActiveSupport::TestCase
   test 'display chronological' do
     
     Page.create( name: 'time', user_id: @wido.id, content: 'oldest')
+    Page.create( name: 'time_left', user_id: @wido.id, content: 'oldest')    
+    sleep(1)
     Page.create( name: 'time', user_id: @wido.id,  content: 'old')
+    Page.create( name: 'time_left', user_id: @wido.id,   content: 'old')    
+    sleep(1)    
     Page.create( name: 'time', user_id: @wido.id,  content: 'latest')
-    Page.create( name: 'time_left', user_id: @wido.id, content: 'oldest')
-    Page.create( name: 'time_left', user_id: @wido.id,   content: 'old')
-    Page.create( name: 'time_left', user_id: @wido.id,   content: 'latest')
-    header, menu, left, center, right, footer = Page.get_layout( 'time' )
+    Page.create( name: 'time_left', user_id: @wido.id,   content: 'latest')    
+   
+
+    header, menu, left, center, right, footer = Page.get_layout( 'time' )    
     assert_equal center.content, 'latest'
     assert_equal left.content, 'latest'
         
@@ -239,6 +249,22 @@ class PageTest < ActiveSupport::TestCase
   test 'pin' do
     page = Page.find_by_name( 'pin' )
     assert_equal page.display, "PIN <div class=\"pindiv\">  <h3> 4</h3> (!&) <p><a href= \"https://pic.g\\?au m/11 4\\?a t6AE#slc=\"https://  </div>"
+  end
+  
+  test 'basepage' do
+    assert_equal Page.basepage( nil ), ''
+    assert_equal Page.basepage( 'something'), 'something'
+    assert_equal Page.basepage( 'some_thing'), 'some_thing'
+    assert_equal Page.basepage( 'some_header'), 'some'
+    assert_equal Page.basepage( 'some_menu'), 'some'  
+    assert_equal Page.basepage( 'some_footer'), 'some' 
+    assert_equal Page.basepage( 'some_left'), 'some' 
+    assert_equal Page.basepage( 'some_right'), 'some'   
+    assert_equal Page.basepage( 'header'), 'header'
+    assert_equal Page.basepage( 'menu'), 'menu'  
+    assert_equal Page.basepage( 'footer'), 'footer' 
+    assert_equal Page.basepage( 'left'), 'left' 
+    assert_equal Page.basepage( 'right'), 'right'              
   end
   
 end

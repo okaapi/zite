@@ -5,9 +5,12 @@ class Page < ActiveRecord::Base
   before_save :name_downcase
   before_update :name_downcase
 
- 
+  def self.get_latest( pagename )
+    Page.where( name: pagename ).order( updated_at: :asc ).last
+  end
+  
   def self.get_layout( pagename )
-    center = Page.where( name: pagename ).last
+    center = Page.get_latest( pagename )
     header = get_panel_or_default( pagename, 'header')
     menu = ( center and center.menu == 'true' ) ? get_panel_or_default( pagename, 'menu') : nil
     left = get_panel_or_default( pagename, 'left')
@@ -17,31 +20,43 @@ class Page < ActiveRecord::Base
   end
   
   def self.get_css
-    p = Page.where( name: 'css').last
+    p = Page.get_latest( 'css')
     css = p ? p.content : ""    
     css = css.gsub(/<p>/i,'').gsub(/<\/p>/i,'').gsub(/<br \/>/i,'')
              .gsub(/&nbsp;/i,' ').gsub(/<pre>/i,'').gsub(/<\/pre>/i,'')
   end
   
   def self.get_panel( pagename, panelname )
-    Page.where( name: pagename + '_' + panelname).last
+    Page.get_latest( pagename + '_' + panelname)
   end
   
   def self.get_panel_or_default( pagename, panelname )
     # first we check for HOME_PAGE_LEFT
-    panel = Page.where( name: pagename + '_' + panelname).last
+    panel = Page.get_latest( pagename + '_' + panelname)
     if ! panel
       # if that doesn't exist, then we check for HOME_LEFT
       rootname = pagename.split('_')[0]
-      panel = Page.where( name: rootname + '_' + panelname ).last      
+      panel = Page.get_latest( rootname + '_' + panelname )   
       if ! panel
         # and if that doesn't exist we check for LEFT
-        panel = Page.where( name: panelname ).last
+        panel = Page.get_latest( panelname )
       end
     end  
     return panel
   end
-  
+
+  def self.basepage( pagename )
+    u_p = (pagename||'').split('_')
+    if u_p.count > 1
+      if u_p[ u_p.count-1 ].casecmp('header') == 0 or u_p[ u_p.count-1 ].casecmp('menu') == 0 or 
+        u_p[ u_p.count-1 ].casecmp('left') == 0 or u_p[ u_p.count-1 ].casecmp('right') == 0 or 
+        u_p[ u_p.count-1 ].casecmp('footer') == 0 
+        return u_p[0..u_p.count-2].join('_')
+      end
+    end
+    (pagename||'')
+  end
+    
   def display( role = 'user' )
 
     if ! self.content
@@ -119,7 +134,7 @@ class Page < ActiveRecord::Base
     c = str
     include_names = c.scan(/<%=\s+include\s+([\w]+)\s+%>/)      
     include_names.each do | p_name |
-      page = Page.where( name: p_name).last
+      page = Page.get_latest( p_name)
       inclusion = page ? page.display( role ) : ( '<%= include ' + p_name[0] + ': not found %>' ) 
       c = c.gsub( /<%=\s+include\s+#{p_name[0]}\s+%>/, inclusion )
     end    

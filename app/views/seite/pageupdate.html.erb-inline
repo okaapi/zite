@@ -5,18 +5,19 @@
  
 <% end %>
 
-<div id="pageupdate" class="center">
+<div id="pageupdate" >
   
   <% if @page.updated_at %>
     <small> Last edited <%= prettyversion( @page.updated_at ) %>: </small>
   <% else %>
     Enter HTML here:
   <% end %>
-  <%= form_tag page_update_save_path( name: @page.name ) do %>
+    
+  <div class="center" contenteditable="true" >
+    <%= @page.content.html_safe %>
+  </div>
   
-    <%= text_area_tag :content, @page.content, id: "pageupdate_textarea",
-        class: ckeditorclass,
-        rows: ( @page.content.scan(/\n/).count + 2 )%>       
+  <%= form_tag page_update_save_path( name: @page.name ) do %>  
         
     <%= submit_tag 'Save!'%> 
     <%= link_to "cancel", seite_path( seite: @page.name ) if @page.updated_at %>

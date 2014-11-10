@@ -32,13 +32,6 @@
 	<div class="footer">
 	  <%= render partial: "seite", locals: { seite: @footer } %>
 	</div>
-	<div class="cleardiv">
-      <small>
-        page <%= @center.name if @center %>
-        user <%= @user.username if @user %> 
-        edit <%= editable( @center, @user ) %> view <%= viewable( @center, @user ) %>
-      </small>
-    </div> 
   	
 </div> 
 
