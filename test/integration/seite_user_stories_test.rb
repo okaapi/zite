@@ -23,7 +23,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   test "viewing a page not logged in" do
   
     # enters correct password and gets logged in and session is created
-    xhr :post, "/prove_it", claim: "arnaud", password: "secret"
+    xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
     assert_response :success
     assert_equal flash[:notice], 'arnaud logged in'
     
@@ -56,7 +56,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   test "viewing a page logged in as admin" do
   
     # enters correct password and gets logged in and session is created
-    xhr :post, "/prove_it", claim: "wido_admin", password: "secret"
+    xhr :post, "/_prove_it", claim: "wido_admin", password: "secret"
     assert_response :success
     assert_equal flash[:notice], 'wido_admin logged in'
     

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141106194111) do
+ActiveRecord::Schema.define(version: 20141111040334) do
 
   create_table "auth_user_actions", force: true do |t|
     t.integer  "user_session_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20141106194111) do
     t.string   "action"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "params"
   end
 
   add_index "auth_user_actions", ["user_session_id"], name: "index_auth_user_actions_on_user_session_id", using: :btree

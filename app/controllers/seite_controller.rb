@@ -101,7 +101,7 @@ class SeiteController < ApplicationController
       @files = Dir.glob( File.join( Rails.root , 'public', 'storage', @pagename, '*' ) )
       @files.delete_if {|f| File.directory?(f) }
           
-      # sanitize and get file/directory names
+      # sanitize and get file/directory names   
       filename = File.basename(params[:file].original_filename).gsub(/[^\w._-]/,'').downcase
       directory = File.join( Rails.root , 'public', 'storage', @pagename )
 
