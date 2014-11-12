@@ -33,11 +33,16 @@ module SeiteHelper
       ext
     end
   end  
+  def file_encoding( f )
+    File.basename( f ).encoding.to_s
+  end
+  def file_basename( f )
+    File.basename( f ).force_encoding("ASCII-8BIT") 
+  end
   def file_target( pagename, f )
-    File.join( '/storage', pagename, File.basename( f ) )
+    File.join( '/storage', pagename, File.basename( f ) ).force_encoding("ASCII-8BIT") 
   end
   def file_grab_target( pagename, f )
-    #File.join( root_url, 'storage', pagename, File.basename( f ) )
     file_target( pagename, f )
   end  
   def center_class( left, right )

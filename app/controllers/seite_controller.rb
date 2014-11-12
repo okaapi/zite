@@ -16,6 +16,12 @@ class SeiteController < ApplicationController
       redirect_to page_update_path( seite: @seiten_name )
     elsif ! @center.editable_by_user( @user ? @user.role : nil, @user ? @user.id : nil )
       render alert: "not authorized..."
+    else
+      begin
+        render
+      rescue Exception => e
+        render inline: "#{e}"
+      end
     end
     
   end
@@ -56,6 +62,12 @@ class SeiteController < ApplicationController
     # see whether there are any files associated with this
     @files = Dir.glob( File.join( Rails.root , 'public', 'storage', @seiten_name, '*' ) )
     @files.delete_if {|f| File.directory?(f) }
+
+    begin
+      render
+    rescue Exception => e
+      render inline: "#{e}"
+    end
 
   end
   

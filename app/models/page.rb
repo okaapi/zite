@@ -143,7 +143,7 @@ class Page < ActiveRecord::Base
   
   def self.parse_pagelink( str )
     c = str
-    links = c.scan(/<%=\s+pagelink\s+([,.'"\w\s]+?)\s+%>/)      
+    links = c.scan(/<%=\s+pagelink\s+([|&;,.'"\w\s]+?)\s+%>/)      
     links.each do | linktext |
       link = linktext[0].split(',')
       link.each {|l| l[0].strip!}
