@@ -18,11 +18,7 @@ class SeiteController < ApplicationController
     elsif ! @center.editable_by_user( @user ? @user.role : nil, @user ? @user.id : nil )
       render alert: "not authorized..."
     else
-      begin
-        render
-      rescue Exception => e
-        render inline: "#{e}"
-      end
+      render
     end
     
   end
@@ -34,11 +30,7 @@ class SeiteController < ApplicationController
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
     
-    begin
-      @cached_page  = render :index
-    #rescue Exception => e
-    #  render inline: "#{e}"
-    end
+    @cached_page  = render :index
 
     # cache the page
     if @cached_page

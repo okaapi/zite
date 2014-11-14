@@ -9,8 +9,14 @@ class SeiteControllerTest < ActionController::TestCase
   
   test "should get index" do
     get :index
-    assert_response :success
+    #assert_response :success
+    assert_redirected_to '/c'
   end
+  
+  test "should get cached" do
+    get :cached
+    assert_response :success
+  end  
 
   test "should get pageupdate" do
     get :pageupdate    

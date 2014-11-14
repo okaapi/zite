@@ -29,7 +29,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
   test "logging in and out" do
   
     # user comes to the website and sees the "login" link
-    get "/"
+    get_via_redirect "/"
     assert_response :success
     assert_select '#authentication_launchpad a', 'login'
 
@@ -80,7 +80,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
       
     # refreshes and confirms that user is not shown as logged in
-    get "/"
+    get_via_redirect "/"
     assert_response :success
     assert_select '#authentication_launchpad', /login/ 
                  
@@ -139,7 +139,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     
     # refreshes and still gets the correct user displayed
-    get "/"
+    get_via_redirect "/"
     assert_response :success
     assert_select '.authenticate fieldset legend', /francois/
     assert_select '.authenticate fieldset div label', /password/     
