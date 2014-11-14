@@ -3,12 +3,13 @@ class SeiteController < ApplicationController
   
   def index
     
+    if !@user
+      redirect_to cached_path( seite: params[:seite] )
+      return
+    end
+    
     @seiten_name = params[:seite] || 'home'
-      
-    #if @seiten_name and @seiten_name.include? "_" and !user
-    #  redirect_to seite_path( seite: @seiten_name.split('_').first )
-    #end
-        
+            
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
     
@@ -26,10 +27,44 @@ class SeiteController < ApplicationController
     
   end
 
+  def cached
+    
+    @seiten_name = params[:seite] || 'home'
+            
+    @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
+    @css = Page.get_css
+    
+    begin
+      @cached_page  = render :index
+    #rescue Exception => e
+    #  render inline: "#{e}"
+    end
+
+    # cache the page
+    if @cached_page
+      path = File.join( Rails.root , 'public', 'c', @seiten_name.downcase ) + '.html'    
+      File.open(path, "w") { |f| f.write(@cached_page[0]) }
+    end
+  
+  end
+  
+  def uncache
+    directory = File.join( Rails.root , 'public', 'c' )
+    FileUtils.rm_rf(Dir.glob( directory + '/*' ))
+    redirect_to root_path
+  end
+  
   def pageupdate
     
     @seiten_name = params[:seite]
-      
+    # remove the cached page
+    if @seiten_name
+      path = File.join( Rails.root , 'public', 'c', @seiten_name.downcase ) + '.html'
+      if File.exists? path
+        File.delete( path )
+      end
+    end
+    
     if ! @user
       redirect_to root_path, alert: "need to login first..."
       return
@@ -73,7 +108,6 @@ class SeiteController < ApplicationController
   
   def pageupdate_save
         
-
     pagename = page_params[:name] || ''
     u_p = page_params[:name].split('_')
     if u_p.count > 1

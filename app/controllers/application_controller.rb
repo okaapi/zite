@@ -5,8 +5,6 @@ class ApplicationController < ActionController::Base
   include Auth::CurrentUserSession
   before_action :set_current_user_session_and_create_action
   
-
-  
   def only_if_admin
     unless current_user_is_admin
       redirect_to '/', notice: "must be admin"

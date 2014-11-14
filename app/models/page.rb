@@ -59,25 +59,17 @@ class Page < ActiveRecord::Base
     
   def display( role = 'user' )
 
-    if ! self.content
+    if self.content.nil?
       self.content = 'empty page' 
-      self.save
     end
-
-    # parse include directive
-    c = Page.parse_include( self.content, role )
-    c = Page.parse_roles( c, role )  
-    c = Page.parse_pagelink( c )  
-    c = Page.parse_pin( c )  
-    c = Page.parse_adminlink( c, role ) 
-    c = Page.parse_imagelink( c, self.name )
-    return c    
+    return parse_content( role )    
     
   end
   
   def self.editabilities
     ['admin', 'self', 'editor']
   end
+  
   def editable_by_user( role, user_id = nil )
   
     case self.editability
@@ -116,7 +108,7 @@ class Page < ActiveRecord::Base
   private
   
   def name_downcase
-    self.name = self.name.downcase if self.name
+   @name = @name.downcase if @name
   end
   
   def id_valid
@@ -128,96 +120,59 @@ class Page < ActiveRecord::Base
     end
   end
   
-  # strip out <%= include pagename %> and replace 'pagename' with the content
-  # of that page...
-  def self.parse_include( str, role )
-    c = str
-    include_names = c.scan(/<%=\s+include\s+([\w]+)\s+%>/)      
-    include_names.each do | p_name |
-      page = Page.get_latest( p_name)
-      inclusion = page ? page.display( role ) : ( '<%= include ' + p_name[0] + ': not found %>' ) 
-      c = c.gsub( /<%=\s+include\s+#{p_name[0]}\s+%>/, inclusion )
-    end    
-    return c
-  end
-  
-  def self.parse_pagelink( str )
-    c = str
-    links = c.scan(/<%=\s+pagelink\s+([|&;,.'"\w\s]+?)\s+%>/)      
-    links.each do | linktext |
-      link = linktext[0].split(',')
-      link.each {|l| l[0].strip!}
-      linktarget = link[0]
-      linkdisplay = link[1] ? link[1] : linktarget     
-      linkdisplay.gsub!(/"/,'')
-      sub = '<a href="/' + linktarget + '" class="pagelink">' + linkdisplay + '</a>'
-      c = c.gsub( /<%=\s+pagelink\s+#{linktext[0]}\s+%>/, sub )
-    end    
-    return c
-  end
-
-  def self.parse_imagelink( str, pagename )
-    c = str
-    links = c.scan(/<%=\s+imagelink\s+([.=,\w\s]+?)\s+%>/)    
-    links.each do | linktext |
-      link = linktext[0].split(',')
-      link.each {|l| l[0].strip!}
-      linktarget = '/storage/' + pagename + '/' + link[0]
-      imagespecs = link[1] ? link[1] : ""
-      sub = '<a href="' + linktarget + '"> <img src="' + linktarget + '"' + imagespecs + '> </a>'
-      c = c.gsub( /<%=\s+imagelink\s+#{linktext[0]}\s+%>/, sub )
-    end    
-    return c
-  end    
-  
-  def self.parse_adminlink( str, role = nil )
-    c = str
-    links = c.scan(/<%=\s+adminlink\s+([,.'"\w\s]+?)\s+%>/)      
-    links.each do | linktext |
-      link = linktext[0].split(',')
-      link.each {|l| l[0].strip!}
-      linktarget = link[0]
-      linkdisplay = link[1] ? link[1] : linktarget     
-      linkdisplay.gsub!(/"/,'')
-      sub = (role == "admin") ? ('<a href="/' + linktarget + '" class="adminlink">' + linkdisplay + '</a>') : ''
-      c = c.gsub( /<%=\s+adminlink\s+#{linktext[0]}\s+%>/, sub )
-    end    
-    return c
-  end  
+  #
+  #   execute directives in <%= ....  %> brackets
+  #
+  #  
+  def parse_content( role )
     
-  def self.parse_roles( str, role = nil  )
-    
-    c = str    
-    # this could be expanded to other roles... but then admin would not see user stuff etc...
-    ['admin','editor'].each do |roledef|
-      links = c.scan(/<%=\s+#{roledef}\s+([<>\/,'"\w\s]+?)\s+%>/)   
-      links.each do | linktext |
-        case role
-        when 'admin'
-          sub = (roledef == 'admin' or roledef == 'editor') ? linktext[0] : ''
-        when 'editor'
-          sub = (roledef == 'editor') ? linktext[0] : ''
+    root = TagTree.parse( self.content, '<%=', '%>' )
+    parsed = root.process do |depth, str|
+      if depth > 0         
+        func, operands = TagTree.first_term( str )
+        case func
+        when 'include'
+          page = Page.get_latest( operands )
+          page ? page.display( role ) : ( '<% include ' + operands + ': not found %>' )
+        when 'pagelink', 'adminlink'
+          link = operands.split(',')
+          link.each {|l| l[0].strip!}
+          linktarget = link[0]
+          linkdisplay = link[1] ? link[1] : linktarget     
+          linkdisplay.gsub!(/"/,'')
+          if ( func == 'adminlink' and role == 'admin' ) or func == 'pagelink'            
+            "<a href=\"/#{linktarget}\" class=\"#{func}\">#{linkdisplay}</a>"
+          else
+            ''
+          end
+        when 'imagelink'
+          link = operands.split(',')
+          link.each {|l| l[0].strip!}
+          linktarget = '/storage/' + self.name + '/' + link[0]
+          imagespecs = link[1] ? link[1] : ""
+          "<a href=\"#{linktarget}\"> <img src=\"#{linktarget}\" #{imagespecs}> </a>" 
+        when 'admin', 'editor'
+          case role
+          when 'admin'
+            (func == 'admin' or func == 'editor') ? operands : ''
+          when 'editor'
+            (func == 'editor') ? operands : ''
+          else
+            sub = ''
+          end
+        when 'pin'
+          "<div class=\"pindiv\">  #{operands}  </div>"
+        when 'questions'
+          eval 'questions ' + operands
         else
-          sub = ''
+          '<B>Bad Call to #{func}</B>'
         end
-        c = c.gsub( /<%=\s+#{roledef}\s+#{linktext[0]}\s+%>/, sub )
-      end 
-    end
-   
-    return c   
-  end
-
-  def self.parse_pin( str )
-    c = str
-    pins = c.scan(/<%=\s+pin\s+([<>\(\)\/,=:.;#-_'!&"\?\w\s]+?)\s+%>/)
-    pins.each do | p |
-      pintext = p[0]
-      pintext = pintext.gsub(/[\?]/,'\\?')
-      pinmatch = pintext.gsub(/[\(]/,'\\(').gsub(/[\)]/,'\\)') 
-      sub = '<div class="pindiv">  ' + pintext + '  </div>'
-      c = c.gsub( /<%=\s+pin\s+#{pinmatch}\s+%>/, sub )
-    end    
-    return c
+      else
+        str
+      end
+    end  
+  
+    return parsed
   end  
    
 end

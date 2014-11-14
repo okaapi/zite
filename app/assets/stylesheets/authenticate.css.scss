@@ -26,19 +26,21 @@
   fieldset {
     .label_input_div {
       clear:both;
-      float:right
+      float:right;
+      
     }
     input {
       //background: LightGoldenRodYellow;
-      border: 2px solid darkgrey;
+      border: 2px solid #A9A9A9;
       border-radius: 5px; 
+      font-size: $text-size;
       &:focus {
         background: Azure;
         outline: none;
       }
     }
     input[type=submit] {
-      background: darkgrey;
+      background: #A9A9A9;
       color: teal;      
       &:hover {
         color: LightGoldenRodYellow;

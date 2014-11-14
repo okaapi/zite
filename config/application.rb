@@ -28,7 +28,9 @@ module Zite
 
     # attempt to use a different path for images...
     #config.assets.paths << Rails.root.join('attachments').to_s
-       
+    config.autoload_paths << Rails.root.join('lib')
+    
+    
   end
 end
 

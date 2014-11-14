@@ -12,7 +12,10 @@ Rails.application.routes.draw do
   post '_pageupdate/(:seite)' => 'seite#pageupdate_save', as: 'page_update_save'
   post 'file_upload' => 'seite#file_upload', as: 'file_upload'
   post 'file_delete' => 'seite#file_delete', as: 'file_delete'
+  get 'c/(:seite)' => 'seite#cached', as: 'cached'
+  get 'unc' => "seite#uncache"
   
   get '(:seite)' => "seite#index", as: 'seite'
+
 
 end

@@ -18,16 +18,19 @@
 
 // this is the background if not logged in
 .background_decoration {
-  background-image: url('freestyle.jpg');  
-  background-repeat: no-repeat;
-  background-color: #004455;  
-  background-size: 100%;
+  background: url('freestyle.jpg') no-repeat center center fixed;
+  background-color: #004455; 
+  background-size: cover; 
+  a {
+    color: white
+  }
+
 }
   
 body {
   color: #333;
   font-family: verdana, arial, helvetica, sans-serif;
-  font-size: 16px;
+  font-size: $text-size;
   
   a {
     color: $a-color;

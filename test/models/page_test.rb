@@ -7,10 +7,15 @@ class PageTest < ActiveSupport::TestCase
     # need to change <#= #> to <%= %>
     pages = Page.all
     pages.each do |page|
-      page.content = page.content.gsub(/<#=/,'<%=').gsub(/#>/,'%>')
+      page.content = page.content.gsub(/<#=/,'<%=').gsub(/#>/,'%>') if page.content
       page.user_id = @wido.id
       page.save!  
     end
+  end
+  
+  test 'nil content' do
+    page = pages(:nil_page)
+    assert_equal page.display, 'empty page'  
   end
   
   test 'visibilities and editabilities' do
@@ -113,12 +118,13 @@ class PageTest < ActiveSupport::TestCase
     assert_equal page.display, "INCLUDE <h1> Home Page </h1>"
   end
   
+
   test 'test pagelink' do
      
     page = Page.find_by_name( 'pagelink')
     assert_equal page.content, "PAGELINK <%= pagelink home %>"
     assert_equal page.display, "PAGELINK <a href=\"/home\" class=\"pagelink\">home</a>" 
-    
+  
     page = Page.find_by_name( 'pagelink2')
     assert_equal page.content, "PAGELINK2 <%= pagelink home, link to home... %>"
     assert_equal page.display, "PAGELINK2 <a href=\"/home\" class=\"pagelink\"> link to home...</a>"
@@ -127,7 +133,8 @@ class PageTest < ActiveSupport::TestCase
     assert_equal page.content, 
          "PAGELINK3 <%= pagelink home %> SOME TEXT <%= pagelink home, link to home %>"
     assert_equal page.display, "PAGELINK3 <a href=\"/home\" class=\"pagelink\">home</a> SOME TEXT <a href=\"/home\" class=\"pagelink\"> link to home</a>"    
-        
+    
+         
     page = Page.find_by_name( 'adminlink')
     assert_equal page.content, "ADMINLINK <%= adminlink admin %>"
     assert_equal page.display, "ADMINLINK "   
@@ -141,7 +148,7 @@ class PageTest < ActiveSupport::TestCase
     assert_equal page.display('admin'), "ADMINLINK2 <a href=\"/admin\" class=\"adminlink\"> stuff...</a>"      
         
   end  
-  
+
   test 'test roles' do
     
     page = Page.find_by_name( 'admin' )
@@ -235,20 +242,27 @@ class PageTest < ActiveSupport::TestCase
         
   end
   
+
   test 'imagelink' do
     page = Page.find_by_name( 'imagelink')
     assert_equal page.content, "IMAGELINK <%= imagelink lifebetterinflipflops.jpg %>"
-    assert_equal page.display, "IMAGELINK <a href=\"/storage/imagelink/lifebetterinflipflops.jpg\"> <img src=\"/storage/imagelink/lifebetterinflipflops.jpg\"> </a>"
+    assert_equal page.display, "IMAGELINK <a href=\"/storage/imagelink/lifebetterinflipflops.jpg\"> <img src=\"/storage/imagelink/lifebetterinflipflops.jpg\" > </a>"
     
     page = Page.find_by_name( 'imagelink2')
     assert_equal page.content, "IMAGELINK2 <%= imagelink lifebetterinflipflops.jpg, width = 200 %>"
-    assert_equal page.display, "IMAGELINK2 <a href=\"/storage/imagelink2/lifebetterinflipflops.jpg\"> <img src=\"/storage/imagelink2/lifebetterinflipflops.jpg\" width = 200> </a>"
+    assert_equal page.display, "IMAGELINK2 <a href=\"/storage/imagelink2/lifebetterinflipflops.jpg\"> <img src=\"/storage/imagelink2/lifebetterinflipflops.jpg\"  width = 200> </a>"
     
   end
-  
+    
+   
   test 'pin' do
     page = Page.find_by_name( 'pin' )
-    assert_equal page.display, "PIN <div class=\"pindiv\">  <h3> 4</h3> (!&) <p><a href= \"https://pic.g\\?au m/11 4\\?a t6AE#slc=\"https://  </div>"
+    assert_equal page.display, "PIN <div class=\"pindiv\">  <h3> 4</h3> (!&) <p><a href= \"https://pic.g?au m/11 4?a t6AE#slc=\"https://  </div>"
+  end
+
+  test 'questions' do
+    page = Page.find_by_name( 'questions' )
+    assert_equal page.display, "QUESTIONS <p> green is=?</p><br><p> blue is=?</p><br>"
   end
   
   test 'basepage' do
