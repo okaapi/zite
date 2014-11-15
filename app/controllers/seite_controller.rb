@@ -3,12 +3,12 @@ class SeiteController < ApplicationController
   
   def index
     
+    @seiten_name = params[:seite] || 'home'
+
     if !@user
-      redirect_to cached_path( seite: params[:seite] )
+      redirect_to cached_path( seite: @seiten_name.downcase )
       return
     end
-    
-    @seiten_name = params[:seite] || 'home'
             
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
@@ -25,17 +25,22 @@ class SeiteController < ApplicationController
 
   def cached
     
-    @seiten_name = params[:seite] || 'home'
+    @seiten_name = params[:seite]
             
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
-    
+    @cached = true
+
     @cached_page  = render :index
 
     # cache the page
     if @cached_page
       path = File.join( Rails.root , 'public', 'c', @seiten_name.downcase ) + '.html'    
-      File.open(path, "w") { |f| f.write(@cached_page[0]) }
+      begin
+        File.open(path, "w") { |f| f.write(@cached_page[0]) }
+      rescue
+        #nothing
+      end
     end
   
   end

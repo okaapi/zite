@@ -26,7 +26,7 @@ module SeiteHelper
     ext = ext.downcase
     case ext
     when '.jpg', '.gif', '.png', '.ico'
-      "<img src=#{target} width=20 >".html_safe    
+      "<img src=\"#{target}\" width=20 >".html_safe    
     when '.pdf'
       link_to image_tag( "pdf.ico", width: 20 ), target   
     else
