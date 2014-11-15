@@ -5,7 +5,7 @@ class SeiteController < ApplicationController
     
     @seiten_name = params[:seite] || 'home'
 
-    if !@user
+    if !@user and !session[:reset_user_id]  # otherwise from_mail reset doesn't work
       redirect_to cached_path( seite: @seiten_name.downcase )
       return
     end

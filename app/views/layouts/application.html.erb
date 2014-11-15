@@ -23,14 +23,12 @@
   </div>
 
   <% if ( @user and @user.admin? ) %>
-	  <div class="cleardiv" id="version"> <small>
-	    Application <%= controller.controller_name %> / <%= controller.action_name %> 
-	    Ruby <%= RUBY_VERSION%> Rails <%= Rails.version %> <%= Rails.env %> <br>
-	    page <%= @center.name if @center %> <%= '(cached)' if @cached %>
-	    user <%= @user.username if @user %> 
-	    edit <%= editable( @center, @user ).to_s[0] %> 
-	    view <%= viewable( @center, @user ).to_s[0] %> <br> <br>
-	  </small> </div>
+	  <div class="cleardiv" id="version"> <small> <small> 
+	  <%= controller.controller_name %> / <%= controller.action_name %> 
+      <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> 
+      <%= editable( @center, @user ).to_s[0] %> <%= viewable( @center, @user ).to_s[0] %> <%= 'C' if @cached %> 
+      <%= prettyversion(Time.now) %>
+	  </small> </small> </div>  
   <% else %>
 	  <div class="cleardiv" id="version"> <small> <small> 
       <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> 

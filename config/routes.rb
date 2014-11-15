@@ -4,9 +4,9 @@ Rails.application.routes.draw do
 
   resources :pages
 
-  mount Auth::Engine => "/", as: "auth_engine"
+  mount Auth::Engine => "/", as: "auth_engine"  
   
-  root "seite#index", as: "root"
+
   
   get '_pageupdate/(:seite)' => 'seite#pageupdate', as: 'page_update'
   post '_pageupdate/(:seite)' => 'seite#pageupdate_save', as: 'page_update_save'
@@ -17,5 +17,6 @@ Rails.application.routes.draw do
   
   get '(:seite)' => "seite#index", as: 'seite'
 
-
+  root "seite#index", as: "root"
+  
 end
