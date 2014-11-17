@@ -114,25 +114,25 @@ class PageTest < ActiveSupport::TestCase
     one.save!    
     #
     page = Page.find_by_name( 'include')
-    assert_equal page.content, "INCLUDE <%= include home %>"
-    assert_equal page.display, "INCLUDE <h1> Home Page </h1>"
+    assert_equal page.content, "INCLUDE <%= include index %>"
+    assert_equal page.display, "INCLUDE <h1> Index Page </h1>"
   end
   
 
   test 'test pagelink' do
      
     page = Page.find_by_name( 'pagelink')
-    assert_equal page.content, "PAGELINK <%= pagelink home %>"
-    assert_equal page.display, "PAGELINK <a href=\"/home\" class=\"pagelink\">home</a>" 
+    assert_equal page.content, "PAGELINK <%= pagelink index %>"
+    assert_equal page.display, "PAGELINK <a href=\"/index\" class=\"pagelink\">index</a>" 
   
     page = Page.find_by_name( 'pagelink2')
-    assert_equal page.content, "PAGELINK2 <%= pagelink home, link to home... %>"
-    assert_equal page.display, "PAGELINK2 <a href=\"/home\" class=\"pagelink\"> link to home...</a>"
+    assert_equal page.content, "PAGELINK2 <%= pagelink index, link to index... %>"
+    assert_equal page.display, "PAGELINK2 <a href=\"/index\" class=\"pagelink\"> link to index...</a>"
     
     page = Page.find_by_name( 'pagelink3')
     assert_equal page.content, 
-         "PAGELINK3 <%= pagelink home %> SOME TEXT <%= pagelink home, link to home %>"
-    assert_equal page.display, "PAGELINK3 <a href=\"/home\" class=\"pagelink\">home</a> SOME TEXT <a href=\"/home\" class=\"pagelink\"> link to home</a>"    
+         "PAGELINK3 <%= pagelink index %> SOME TEXT <%= pagelink index, link to index %>"
+    assert_equal page.display, "PAGELINK3 <a href=\"/index\" class=\"pagelink\">index</a> SOME TEXT <a href=\"/index\" class=\"pagelink\"> link to index</a>"    
     
          
     page = Page.find_by_name( 'adminlink')
@@ -175,13 +175,13 @@ class PageTest < ActiveSupport::TestCase
   
   test 'test whole page' do
 
-    header, menu, left, center, right, footer = Page.get_layout( 'home' )
-    assert_equal header.name, 'home_header'
-    assert_equal menu.name, 'home_menu'
-    assert_equal left.name, 'home_left'
-    assert_equal center.name, 'home'
-    assert_equal right.name, 'home_right'
-    assert_equal footer.name, 'home_footer'
+    header, menu, left, center, right, footer = Page.get_layout( 'index' )
+    assert_equal header.name, 'index_header'
+    assert_equal menu.name, 'index_menu'
+    assert_equal left.name, 'index_left'
+    assert_equal center.name, 'index'
+    assert_equal right.name, 'index_right'
+    assert_equal footer.name, 'index_footer'
     
     header, menu, left, center, right, footer = Page.get_layout( 'presentations' )
     assert_not header
@@ -218,9 +218,10 @@ class PageTest < ActiveSupport::TestCase
   end
   
   test 'more panels' do
-    assert_equal Page.get_panel( 'home', 'left').name, "home_left"
+    
+    assert_equal Page.get_panel( 'index', 'left').name, "index_left"
     assert_not Page.get_panel( 'presentations', 'left')
-    assert_equal Page.get_panel_or_default( 'home', 'left').name, "home_left"
+    assert_equal Page.get_panel_or_default( 'index', 'left').name, "index_left"
     assert_equal Page.get_panel_or_default( 'presentations', 'menu').name, "menu"
   end
   

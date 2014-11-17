@@ -8,7 +8,7 @@
 <div id="pageupdate" >
   
   <% if @page.updated_at %>
-    <small> Last edited <%= prettyversion( @page.updated_at ) %>: </small>
+    <small> Last edited <%= prettytime( @page.updated_at ) %>: </small>
   <% else %>
     Enter HTML here:
   <% end %>

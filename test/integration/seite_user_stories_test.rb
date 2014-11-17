@@ -34,18 +34,21 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     one_header.save!
     one_old = pages( :one_header_older)
    
-    path = File.join( Rails.root , 'public', 'c', 'home' ) + '.html'    
-    File.delete( path ) if File.exists? path
+    # this for caching
+    #path = File.join( Rails.root , 'public', 'c', 'home' ) + '.html'    
+    #File.delete( path ) if File.exists? path
 
     get_via_redirect "/"
     assert_response :success
-    assert_select '.header', 'HOME HEADER'
-    assert_select '.menu', 'HOME MENU'      
-    assert_select '.left', 'HOME LEFT' 
-    assert_select '.center', 'Home Page'
-    assert_select '.right', 'HOME RIGHT' 
-    assert_select '.footer', 'HOME FOOTER'
-    assert File.exists? path
+    assert_select '.header', 'INDEX HEADER'
+    assert_select '.menu', 'INDEX MENU'      
+    assert_select '.left', 'INDEX LEFT' 
+    assert_select '.center', 'Index Page'
+    assert_select '.right', 'INDEX RIGHT' 
+    assert_select '.footer', 'INDEX FOOTER'
+    
+    # also for caching
+    #assert File.exists? path
     
     get_via_redirect "/talks"
     assert_response :success
@@ -71,17 +74,18 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     one_header.save!
     one_old = pages( :one_header_older)
    
-    path = File.join( Rails.root , 'public', 'c', 'home' ) + '.html'    
-    File.delete( path ) if File.exists? path
+    # for caching
+    #path = File.join( Rails.root , 'public', 'c', 'home' ) + '.html'    
+    #File.delete( path ) if File.exists? path
 
     get "/"
     assert_response :success
-    assert_select '.header', 'HOME HEADER'
-    assert_select '.menu', 'HOME MENU'      
-    assert_select '.left', 'HOME LEFT' 
-    assert_select '.center', 'Home Page'
-    assert_select '.right', 'HOME RIGHT' 
-    assert_select '.footer', 'HOME FOOTER'
+    assert_select '.header', 'INDEX HEADER'
+    assert_select '.menu', 'INDEX MENU'      
+    assert_select '.left', 'INDEX LEFT' 
+    assert_select '.center', 'Index Page'
+    assert_select '.right', 'INDEX RIGHT' 
+    assert_select '.footer', 'INDEX FOOTER'
     assert_not File.exists? path
     
     get "/talks"
@@ -110,12 +114,12 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     
     get "/"
     assert_response :success
-    assert_select '.header', 'HOME HEADER'
-    assert_select '.menu', 'HOME MENU'      
-    assert_select '.left', 'HOME LEFT' 
-    assert_select '.center', 'Home Page'
-    assert_select '.right', 'HOME RIGHT' 
-    assert_select '.footer', 'HOME FOOTER'
+    assert_select '.header', 'INDEX HEADER'
+    assert_select '.menu', 'INDEX MENU'      
+    assert_select '.left', 'INDEX LEFT' 
+    assert_select '.center', 'Index Page'
+    assert_select '.right', 'INDEX RIGHT' 
+    assert_select '.footer', 'INDEX FOOTER'
     
     get "/talks"
     assert_response :success

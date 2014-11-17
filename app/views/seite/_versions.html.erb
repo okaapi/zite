@@ -8,7 +8,7 @@
       <tr>
       <% @pages.each_with_index do |p,i| %>
         <td>
-        <%= link_to( prettyversion( p.updated_at), 
+        <%= link_to( prettytime( p.updated_at), 
              page_update_path( seite: p.name, updated_at: p.updated_at ) ) if editable( p, @user ) %>
         &nbsp;
         </td>

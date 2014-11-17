@@ -17,7 +17,7 @@ module SeiteHelper
   def is_admin( user )
     ( user and user.admin? )
   end
-  def prettyversion( t )
+  def prettytime( t )
     t.getlocal.strftime("%H:%M %m-%d-%Y")
   end
   def if_image( pagename, f )

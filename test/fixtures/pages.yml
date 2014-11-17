@@ -1,53 +1,53 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one_oldest:
-  name: home
-  content: "<h1> Oldest Home Page </h1>"
+  name: index
+  content: "<h1> Oldest Index Page </h1>"
   user_id: 1
   
 one_older:
-  name: home
-  content: "<h1> Old Home Page </h1>"
+  name: index
+  content: "<h1> Old Index Page </h1>"
   user_id: 1
     
 one:
-  name: home
-  content: "<h1> Home Page </h1>"
+  name: index
+  content: "<h1> Index Page </h1>"
   user_id: 1
    
 one_header_older:
-  name: home_header
-  content: "OLD HOME HEADER" 
+  name: index_header
+  content: "OLD INDEX HEADER" 
   user_id: 1  
 
 one_header:
-  name: home_header
-  content: "HOME HEADER"
+  name: index_header
+  content: "INDEX HEADER"
   user_id: 1  
     
 one_menu:
-  name: home_menu
-  content: "HOME MENU"
+  name: index_menu
+  content: "INDEX MENU"
   user_id: 1  
   
 one_left:
-  name: home_left
-  content: "HOME LEFT"
+  name: index_left
+  content: "INDEX LEFT"
   user_id: 1
   
 one_menu:
-  name: home_menu
-  content: "HOME MENU"
+  name: index_menu
+  content: "INDEX MENU"
   user_id: 1
   
 one_right:
-  name: home_right
-  content: "HOME RIGHT"
+  name: index_right
+  content: "INDEX RIGHT"
   user_id: 1  
   
 one_footer:
-  name: home_footer
-  content: "HOME FOOTER"
+  name: index_footer
+  content: "INDEX FOOTER"
   user_id: 1    
       
 two:
@@ -103,7 +103,7 @@ inclusion:
   
 include:
   name: include
-  content: 'INCLUDE <#= include home #>'
+  content: 'INCLUDE <#= include index #>'
   user_id: 1
 
   
@@ -120,17 +120,17 @@ imagelink2:
     
 pagelink:
   name: pagelink
-  content: "PAGELINK <#= pagelink home #>"
+  content: "PAGELINK <#= pagelink index #>"
   user_id: 1  
   
 pagelink2:
   name: pagelink2
-  content: "PAGELINK2 <#= pagelink home, link to home... #>"
+  content: "PAGELINK2 <#= pagelink index, link to index... #>"
   user_id: 1   
 
 pagelink3:
   name: pagelink3
-  content: "PAGELINK3 <#= pagelink home #> SOME TEXT <#= pagelink home, link to home #>"
+  content: "PAGELINK3 <#= pagelink index #> SOME TEXT <#= pagelink index, link to index #>"
   user_id: 1  
   
 admin:

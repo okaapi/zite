@@ -3,25 +3,64 @@ class SeiteController < ApplicationController
   
   def index
     
-    @seiten_name = params[:seite] || 'index'
+    @seiten_name = params[:seite] || 'home'
+
+    if !@user and !session[:reset_user_id]  # otherwise from_mail reset doesn't work
+      redirect_to cached_path( seite: @seiten_name.downcase )
+      return
+    end
             
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
     
-    if @user and !@center
+    if !@center
       redirect_to page_update_path( seite: @seiten_name )
-    elsif @user and @center and ! @center.editable_by_user( @user ? @user.role : nil, @user ? @user.id : nil )
+    elsif ! @center.editable_by_user( @user ? @user.role : nil, @user ? @user.id : nil )
       render alert: "not authorized..."
     else
       render
     end
     
   end
+
+  def cached
+    
+    @seiten_name = params[:seite]
+            
+    @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
+    @css = Page.get_css
+    @cached = true
+
+    @cached_page  = render :index
+
+    # cache the page
+    if @cached_page
+      path = File.join( Rails.root , 'public', 'c', @seiten_name.downcase ) + '.html'    
+      begin
+        File.open(path, "w") { |f| f.write(@cached_page[0]) }
+      rescue
+        #nothing
+      end
+    end
+  
+  end
+  
+  def uncache
+    directory = File.join( Rails.root , 'public', 'c' )
+    FileUtils.rm_rf(Dir.glob( directory + '/*' ))
+    redirect_to root_path
+  end
   
   def pageupdate
     
     @seiten_name = params[:seite]
-    @seiten_name.downcase! if @seiten_name
+    # remove the cached page
+    if @seiten_name
+      path = File.join( Rails.root , 'public', 'c', @seiten_name.downcase ) + '.html'
+      if File.exists? path
+        File.delete( path )
+      end
+    end
     
     if ! @user
       redirect_to root_path, alert: "need to login first..."
