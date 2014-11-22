@@ -15,6 +15,12 @@ module Admin
 	    assert_not_nil assigns(:pages)
 	  end
 	
+	  test "should get index by name" do
+	    get :index, by_name: 'true'
+	    assert_response :success
+	    assert_not_nil assigns(:pages)
+	  end
+	  	
 	  test "should get new" do
 	    get :new
 	    assert_response :success
@@ -30,6 +36,16 @@ module Admin
 	    assert_redirected_to page_path(assigns(:page))
 	  end
 	
+	  test "should not create page without user ID" do
+	    assert_no_difference('Page.count') do
+	      post :create, page: { content: @page.content, 
+	        editability: @page.editability, id: 0,
+	        lock: @page.lock, menu: @page.menu, 
+	        visibility: @page.visibility }
+	    end
+
+	  end
+	  	
 	  test "should show page" do
 	    get :show, id: @page
 	    assert_response :success

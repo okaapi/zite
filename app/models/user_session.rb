@@ -1,10 +1,9 @@
 
   class UserSession < ActiveRecord::Base
     
-    SESSION_TIMEOUT = 120
+    SESSION_TIMEOUT = 60 * 60 * 4 # 4 hours
     attr_accessor :idle
     belongs_to :user
-    #validates :user_id, :presence => true
     validate :id_valid
     
     has_many :user_actions, dependent: :destroy  

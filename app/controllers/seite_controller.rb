@@ -1,43 +1,45 @@
 class SeiteController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: :file_upload
+  skip_before_action :verify_authenticity_token #, only: :file_upload
   
   def index
-    
+        
     @seiten_name = params[:seite] || 'index'
             
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
     
-    if @center
-      render
-    elsif !@center and @user 
+    if !@center and @user 
       redirect_to page_update_path( seite: @seiten_name )
+    elsif @center and !@user
+      cached_content = render
+      @center.cache( cached_content )
     else
       render
     end
-    
+   
   end
   
   def pageupdate
-    
-    @seiten_name = params[:seite]
-    @seiten_name.downcase! if @seiten_name
     
     if ! @user
       redirect_to root_path, alert: "need to login first..."
       return
     end
-    
+
+    @seiten_name = params[:seite]
+      
     # filter out bad names...
-    if !@seiten_name or @seiten_name == ''
-      redirect_to root_path, alert: "bad page name #{@seiten_name}..."
+    if ! (  /^[a-z][0-9a-z_]*/.match(@seiten_name)  )
+      redirect_to root_path, 
+        alert: "bad page name '#{@seiten_name}'... can only contain lower case 
+          english letters, numbers and '_', and cannot start with number or '_'"
       return      
     end
 
     # create new page if required    
     @pages = Page.where( name: @seiten_name ).order( updated_at: :desc )
     if @pages.count == 0
-      @page = Page.new( name: @seiten_name, content: "", user_id: @user.id )
+      @page = Page.new( name: @seiten_name, content: "" )
     # editing a previous version
     elsif params[:updated_at]  
       @page = @pages.find_by_updated_at( params[:updated_at] )
@@ -45,53 +47,36 @@ class SeiteController < ApplicationController
     else
       @page = @pages.first
     end
+    # remember last editor, and set this page to current editor
+    @lastuser = User.find( @page.user_id ) if @page.user_id
+    @page.user_id = @user.id
     
     # see whether page is editable
     if ! @page.editable_by_user( @user ? @user.role : nil, @user ? @user.id : nil )
       redirect_to root_path, alert: "not authorized..."
       return    
     end
-      
+    
     # see whether there are any files associated with this
     @files = Dir.glob( File.join( Rails.root , 'public', 'storage', @seiten_name, '*' ) )
     @files.delete_if {|f| File.directory?(f) }
 
-    begin
-      render
-    rescue Exception => e
-      render inline: "#{e}"
-    end
+    render
 
   end
   
   def pageupdate_save
-        
-    pagename = page_params[:name] || ''
-    u_p = page_params[:name].split('_')
-    if u_p.count > 1
-      if u_p[ u_p.count-1 ].casecmp('header') == 0 or u_p[ u_p.count-1 ].casecmp('menu') == 0 or 
-        u_p[ u_p.count-1 ].casecmp('left') == 0 or u_p[ u_p.count-1 ].casecmp('right') == 0 or 
-        u_p[ u_p.count-1 ].casecmp('footer') == 0 
-        returnpage = u_p[0..u_p.count-2].join('_')
-      else
-        returnpage = pagename
-      end
-    else
-      returnpage = pagename
-    end
-    
-    if @user
-      @page = Page.new( page_params )
-      @page.user_id = @user.id
-      begin
-        @page.save
-        redirect_to seite_path( seite: returnpage ), notice: "page #{@page.name} saved..."
-      rescue Exception => e           
-        redirect_to root_path,  alert: "problems saving page... #{e}"
-      end      
-    else
-      redirect_to seite_path( seite: returnpage )
-    end
+
+    # save even if the user isn't logged in anymore... they were logged in
+    # when they started editing the page...
+    @page = Page.new( page_params )
+    begin
+      @page.save
+      redirect_to seite_path( seite: Page.basepage( page_params[:name] ) ), 
+                              notice: "page #{@page.name} saved..."
+    rescue Exception => e           
+      redirect_to root_path,  alert: "problems saving page... #{e}"
+    end  
           
   end
   
@@ -117,8 +102,8 @@ class SeiteController < ApplicationController
       # copy the old file if necessary
       path = File.join( directory, filename )
       if File.exists? path
-        newfilename = File.basename(filename, File.extname(filename) ) + 
-             SecureRandom.urlsafe_base64(8)  + File.extname(filename) 
+        newfilename = File.basename(filename, File.extname(filename) ) + '.' +
+             Time.now.to_s.gsub(/\D/,'') + File.extname(filename) 
         newpath = File.join( directory, newfilename )
         FileUtils.cp( path, newpath )
       end

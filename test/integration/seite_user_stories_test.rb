@@ -8,27 +8,16 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     # need to change <#= #> to <%= %>
     pages = Page.all
     pages.each do |page|
-      if page.content
+      if page.content and /<#=/ =~ page.content
         page.content = page.content.gsub(/<#=/,'<%=').gsub(/#>/,'%>')
-      end
-      page.user_id = @wido.id
-      page.save!  
+        page.save!
+      end  
     end
           
   end
 
   test "viewing a page not logged in" do
      
-    # refresh the time stamps    
-    one = pages( :one )
-    one.id_will_change!      
-    one_header = pages( :one_header )
-    one_header.id_will_change!
-    sleep( 1 )
-    one.save!
-    one_header.save!
-    one_old = pages( :one_header_older)
-   
     # this for caching
     #path = File.join( Rails.root , 'public', 'c', 'home' ) + '.html'    
     #File.delete( path ) if File.exists? path
@@ -50,7 +39,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '.center', 'protected content...'
      
   end
-      
+
   #
   test "viewing a page logged in" do
   
@@ -58,16 +47,6 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
     assert_response :success
     assert_equal flash[:notice], 'arnaud logged in'
-    
-    # refresh the time stamps    
-    one = pages( :one )
-    one.id_will_change!      
-    one_header = pages( :one_header )
-    one_header.id_will_change!
-    sleep( 1 )
-    one.save!
-    one_header.save!
-    one_old = pages( :one_header_older)
    
     # for caching
     #path = File.join( Rails.root , 'public', 'c', 'home' ) + '.html'    
@@ -98,16 +77,6 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal flash[:notice], 'wido_admin logged in'
     
-    # refresh the time stamps    
-    one = pages( :one )
-    one.id_will_change!      
-    one_header = pages( :one_header )
-    one_header.id_will_change!
-    sleep( 1 )
-    one.save!
-    one_header.save!
-    one_old = pages( :one_header_older)
-    
     get "/"
     assert_response :success
     assert_select '.header', 'INDEX HEADER'
@@ -122,6 +91,5 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '.center', 'Talks'
      
   end
-    
-  
+
 end

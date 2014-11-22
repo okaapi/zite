@@ -6,7 +6,7 @@ class Page < ActiveRecord::Base
   before_update :name_downcase
 
   def self.get_latest( pagename )
-    Page.where( name: pagename ).order( updated_at: :asc ).last
+    page = Page.where( name: pagename ).order( updated_at: :asc ).last
   end
   
   def self.get_layout( pagename )
@@ -56,7 +56,8 @@ class Page < ActiveRecord::Base
     end
     (pagename||'')
   end
-    
+     
+  
   def display( role = 'user' )
 
     if self.content.nil?
@@ -104,6 +105,35 @@ class Page < ActiveRecord::Base
     end  
     
   end  
+  
+  # this is dangerous...  once a page is cached, it becomes
+  # visible to the world... so only cached pages should be  
+  # cached... and once a user logs in, they should all be
+  # uncached, else the "login" is not visible...
+  def cache( content )
+    path = File.join( Rails.root , 'public', self.name ) + '.html'    
+    begin
+      File.open(path, "w") { |f| f.write( content[0] ) }
+    rescue
+      #nothing
+    end
+  end
+  
+  def uncache
+    path = File.join( Rails.root , 'public', self.name ) + '.html'  
+    if File.exists? path
+      File.delete( path )
+    end
+  end
+  
+  def self.uncache_all
+    pages = self.all
+    pages.each { |p| p.uncache }
+  end
+    
+  def self.good_name?
+    
+  end
   
   private
   

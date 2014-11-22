@@ -11,16 +11,59 @@ class SeiteControllerTest < ActionController::TestCase
     get :index
     assert_response :success
   end
-  
-  #test "should get cached" do
-  #  get :cached, seite: 'home'
-  #  assert_response :success
-  #end  
 
-  test "should get pageupdate" do
-    get :pageupdate    
+  test "should get index logged in" do
+    admin_login_4_test
+    get :index, seite: 'some_page_that_does_not_exist'
+    assert_redirected_to '/_pageupdate/some_page_that_does_not_exist'
+  end 
+  
+  test "should get pageupdate not logged in new page" do
+    get :pageupdate,  seite: 'some_page'
     assert_redirected_to '/'
+    assert_equal flash[:alert], 'need to login first...'
   end
+  
+  test "should get pageupdate not authorized in existing page" do
+    login_4_test
+    get :pageupdate,  seite: 'talks'
+    assert_redirected_to '/'
+    assert_equal flash[:alert], 'not authorized...'
+  end  
+  
+  test "should get pageupdate logged in" do
+    admin_login_4_test
+    get :pageupdate, seite: 'some_page7'
+    assert_response :success
+  end  
+  
+  test "should get pageupdate for index logged in" do
+    admin_login_4_test
+    get :pageupdate, seite: 'index'
+    assert_response :success
+  end
+    
+  test "should get pageupdate for index for previous version logged in" do
+    pages = Page.where( name: 'index').order( :updated_at )
+    assert_equal pages.count, 3
+    stamp = pages[1].updated_at
+    admin_login_4_test
+    get :pageupdate, seite: 'index', updated_at: stamp 
+    assert_response :success
+  end
+    
+  test "bad page name" do
+    admin_login_4_test
+    get :pageupdate, seite: 'Some_page'
+    assert_redirected_to '/'
+    assert_equal flash[:alert][0..12], 'bad page name'
+    get :pageupdate, seite: 'Some page'
+    assert_redirected_to '/'
+    assert_equal flash[:alert][0..12], 'bad page name'  
+    get :pageupdate, seite: '7some_page'
+    assert_redirected_to '/'
+    assert_equal flash[:alert][0..12], 'bad page name'             
+  end    
 
   test "save update" do
     post :pageupdate_save, name: @page.name, content: @page.content, 
@@ -62,8 +105,16 @@ class SeiteControllerTest < ActionController::TestCase
      
     # upload the file
     post :file_upload, seite: 'test',
-      file: fixture_file_upload('files/test.txt','text/txt')            
+      file: fixture_file_upload('files/test.txt','text/txt')      
     assert File.exists? path + '/test.txt'  
+      
+    # upload the file again
+    post :file_upload, seite: 'test',
+      file: fixture_file_upload('files/test.txt','text/txt')        
+    directory = Dir.glob( path + '/test.*.txt')
+    assert_equal directory.count, 1
+    assert File.exists?( directory[0] )      
+    File.delete( directory[0] )
       
     # delete the file
     post :file_delete, seite: 'test', filename: 'test.txt'

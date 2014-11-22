@@ -1,13 +1,13 @@
-<h1>Listing user_sessions</h1>
+<h1>Listing User Sessions</h1>
 
-<table>
+<table cellpadding=5 >
   <thead>
     <tr>
-      <th>User</th>    
+      <th><u><%= link_to 'User', user_sessions_path( by_name: 'true' ) %></u></th>    
       <th>ID</th>
       <th>Client</th>
-      <th>IP</th>
-      <th>Updated At</th>      
+      <th><u><%= link_to 'IP', user_sessions_path( by_ip: 'true' )%></u></th>
+      <th><u><%= link_to 'Time', user_sessions_path %></u></th>      
       <th></th>
       <th></th>
       <th></th>
@@ -21,7 +21,7 @@
         <td><%= user_session.id %></td>
         <td><%= truncate( user_session.client ) %></td>
         <td><%= user_session.ip %></td>
-        <td><%= user_session.updated_at %></td>        
+        <td><small><%= prettytime( user_session.updated_at ) %></small></td>        
         <td><%= link_to 'Show', user_session %></td>
         <td><%= link_to 'Edit', edit_user_session_path(user_session) %></td>
         <td><%= link_to 'Destroy', user_session, method: :delete, data: { confirm: 'Are you sure?' } %></td>

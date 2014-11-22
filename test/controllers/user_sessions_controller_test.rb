@@ -13,6 +13,18 @@ module Admin
       assert_response :success
       assert_not_nil assigns(:user_sessions)
     end
+    
+    test "should get index ip order" do
+      get :index, by_ip: 'true'
+      assert_response :success
+      assert_not_nil assigns(:user_sessions)
+    end
+    
+    test "should get index name order" do
+      get :index, by_name: 'true'
+      assert_response :success
+      assert_not_nil assigns(:user_sessions)
+    end
   
     test "should get new" do
       get :new

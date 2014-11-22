@@ -1,19 +1,20 @@
 
-
+<!-- this only applies to ckeditor -->
 <% if ( @page and @page.editor == "wysiwyg" ) %>
   <% ckeditorclass = 'ckeditor' %>
-  <!-- load ckeditor only for this page! -->
   <script src="../ckeditor/ckeditor.js"></script>
- 
 <% end %>
 
 <div id="pageupdate" class="center">
   
   <% if @page.updated_at %>
-    <small> Last edited <%= prettytime( @page.updated_at ) %>: </small>
+    <small> Last edited <%= prettytime( @page.updated_at ) %> 
+    <%= ( 'by ' + @lastuser.username ) %>:
+    </small>
   <% else %>
     Enter HTML here:
   <% end %>
+  
   <%= form_tag page_update_save_path( name: @page.name ) do %>
   
     <%= text_area_tag :content, @page.content, id: "pageupdate_textarea",
@@ -35,8 +36,6 @@
 
 
 </div>
-
-
 
 <!-- this only applies to non-ckeditor -->
 <script>

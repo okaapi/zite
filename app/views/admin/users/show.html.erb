@@ -37,7 +37,7 @@
 	  
 	  <tiny>
 	    <% session.user_actions.each do |action| %>
-	      <%= action.controller %>#<%= action.action %><br />
+	      <%= action.controller %>#<%= action.action %> &nbsp; <%= action.params %><br />
 	    <% end %>    
 	  </tiny>
 	       

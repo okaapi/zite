@@ -7,9 +7,10 @@ class PageTest < ActiveSupport::TestCase
     # need to change <#= #> to <%= %>
     pages = Page.all
     pages.each do |page|
-      page.content = page.content.gsub(/<#=/,'<%=').gsub(/#>/,'%>') if page.content
-      page.user_id = @wido.id
-      page.save!  
+      if page.content and /<#=/ =~ page.content      
+        page.content = page.content.gsub(/<#=/,'<%=').gsub(/#>/,'%>') if page.content
+        page.save!
+      end  
     end
   end
   
@@ -107,12 +108,6 @@ class PageTest < ActiveSupport::TestCase
   end  
   
   test 'test include' do
-    one = pages( :one  )
-    # make sure it's the most recent one...
-    one.id_will_change!
-    sleep( 1 )
-    one.save!    
-    #
     page = Page.find_by_name( 'include')
     assert_equal page.content, "INCLUDE <%= include index %>"
     assert_equal page.display, "INCLUDE <h1> Index Page </h1>"
@@ -224,21 +219,11 @@ class PageTest < ActiveSupport::TestCase
     assert_equal Page.get_panel_or_default( 'presentations', 'menu').name, "menu"
   end
   
-  test 'display chronological' do
-    
-    Page.create( name: 'time', user_id: @wido.id, content: 'oldest')
-    Page.create( name: 'time_left', user_id: @wido.id, content: 'oldest')    
-    sleep(1)
-    Page.create( name: 'time', user_id: @wido.id,  content: 'old')
-    Page.create( name: 'time_left', user_id: @wido.id,   content: 'old')    
-    sleep(1)    
-    Page.create( name: 'time', user_id: @wido.id,  content: 'latest')
-    Page.create( name: 'time_left', user_id: @wido.id,   content: 'latest')    
+  test 'display chronological' do 
    
-
-    header, menu, left, center, right, footer = Page.get_layout( 'time' )    
-    assert_equal center.content, 'latest'
-    assert_equal left.content, 'latest'
+    header, menu, left, center, right, footer = Page.get_layout( 'index' )    
+    assert_equal center.content, '<h1> Index Page </h1>'
+    assert_equal header.content, 'INDEX HEADER'
         
   end
   
@@ -281,5 +266,23 @@ class PageTest < ActiveSupport::TestCase
     assert_equal Page.basepage( 'right'), 'right'              
   end
   
+  test 'cache a page and delete it' do
+    
+    strange = 'asdjk_lwqfij_orieg'
+    page = Page.new( name: strange, user_id: @wido.id )
+    page.save!
+    
+    # cache a page... first check it doesn't exist
+    path = File.join( Rails.root , 'public', strange ) + '.html'    
+    assert_not File.exists?(path), "cached file is present in /public"
+    page.cache( 'this is a cached test page' )
+    assert File.exists?(path)
+    
+    # now delete cached files
+    Page.uncache_all
+    assert_not File.exists?(path)
+    
+  end
+
 end
 

@@ -9,7 +9,12 @@ module Admin
 	  # GET /pages
 	  # GET /pages.json
 	  def index
-	    @pages = Page.all.order( updated_at: :desc )
+	    if params[:by_name]
+        @pages = Page.all.order( name: :asc ).group( :name )
+	    else
+        @pages = Page.all.order( updated_at: :desc )
+	    end
+	    
 	  end
 	
 	  # GET /pages/1

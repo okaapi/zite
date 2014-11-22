@@ -7,8 +7,15 @@ module Admin
 	  
 	  # GET /user_sessions
 	  # GET /user_sessions.json
-	  def index
-	    @user_sessions = UserSession.all
+	  def index	    
+	    if params[:by_name]
+        @user_sessions = UserSession.all.order( user_id: :asc )
+	    elsif params[:by_ip]
+        @user_sessions = UserSession.all.order( ip: :asc )          
+	    else
+        @user_sessions = UserSession.all.order( updated_at: :desc )
+	    end
+	    	    
 	  end
 	
 	  # GET /user_sessions/1

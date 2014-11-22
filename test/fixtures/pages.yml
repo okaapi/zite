@@ -3,178 +3,184 @@
 one_oldest:
   name: index
   content: "<h1> Oldest Index Page </h1>"
-  user_id: 1
-  
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  updated_at: <%= (Time.now - 2000000) %>  
+
 one_older:
   name: index
   content: "<h1> Old Index Page </h1>"
-  user_id: 1
-    
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  updated_at: <%= Time.now - 1000000 %>
+ 
 one:
   name: index
   content: "<h1> Index Page </h1>"
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  updated_at: <%= Time.now %>
    
 one_header_older:
   name: index_header
   content: "OLD INDEX HEADER" 
-  user_id: 1  
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
+  updated_at: <%= Time.now - 2000000 %>
 
 one_header:
   name: index_header
   content: "INDEX HEADER"
-  user_id: 1  
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
+  updated_at: <%= Time.now - 1000000 %>
     
 one_menu:
   name: index_menu
   content: "INDEX MENU"
-  user_id: 1  
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
   
 one_left:
   name: index_left
   content: "INDEX LEFT"
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   
 one_menu:
   name: index_menu
   content: "INDEX MENU"
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   
 one_right:
   name: index_right
   content: "INDEX RIGHT"
-  user_id: 1  
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
   
 one_footer:
   name: index_footer
   content: "INDEX FOOTER"
-  user_id: 1    
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>    
       
 two:
   name: talks
   content: "<h1> Talks </h1>"
   menu: 'false'
   visibility: 'admin'
-  user_id: 1  
+  editability: 'admin'
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
   
 two_left:
   name: talks_left
   content: "talks left"
-  user_id: 1    
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>     
  
 two_books:
   name: talks_books
   content: "<h1> Talks on books </h1>"
   menu: 'false'  
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   
 two_films:
   name: talks_films
   menu: 'false' 
   content: "<h1> Talks on films </h1>"
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   
 two_films_left:
   name: talks_films_left
   content: "Talks on films left"
-  user_id: 1 
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
   
 three:
   name: presentations
   content: "<h1> Presentations </h1>"
   menu: 'false'
-  user_id: 1       
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>        
   
 
 menu:
   name: menu
   content: "GENERIC MENU"
-  user_id: 1   
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>    
   
 footer:
   name: footer
   content: "GENERIC FOOTER"
-  user_id: 1   
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
   
 inclusion:
   name: inclusion
   content: "INCLUSION"
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   
 include:
   name: include
   content: 'INCLUDE <#= include index #>'
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
 
   
 imagelink:
   name: imagelink
   content: "IMAGELINK <#= imagelink lifebetterinflipflops.jpg #>"
-  user_id: 1 
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
   
   
 imagelink2:
   name: imagelink2
   content: "IMAGELINK2 <#= imagelink lifebetterinflipflops.jpg, width = 200 #>"
-  user_id: 1   
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>    
     
 pagelink:
   name: pagelink
   content: "PAGELINK <#= pagelink index #>"
-  user_id: 1  
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
   
 pagelink2:
   name: pagelink2
   content: "PAGELINK2 <#= pagelink index, link to index... #>"
-  user_id: 1   
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
 
 pagelink3:
   name: pagelink3
   content: "PAGELINK3 <#= pagelink index #> SOME TEXT <#= pagelink index, link to index #>"
-  user_id: 1  
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
   
 admin:
   name: admin
   content: "ADMIN <#= admin  <h1> Admin Heading</h1> to 'admin stuff' #>"
-  user_id: 1  
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
   
 adminlink:
   name: adminlink
   content: "ADMINLINK <#= adminlink admin #>"
-  user_id: 1    
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
   
 adminlink2:
   name: adminlink2
   content: "ADMINLINK2 <#= adminlink admin, stuff... #>"
-  user_id: 1     
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>      
     
 editor:
   name: editor
   content: "EDITOR <#= editor  <h1> Editor Heading</h1> to 'editor stuff' #>"
-  user_id: 1      
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>    
   
 css: 
   name: css
   content: "<PRE></PRE><P>{ color: red }</P><BR />&nbsp;<pre></pre><p></p><br />"
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
 
 user:
   name: user
   content: "USER <#= user  <h1> User Heading</h1> to 'user stuff' #>"
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   
 pin:
   name: pin
   content: 'PIN <#= pin <h3> 4</h3> (!&) <p><a href= "https://pic.g?au m/11 4?a t6AE#slc="https:// #>'
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
 
 nil_page:
   name: nil_page
   content:
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
 
 questions:
   name: questions
   content: "QUESTIONS <#= questions ['green is=', 'blue is=']"
-  user_id: 1
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
 
