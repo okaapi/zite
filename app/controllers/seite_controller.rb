@@ -8,10 +8,10 @@ class SeiteController < ApplicationController
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
     
-    if @user and !@center
+    if @center
+      render
+    elsif !@center and @user 
       redirect_to page_update_path( seite: @seiten_name )
-    elsif @user and @center and ! @center.editable_by_user( @user ? @user.role : nil, @user ? @user.id : nil )
-      render alert: "not authorized..."
     else
       render
     end

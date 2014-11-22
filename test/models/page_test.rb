@@ -3,7 +3,7 @@ require 'test_helper'
 class PageTest < ActiveSupport::TestCase
   
   setup do
-    @wido = Auth::User.find_by_username('wido_admin')
+    @wido = User.find_by_username('wido_admin')
     # need to change <#= #> to <%= %>
     pages = Page.all
     pages.each do |page|
@@ -31,7 +31,7 @@ class PageTest < ActiveSupport::TestCase
         pages << Page.new( user_id: @wido.id, editability: p, visibility: v  )
       end
     end
-    users = Auth::User.all
+    users = User.all
     users << nil
     users.each do |user|
       pages.each do |page|
@@ -78,7 +78,7 @@ class PageTest < ActiveSupport::TestCase
         pages << Page.new( user_id: @wido.id, editability: p, visibility: v  )
       end
     end
-    users = Auth::User.all
+    users = User.all
     users << nil
     users.each do |user|
       pages.each do |page|
@@ -218,7 +218,6 @@ class PageTest < ActiveSupport::TestCase
   end
   
   test 'more panels' do
-    
     assert_equal Page.get_panel( 'index', 'left').name, "index_left"
     assert_not Page.get_panel( 'presentations', 'left')
     assert_equal Page.get_panel_or_default( 'index', 'left').name, "index_left"

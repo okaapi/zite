@@ -1,0 +1,13 @@
+
+<div class="authenticate">
+  <%= form_tag prove_it_path, remote: js? do %>
+    <fieldset>
+      <%= render "user_errors" %>    
+      <legend>Who are you?</legend>
+      <div class="label_input_div">
+        <%= label_tag :claim, "username/email:" %>
+        <%= text_field_tag :claim, '', autofocus: true, size: 8 %>
+      </div>
+    </fieldset>
+  <% end %>
+</div>

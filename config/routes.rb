@@ -1,22 +1,28 @@
 Rails.application.routes.draw do
-
-
-
+    
+  # these are the actions related to authentication
+  get "_who_are_u" => "authenticate#who_are_u", as: 'who_are_u'
+  post "_prove_it" => "authenticate#prove_it", as: 'prove_it'
+  post "_about_urself" => "authenticate#about_urself", as: 'about_urself'
+  get "_from_mail/(:user_token)" => "authenticate#from_mail", as: 'from_mail'
+  post "_ur_secrets" => "authenticate#ur_secrets", as: "ur_secrets", as: 'ur_secrets'
+  get "_reset_mail" => "authenticate#reset_mail", as: 'reset_mail'
+  get "_see_u" => "authenticate#see_u", as: 'see_u'
+    
+  # these should only be available to administrators...
+  resources :user_actions
+  resources :user_sessions
+  resources :users
   resources :pages
-
-  mount Auth::Engine => "/", as: "auth_engine"  
   
-
-  
+  # these are the actual routes for editing
   get '_pageupdate/(:seite)' => 'seite#pageupdate', as: 'page_update'
   post '_pageupdate/(:seite)' => 'seite#pageupdate_save', as: 'page_update_save'
   post 'file_upload' => 'seite#file_upload', as: 'file_upload'
   post 'file_delete' => 'seite#file_delete', as: 'file_delete'
-  get 'c/(:seite)' => 'seite#cached', as: 'cached'
-  get 'unc' => "seite#uncache"
   
+  # this is the route for viewing
   get '(:seite)' => "seite#index", as: 'seite'
-
   root "seite#index", as: "root"
   
 end

@@ -1,20 +1,10 @@
 require 'test_helper'
 
-module Auth
-
-  # stub to make tests believe that admin user is logged in
-  module CurrentUserSession
-    def current_user_is_admin
-      true
-    end
-  end
-
-end
-
 class PagesControllerTest < ActionController::TestCase
   setup do
     @page = pages(:one)
-    @wido = Auth::User.find_by_username('wido_admin')
+    @wido = users(:wido)
+    admin_login_4_test    
   end
 
   test "should get index" do

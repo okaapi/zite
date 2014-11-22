@@ -1,0 +1,12 @@
+
+<% if !@user  %>
+
+  <%= link_to 'login', who_are_u_path, remote: js? %>
+  <%= link_to 'register', about_urself_path, method: :post, remote: js? %>
+
+<% else %>
+
+  <%= link_to 'logout', see_u_path %> 
+  <%= @user.username  %>
+
+<% end %>

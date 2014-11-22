@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+session_one:
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>
+  client: MyClient
+  ip: MyString
+
+session_two:
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  client: MyString
+  ip: MyString

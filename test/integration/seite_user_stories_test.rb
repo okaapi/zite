@@ -3,12 +3,8 @@ require 'test_helper'
 class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   
   setup do
-    @user_arnaud = Auth::User.new( username: 'arnaud', email: 'arnaud@gmail.com', 
-                                 active: 'confirmed',
-                                 password: 'secret', password_confirmation: 'secret')
-    @user_arnaud.save!  
-    
-    @wido = Auth::User.find_by_username('wido_admin')
+    @user_arnaud = users(:arnaud)
+    @wido = users(:admin)
     # need to change <#= #> to <%= %>
     pages = Page.all
     pages.each do |page|
@@ -21,7 +17,6 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
           
   end
 
-  #
   test "viewing a page not logged in" do
      
     # refresh the time stamps    
@@ -86,7 +81,8 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '.center', 'Index Page'
     assert_select '.right', 'INDEX RIGHT' 
     assert_select '.footer', 'INDEX FOOTER'
-    assert_not File.exists? path
+    # for caching    
+    #assert_not File.exists? path
     
     get "/talks"
     assert_response :success

@@ -1,0 +1,29 @@
+
+<p>
+  <strong>User:</strong>
+  <%= @user_session.user.username if @user_session.user %>
+</p>
+
+<p>
+  <strong>Client:</strong>
+  <%= @user_session.client %>
+</p>
+
+<p>
+  <strong>Ip:</strong>
+  <%= @user_session.ip %>
+</p>
+
+<%= link_to 'Edit', edit_user_session_path(@user_session) %> |
+<%= link_to 'Back', user_sessions_path %>
+
+<small>
+	<h2>Actions for Session <%= @user_session %> </h2>
+	
+	<% @user_session.user_actions.reverse.each do |action| %>
+	  <tiny>
+	      <%= action.controller %>#<%= action.action %><br />
+      </tiny>	      
+    <% end %>    
+	  
+</small>

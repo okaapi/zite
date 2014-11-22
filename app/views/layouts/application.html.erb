@@ -9,7 +9,7 @@
 </head>
 <body>
   
-  <%= render "auth/authenticate/layout_insert" %>
+  <%= render "authenticate/layout_insert" %>
   
   <% if flash[:alert] %>
     <p id="alert"><%= flash[:alert] %></p>
@@ -22,23 +22,18 @@
     <%= yield %>
   </div>
 
+
   <% if ( @user and @user.admin? ) %>
 	  <div class="cleardiv" id="version"> <small> <small> 
 	  <%= controller.controller_name %> / <%= controller.action_name %> 
       <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> 
-      <%= editable( @center, @user ).to_s[0] %> <%= viewable( @center, @user ).to_s[0] %> 
-      <% if @cached %> 
-        C <%= prettytime(Time.now) %>
-      <% end %>
-	  </small> </small> </div>  
+      <%= editable( @center, @user ).to_s[0] %> <%= viewable( @center, @user ).to_s[0] %>
+      </small> </small> </div>  
   <% else %>
 	  <div class="cleardiv" id="version"> <small> <small> 
       <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> 
-      <%= editable( @center, @user ).to_s[0] %> <%= viewable( @center, @user ).to_s[0] %> 
-      <% if @cached %> 
-        C <%= prettytime(Time.now) %>
-      <% end %>
-	  </small> </small> </div>  	  
+      <%= editable( @center, @user ).to_s[0] %> <%= viewable( @center, @user ).to_s[0] %> <%= 'C' if @cached %> 
+      </small> </small> </div>  	  
   <% end %>
 
 </body>

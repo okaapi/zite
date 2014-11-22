@@ -1,0 +1,55 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+admin:
+  username: wido_admin
+  email: wido_admin@menhardt.com
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  role: admin
+  token: w1w2
+  active: confirmed
+  
+editor:
+  username: wido_editor
+  email: wido_editor@menhardt.com
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  role: editor
+  token: w1w2
+  active: confirmed  
+  
+user:
+  username: wido_user
+  email: wido_user@menhardt.com
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  role: user
+  token: w1w2
+  active: confirmed  
+  
+wido:
+  username: wido
+  email: wido@menhardt.com
+  alternate_email: wmenhardt@beckman.com
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  role: admin
+  token: w1w2
+  active: confirmed
+  
+john:
+  username: john
+  email: john@menhardt.com
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  role: user
+  active: not confirmed
+  token: john_token
+
+arnaud:
+  username: arnaud
+  email: arnaud@gmail.com
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  active: confirmed
+  
+francois:
+  username: francois
+  email: francoise@gmail.com
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  token: francois_token
+

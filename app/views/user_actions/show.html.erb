@@ -1,0 +1,25 @@
+
+
+<p>
+  <strong>User session id:</strong>
+  <%= @user_action.user_session.id if @user_action %>
+</p>
+
+<p>
+  <strong>Controller:</strong>
+  <%= @user_action.controller %>
+</p>
+
+<p>
+  <strong>Action:</strong>
+  <%= @user_action.action %>
+</p>
+
+<p>
+  <strong>Parameters:</strong>
+  <%= @user_action.params %>
+</p>
+
+<%= link_to 'Edit', edit_user_action_path(@user_action) %> |
+<%= link_to 'Back', user_actions_path %>
+

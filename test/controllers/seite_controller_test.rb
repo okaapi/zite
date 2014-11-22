@@ -4,7 +4,7 @@ class SeiteControllerTest < ActionController::TestCase
   
   setup do 
     @page = pages(:one)
-    @wido = Auth::User.find_by_username('wido_admin')
+    @wido = users(:admin)
   end
   
   test "should get index" do

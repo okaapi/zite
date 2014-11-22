@@ -3,13 +3,8 @@ require 'test_helper'
 class AuthUserStoriesTest < ActionDispatch::IntegrationTest
   
   setup do
-    @user_arnaud = Auth::User.new( username: 'arnaud', email: 'arnaud@gmail.com', active: 'confirmed',
-                                 password: 'secret', password_confirmation: 'secret')
-    @user_arnaud.save!                                 
-    @user_francois = Auth::User.new( username: 'francois', email: 'francois@gmail.com',
-                                 password: 'secret', password_confirmation: 'secret',
-                                 token: 'francois_token' )
-    @user_francois.save!      
+    @user_arnaud = users(:arnaud)                              
+    @user_francois = users(:francois)      
     @not_java = ! Rails.configuration.use_javascript
   end
   

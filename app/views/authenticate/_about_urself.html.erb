@@ -1,0 +1,19 @@
+<div class="authenticate">
+  <%= form_tag about_urself_path, remote: js? do %>
+    <fieldset>
+      <%= render "user_errors" %>
+      <legend>Tell us about yourself!</legend>
+      <div class="label_input_div" >
+        <%= label_tag :username, "username:" %>
+        <%= text_field_tag :username, @username, autofocus: true %>
+      </div>
+      <div class="label_input_div"_>
+        <%= label_tag :email, "email:" %>
+        <%= text_field_tag :email, @email %>
+      </div>      
+      <div class="label_input_div">
+        <%= submit_tag 'Send registration email'%>
+      </div>      
+    </fieldset>
+  <% end %>
+</div>

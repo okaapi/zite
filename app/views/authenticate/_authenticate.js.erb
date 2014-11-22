@@ -1,0 +1,8 @@
+$('#spinner').hide();
+$('#authentication_launchpad').html('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;');
+$('#authentication_dialogue').hide();
+$('#authentication_dialogue').fadeIn("slow");
+$('input[autofocus]').focus(); 
+$('form').submit( function() { $('#spinner').fadeIn("slow"); });
+$('a').click( function() { $('#spinner').fadeIn("slow");  });
+               

@@ -113,7 +113,7 @@ class Page < ActiveRecord::Base
   
   def id_valid
     begin
-      Auth::User.find(user_id)
+      User.find(user_id)
     rescue
       errors.add( :user_id, "has to be valid")
       false
