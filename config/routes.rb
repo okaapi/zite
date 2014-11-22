@@ -10,10 +10,12 @@ Rails.application.routes.draw do
   get "_see_u" => "authenticate#see_u", as: 'see_u'
     
   # these should only be available to administrators...
-  resources :user_actions
-  resources :user_sessions
-  resources :users
-  resources :pages
+  scope module: 'admin' do  
+    resources :users
+    resources :user_actions
+    resources :user_sessions  
+    resources :pages    
+  end
   
   # these are the actual routes for editing
   get '_pageupdate/(:seite)' => 'seite#pageupdate', as: 'page_update'

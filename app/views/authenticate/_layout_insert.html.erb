@@ -1,8 +1,6 @@
 
-<% if session[:reset_user_id] %>
-
-  <% @authentication_from_mail = true %>
-  <% @user = User.find_by_id( session[:reset_user_id] ) %>
+<% #this is kludgy... %>
+<% if session[:reset_user_id] and @user = User.find_by_id( session[:reset_user_id] )%>
 
   <div id="authentication_dialogue" style="display:block" >
     <%= render "authenticate/ur_secrets" %>

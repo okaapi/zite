@@ -1,4 +1,5 @@
 
+
 class AuthenticateController < ApplicationController
   # max retries for password
   MAX_RETRIES = 3
@@ -176,4 +177,3 @@ class AuthenticateController < ApplicationController
     end
   
 end
-
