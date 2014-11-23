@@ -66,10 +66,15 @@ class SeiteControllerTest < ActionController::TestCase
   end    
 
   test "save update" do
-    post :pageupdate_save, name: @page.name, content: @page.content, 
-      editability: @page.editability, 
-      menu: @page.menu, visibility: @page.visibility
-    assert_redirected_to '/'+@page.name
+    assert_difference('Page.count', 1) do
+      post :pageupdate_save, name: @page.name, content: "newly added content", 
+        editability: @page.editability, user_id: @wido.id,
+        menu: @page.menu, visibility: @page.visibility
+      assert_redirected_to '/'+@page.name
+    end
+    pg = Page.get_latest( @page.name )
+    assert_equal pg.content, 'newly added content'
+    
   end
   
   test "save update return to base page" do
@@ -77,14 +82,14 @@ class SeiteControllerTest < ActionController::TestCase
     @page = pages(:two_films)
     assert_equal @page.name, 'talks_films'
     post :pageupdate_save, name: @page.name, content: @page.content, 
-      editability: @page.editability, 
+      editability: @page.editability, user_id: @wido.id,
       menu: @page.menu, visibility: @page.visibility
     assert_redirected_to '/talks_films'
     
     @page = pages(:two_films_left)
     assert_equal @page.name, 'talks_films_left'    
     post :pageupdate_save, name: @page.name, content: @page.content, 
-      editability: @page.editability, 
+      editability: @page.editability, user_id: @wido.id,
       menu: @page.menu, visibility: @page.visibility
     assert_redirected_to '/talks_films'
         

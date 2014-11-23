@@ -9,7 +9,7 @@
   
   <% if @page.updated_at %>
     <small> Last edited <%= prettytime( @page.updated_at ) %> 
-    <%= ( 'by ' + @lastuser.username ) %>:
+    <%= ( 'by ' + @lastuser.username ) %>: page.user_id <%= @page.user_id %>
     </small>
   <% else %>
     Enter HTML here:
@@ -20,7 +20,7 @@
     <%= text_area_tag :content, @page.content, id: "pageupdate_textarea",
         class: ckeditorclass,
         rows: ( @page.content.scan(/\n/).count + 2 )%>       
-        
+    <%= hidden_field_tag :user_id, @page.user_id %>
     <%= submit_tag 'Save!'%> 
     <%= link_to "cancel", seite_path( seite: @page.name ) if @page.updated_at %>
     

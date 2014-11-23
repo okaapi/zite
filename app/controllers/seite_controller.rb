@@ -69,10 +69,14 @@ class SeiteController < ApplicationController
 
     # save even if the user isn't logged in anymore... they were logged in
     # when they started editing the page...
-    @page = Page.new( page_params )
+    @page = Page.new( content: params[:content], name: params[:name],
+                      user_id: params[:user_id], menu: params[:menu],
+                      lock: params[:lock], editor: params[:editor],
+                      visibility: params[:visibility], 
+                      editability: params[:editability] )
     begin
-      @page.save
-      redirect_to seite_path( seite: Page.basepage( page_params[:name] ) ), 
+      @page.save!
+      redirect_to seite_path( seite: Page.basepage( params[:name] ) ), 
                               notice: "page #{@page.name} saved..."
     rescue Exception => e           
       redirect_to root_path,  alert: "problems saving page... #{e}"
@@ -135,9 +139,6 @@ class SeiteController < ApplicationController
   end
   
   private
-  
-  def page_params
-    params.permit(:content, :name, :user_id, :visibility, :editability, :menu, :lock, :editor)
-  end
+
   
 end
