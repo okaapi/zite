@@ -126,6 +126,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt-ruby
   coffee-rails (~> 4.0.0)
+  docile (= 1.1.5)
   jbuilder (~> 2.0)
   jquery-rails
   mysql

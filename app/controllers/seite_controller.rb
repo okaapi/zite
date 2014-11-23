@@ -12,7 +12,8 @@ class SeiteController < ApplicationController
       redirect_to page_update_path( seite: @seiten_name )
     elsif @center and !@user
       cached_content = render
-      @center.cache( cached_content )
+      # caching not enabled
+      # @center.cache( cached_content )
     else
       render
     end

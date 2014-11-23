@@ -39,5 +39,5 @@ gem 'bcrypt-ruby'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-#gem 'auth', path: "../auth_engine"
-
+# not sure why I need this
+gem 'docile', '1.1.5'
