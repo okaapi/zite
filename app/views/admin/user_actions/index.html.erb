@@ -4,10 +4,10 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>User session ID</th>
+      <th>S_ID</th>
       <th>Controller</th>
       <th>Action</th>
-      <th>Updated At</th>          
+      <th>Params</th>    
       <th></th>
       <th></th>
       <th></th>
@@ -21,7 +21,7 @@
         <td align=right><%= user_action.user_session_id %></td>
         <td><%= user_action.controller %></td>
         <td><%= user_action.action %></td>
-        <td><%= user_action.updated_at %></td>        
+        <td><%= user_action.params %></td>   
         <td><%= link_to 'Show', user_action %></td>
         <td><%= link_to 'Edit', edit_user_action_path(user_action) %></td>
         <td><%= link_to 'Destroy', user_action, method: :delete, data: { confirm: 'Are you sure?' } %></td>
