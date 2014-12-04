@@ -13,14 +13,15 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
         page.save!
       end  
     end
+    @not_java = ! Rails.configuration.use_javascript
           
   end
 
   test "viewing a page not logged in" do
      
     # this for caching
-    #path = File.join( Rails.root , 'public', 'c', 'home' ) + '.html'    
-    #File.delete( path ) if File.exists? path
+    path = File.join( Rails.root , 'public', 'index' ) + '.html'    
+    File.delete( path ) if File.exists? path
 
     get_via_redirect "/"
     assert_response :success
@@ -31,26 +32,42 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '.right', 'INDEX RIGHT' 
     assert_select '.footer', 'INDEX FOOTER'
     
-    # also for caching
-    #assert File.exists? path
+    if Rails.configuration.page_caching
+      assert File.exists? path
+      File.delete( path )
+    end
     
     get_via_redirect "/talks"
     assert_response :success
     assert_select '.center', 'protected content...'
-     
+    if Rails.configuration.page_caching
+      path = File.join( Rails.root , 'public', 'talks' ) + '.html'    
+      assert File.exists? path
+      File.delete( path )
+    end
+    
   end
 
   #
   test "viewing a page logged in" do
   
-    # enters correct password and gets logged in and session is created
-    xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
-    assert_response :success
-    assert_equal flash[:notice], 'arnaud logged in'
-   
     # for caching
-    #path = File.join( Rails.root , 'public', 'c', 'home' ) + '.html'    
-    #File.delete( path ) if File.exists? path
+    if Rails.configuration.page_caching
+      path = File.join( Rails.root , 'public', 'index' ) + '.html'    
+      File.open(path, "w") do |f|
+        f.write( "this index.html should get deleted when logging in" )
+      end
+    end
+    
+    # enters correct password and gets logged in and session is created
+    if @not_java
+      post "/_prove_it", claim: "arnaud", password: "secret"
+      assert_redirected_to root_path
+    else
+      xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
+      assert_response :success
+    end
+    assert_equal flash[:notice], 'arnaud logged in'
 
     get "/"
     assert_response :success
@@ -61,7 +78,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '.right', 'INDEX RIGHT' 
     assert_select '.footer', 'INDEX FOOTER'
     # for caching    
-    #assert_not File.exists? path
+    assert_not File.exists? path
     
     get "/talks"
     assert_response :success
@@ -73,8 +90,13 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   test "viewing a page logged in as admin" do
   
     # enters correct password and gets logged in and session is created
-    xhr :post, "/_prove_it", claim: "wido_admin", password: "secret"
-    assert_response :success
+    if @not_java
+      post "/_prove_it", claim: "wido_admin", password: "secret"
+      assert_redirected_to root_path
+    else
+      xhr :post, "/_prove_it", claim: "wido_admin", password: "secret"
+      assert_response :success
+    end
     assert_equal flash[:notice], 'wido_admin logged in'
     
     get "/"
@@ -91,5 +113,5 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '.center', 'Talks'
      
   end
-
+  
 end

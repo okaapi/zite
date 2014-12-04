@@ -4,17 +4,18 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
   
   setup do
     @user_arnaud = users(:arnaud)                              
-    @user_francois = users(:francois)      
+    @user_francois = users(:francois)     
     @not_java = ! Rails.configuration.use_javascript
   end
   
+ 
   #
   #   these tests are all set up to NOT examine internals of the app (session 
   #   object, models etc...  only testing flash, notice, and HTML
   #
   test "root path" do
     assert_equal root_path, '/'
-    puts "[ javascript is " + ( @not_java ? "off ]" : "on ]" ) 
+
   end
   
   #
@@ -30,27 +31,27 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 
     # clicks the login link and gets username entry field
     if @not_java
-      #get "/_who_are_u"
-      #assert_response :success
-      #assert_select '.authenticate fieldset div label', /username\/email/ 
+      get "/_who_are_u"
+      assert_response :success
+      assert_select '.authenticate fieldset div label', /username\/email/ 
     else
       xhr :get, "/_who_are_u"
       assert_response :success
-      assert_select_jquery :html, '#authentication_dialogue' do
+      assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select 'fieldset div label', /username\/email/ 
       end
     end
         
     # enters username and gets password entry field with username legend
     if @not_java
-      #post "/_prove_it", claim: "arnaud"
-      #assert_response :success
-      #assert_select '.authenticate fieldset legend', /arnaud/
-      #assert_select '.authenticate fieldset div label', /password/            
+      post "/_prove_it", claim: "arnaud"
+      assert_response :success
+      assert_select '.authenticate fieldset legend', /arnaud/
+      assert_select '.authenticate fieldset div label', /password/            
     else
       xhr :post, "/_prove_it", claim: "arnaud"
       assert_response :success       
-      assert_select_jquery :html, '#authentication_dialogue' do    
+      assert_select_jquery :html, '#authentication_dialogue_js' do    
         assert_select '.authenticate fieldset legend', /arnaud/
         assert_select '.authenticate fieldset div label', /password/
       end      
@@ -58,7 +59,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
       
     # enters correct password and gets logged in and session is created
     if @not_java  
-      #post "/_prove_it", claim: "arnaud", password: "secret"
+      post "/_prove_it", claim: "arnaud", password: "secret"
     else
       xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
     end
@@ -89,14 +90,14 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
   
     # user clicks "registration" link
     if @not_java
-      #post "/_about_urself"
-      #assert_response :success
-      #assert_select '.authenticate fieldset div label', /username/
-      #assert_select '.authenticate fieldset div label', /email/        
+      post "/_about_urself"
+      assert_response :success
+      assert_select '.authenticate fieldset div label', /username/
+      assert_select '.authenticate fieldset div label', /email/        
     else  
       xhr :post, "/_about_urself"
       assert_response :success
-      assert_select_jquery :html, '#authentication_dialogue' do
+      assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.authenticate fieldset div label', /username/
         assert_select '.authenticate fieldset div label', /email/           
       end
@@ -104,7 +105,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     
     # user enters proper username / email combo
     if @not_java
-      #post "/_about_urself", username: "jim", email: "jim@gmail.com"
+      post "/_about_urself", username: "jim", email: "jim@gmail.com"
     else  
       xhr :post, "/_about_urself", username: "jim", email: "jim@gmail.com"       
     end
@@ -141,7 +142,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     
     # sets the password and gets logged in
     if @not_java
-      #post "/_ur_secrets", user_id: @user_francois.id, password: 'secret', password_confirmation: 'secret' 
+      post "/_ur_secrets", user_id: @user_francois.id, password: 'secret', password_confirmation: 'secret' 
     else
       xhr :post, "/_ur_secrets", user_id: @user_francois.id, 
                         password: 'secret', password_confirmation: 'secret'   
@@ -155,6 +156,9 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '#authentication_launchpad', /francois/
       
   end
+
+
+
   
   private
      

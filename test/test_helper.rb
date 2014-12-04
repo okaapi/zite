@@ -12,23 +12,24 @@ puts "simple cov started"
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
-
-  # Add more helper methods to be used by all tests here...
-  
+ 
   (1..10).each {puts "."}
+  puts "[ javascript is " + ( Rails.configuration.use_javascript ? "on ]" : "off ]" ) 
+  puts "[ caching is " + ( Rails.configuration.page_caching ? "on ]" : "off ]" )   
 
-def admin_login_4_test
-    @admin = users(:admin)
-    user_session = UserSession.create( user_id: @admin.id )
-    user_session.save!
-    session[:user_session_id] = user_session.id
-end
-def login_4_test
-    @user = users(:arnaud)
-    user_session = UserSession.create( user_id: @user.id )
-    user_session.save!
-    session[:user_session_id] = user_session.id
-end
+
+	def admin_login_4_test
+	    @admin = users(:admin)
+	    user_session = UserSession.create( user_id: @admin.id )
+	    user_session.save!
+	    session[:user_session_id] = user_session.id
+	end
+	def login_4_test
+	    @user = users(:arnaud)
+	    user_session = UserSession.create( user_id: @user.id )
+	    user_session.save!
+	    session[:user_session_id] = user_session.id
+	end
 
 end
 

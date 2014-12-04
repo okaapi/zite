@@ -12,14 +12,14 @@ class AuthenticateControllerTest < ActionController::TestCase
   test "should get who_are_u" do
     
     if @not_java
-      #get :who_are_u
-      #assert_response :success
-      #assert_select '#authentication_dialogue .authenticate', false
-      #assert_select '.authenticate fieldset div label', /username\/email/ 
+      get :who_are_u
+      assert_response :success
+      assert_select '#authentication_dialogue_js .authenticate', false
+      assert_select '.authenticate fieldset div label', /username\/email/ 
     else
       xhr :get, :who_are_u
       assert_response :success
-      assert_select_jquery :html, '#authentication_dialogue' do
+      assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.authenticate'
         assert_select 'fieldset div label', /username\/email/ 
       end
@@ -29,15 +29,15 @@ class AuthenticateControllerTest < ActionController::TestCase
  
   test "should post prove_it_with_user_name" do
     if @not_java
-      #post :prove_it, claim: "some weird name"
-      #assert_response :success
-      #assert_select '#authentication_dialogue .authenticate', false      
-      #assert_select '.authenticate fieldset legend', /some weird name/
-      #assert_select '.authenticate fieldset div label', /password/            
+      post :prove_it, claim: "some weird name"
+      assert_response :success
+      assert_select '#authentication_dialogue_js .authenticate', false      
+      assert_select '.authenticate fieldset legend', /some weird name/
+      assert_select '.authenticate fieldset div label', /password/            
     else
       xhr :post, :prove_it, claim: "some weird name"
       assert_response :success       
-      assert_select_jquery :html, '#authentication_dialogue' do    
+      assert_select_jquery :html, '#authentication_dialogue_js' do    
         assert_select '.authenticate fieldset legend', /some weird name/
         assert_select '.authenticate fieldset div label', /password/
       end      
@@ -50,7 +50,7 @@ class AuthenticateControllerTest < ActionController::TestCase
   test "prove_it with correct password" do
     @controller.session[:password_retries] = 0
     if @not_java  
-      #post :prove_it, claim: "wido", password: "secret"
+      post :prove_it, claim: "wido", password: "secret"
     else
       xhr :post, :prove_it, claim: "wido", password: "secret"
     end
@@ -64,14 +64,14 @@ class AuthenticateControllerTest < ActionController::TestCase
   test "prove_it with incorrect password" do
     @controller.session[:password_retries] = 0
     if @not_java
-      #post :prove_it, claim: "wido", password: "secret1"
-      #assert_response :success   
-      #assert_select '#authentication_dialogue .authenticate', false
-      #assert_select '.authenticate'
+      post :prove_it, claim: "wido", password: "secret1"
+      assert_response :success   
+      assert_select '#authentication_dialogue_js .authenticate', false
+      assert_select '.authenticate'
     else 
       xhr :post, :prove_it, claim: "wido", password: "secret1"
       assert_response :success 
-      assert_select_jquery :html, '#authentication_dialogue' do
+      assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.authenticate' 
         assert_select 'fieldset div label', /password/        
       end      
@@ -81,10 +81,11 @@ class AuthenticateControllerTest < ActionController::TestCase
     assert_equal @controller.session[:password_retries], 1
   end  
   
+
   test "prove_it with incorrect password too often" do
     @controller.session[:password_retries] = 3
     if @not_java
-      #post :prove_it, claim: "wido", password: "secret1"
+      post :prove_it, claim: "wido", password: "secret1"
     else 
       xhr :post, :prove_it, claim: "wido", password: "secret1"
     end   
@@ -95,7 +96,7 @@ class AuthenticateControllerTest < ActionController::TestCase
          
   test "prove_it with suspended user" do
     if @not_java
-      #post :prove_it, claim: "john", password: "secret"    
+      post :prove_it, claim: "john", password: "secret"    
     else 
       xhr :post, :prove_it, claim: "john", password: "secret"
     end
@@ -105,7 +106,7 @@ class AuthenticateControllerTest < ActionController::TestCase
   
   test "prove_it with noexisting user" do
     if @not_java
-      #post :prove_it, claim: "john1", password: "secret" 
+      post :prove_it, claim: "john1", password: "secret" 
     else 
       xhr :post, :prove_it, claim: "john1", password: "secret"
     end
@@ -115,14 +116,14 @@ class AuthenticateControllerTest < ActionController::TestCase
 
   test "about_urself" do
     if @not_java
-      #post :about_urself
-      #assert_response :success
-      #assert_select '.authenticate fieldset div label', /username/
-      #assert_select '.authenticate fieldset div label', /email/         
+      post :about_urself
+      assert_response :success
+      assert_select '.authenticate fieldset div label', /username/
+      assert_select '.authenticate fieldset div label', /email/         
     else  
       xhr :post, :about_urself
       assert_response :success
-      assert_select_jquery :html, '#authentication_dialogue' do
+      assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.authenticate fieldset div label', /username/ 
         assert_select '.authenticate fieldset div label', /email/            
       end    
@@ -131,7 +132,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 
   test "about_urself correct credentials" do
     if @not_java
-      #post :about_urself, username: "jim", email: "jim@gmail.com"
+      post :about_urself, username: "jim", email: "jim@gmail.com"
     else  
       xhr :post, :about_urself, username: "jim", email: "jim@gmail.com"       
     end
@@ -141,16 +142,17 @@ class AuthenticateControllerTest < ActionController::TestCase
     assert_equal @controller.session[:user_session_id], UserSession.last.id       
   end
           
+
   test "about_urself incorrect credentials" do
     if @not_java
-      #post :about_urself, username: "john", email: "whatever"
-      #assert_response :success
-      #assert_select '#authentication_dialogue .authenticate', false
-      #assert_select '.authenticate'
+      post :about_urself, username: "john", email: "whatever"
+      assert_response :success
+      assert_select '#authentication_dialogue_js .authenticate', false
+      assert_select '.authenticate'
     else      
       xhr :post, :about_urself, username: "john", email: "whatever"
       assert_response :success
-      assert_select_jquery :html, '#authentication_dialogue' do
+      assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.authenticate'
         assert_select 'fieldset div label', /username/ 
         assert_select 'fieldset div label', /email/            
@@ -178,7 +180,7 @@ class AuthenticateControllerTest < ActionController::TestCase
     @user_john.password = @user_john.password_confirmation = 'bla'
     @user_john.save!
     if @not_java
-      #get :from_mail, user_token: 'john_token' 
+      get :from_mail, user_token: 'john_token' 
     else
       xhr :post, :from_mail, user_token: 'john_token' 
     end
@@ -190,16 +192,16 @@ class AuthenticateControllerTest < ActionController::TestCase
   test "ur_secrets from mail post without anything" do
     session[:reset_user_id] = @user_john.id  
     if @not_java
-      #post :ur_secrets
-      #assert_response :success
-      #assert_select '#authentication_dialogue .authenticate'   
-      #assert_select '.authenticate fieldset legend', /#{@user_john.username}/
-      #assert_select 'fieldset div label', /password/ 
-      #assert_select 'fieldset div label', /confirmation/       
+      post :ur_secrets
+      assert_response :success
+      assert_select '#authentication_dialogue_js .authenticate'   
+      assert_select '.authenticate fieldset legend', /#{@user_john.username}/
+      assert_select 'fieldset div label', /password/ 
+      assert_select 'fieldset div label', /confirmation/       
     else
       xhr :post, :ur_secrets 
       assert_response :success
-      assert_select_jquery :html, '#authentication_dialogue' do
+      assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.authenticate'
         assert_select '.authenticate fieldset legend', /#{@user_john.username}/
         assert_select 'fieldset div label', /password/ 
@@ -211,16 +213,16 @@ class AuthenticateControllerTest < ActionController::TestCase
     assert_equal assigns(:user).errors.full_messages[1], "Password can't be blank"
     assert_nil session[:reset_user_id]
   end  
-   
+ 
   test "ur_secrets post with correct user_id" do
     if @not_java
-      #post :ur_secrets, user_id: @user_john.id  
-      #assert_response :success
-      #assert_select '#authentication_dialogue .authenticate'   
+      post :ur_secrets, user_id: @user_john.id  
+      assert_response :success
+      assert_select '#authentication_dialogue_js .authenticate'   
     else
       xhr :post, :ur_secrets, user_id: @user_john.id 
       assert_response :success      
-      assert_select_jquery :html, '#authentication_dialogue' do
+      assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.authenticate'
         assert_select 'fieldset div label', /password/ 
         assert_select 'fieldset div label', /confirmation/            
@@ -234,7 +236,7 @@ class AuthenticateControllerTest < ActionController::TestCase
   
   test "ur_secrets post with incorrect user_id" do
     if @not_java
-      #post :ur_secrets, user_id: 27
+      post :ur_secrets, user_id: 27
     else
       xhr :post, :ur_secrets, user_id: 27
     end
@@ -245,13 +247,13 @@ class AuthenticateControllerTest < ActionController::TestCase
 
   test "ur_secrets post with correct user_id and not matching passwords" do
     if @not_java
-      #post :ur_secrets, user_id: @user_john.id, password: 'secret', password_confirmation: 'secret2' 
-      #assert_response :success 
-      #assert_select '#authentication_dialogue .authenticate'    
+      post :ur_secrets, user_id: @user_john.id, password: 'secret', password_confirmation: 'secret2' 
+      assert_response :success 
+      assert_select '#authentication_dialogue_js .authenticate'    
     else
       xhr :post, :ur_secrets, user_id: @user_john.id, password: 'secret', password_confirmation: 'secret2' 
       assert_response :success      
-      assert_select_jquery :html, '#authentication_dialogue' do
+      assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.authenticate'
         assert_select 'fieldset div label', /password/ 
         assert_select 'fieldset div label', /confirmation/            
@@ -264,7 +266,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 
   test "ur_secrets post with correct user_id and correct passwords" do
     if @not_java
-      #post :ur_secrets, user_id: @user_john.id, password: 'secret', password_confirmation: 'secret' 
+      post :ur_secrets, user_id: @user_john.id, password: 'secret', password_confirmation: 'secret' 
     else
       xhr :post, :ur_secrets, user_id: @user_john.id, 
                         password: 'secret', password_confirmation: 'secret'   

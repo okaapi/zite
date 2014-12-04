@@ -1,6 +1,5 @@
-
-
 class AuthenticateController < ApplicationController
+
   # max retries for password
   MAX_RETRIES = 3
   
@@ -171,6 +170,7 @@ class AuthenticateController < ApplicationController
     
     def create_new_user_session( user )   
       reset_session
+      Page.uncache_all
       user_session = UserSession.new_ip_and_client( user, request.remote_ip(),
                                                    request.env['HTTP_USER_AGENT'])
       session[:user_session_id] = user_session.id     

@@ -107,8 +107,10 @@ class Page < ActiveRecord::Base
   end  
   
   # this is dangerous...  once a page is cached, it becomes
-  # visible to the world... so only cached pages should be  
-  # cached... and once a user logs in, they should all be
+  # visible to the world... so only publicly visible pages should be  
+  # cached... which can be achieved by caching only when nobody
+  # is logged in...
+  # ...and once a user logs in, they should all be
   # uncached, else the "login" is not visible...
   def cache( content )
     path = File.join( Rails.root , 'public', self.name ) + '.html'    

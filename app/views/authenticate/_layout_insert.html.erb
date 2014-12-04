@@ -2,7 +2,7 @@
 <% #this is kludgy... %>
 <% if session[:reset_user_id] and @user = User.find_by_id( session[:reset_user_id] )%>
 
-  <div id="authentication_dialogue" style="display:block" >
+  <div id="authentication_dialogue_js" style="display:block" >
     <%= render "authenticate/ur_secrets" %>
   </div>
   
@@ -11,7 +11,7 @@
   <div id="authentication_launchpad">
     <%= render "authenticate/launchpad" %>
   </div>
-  <div id="authentication_dialogue"></div>
+  <div id="authentication_dialogue_js"></div>
 
 <% end %>
 

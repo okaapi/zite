@@ -10,13 +10,21 @@
   @include box-shadow; 
 } 
 
-#authentication_dialogue {
+#authentication_dialogue_js {
   //border: 2px dotted red;
   position: fixed;
   @include box-shadow; 
   right: 15%;
   top: 10%;
   display: none;
+} 
+#authentication_dialogue {
+  //border: 2px dotted red;
+  @include box-shadow; 
+  float: left;
+  position: relative;
+  left: 20%;
+  height: 500px;
 } 
 
 .authenticate {
