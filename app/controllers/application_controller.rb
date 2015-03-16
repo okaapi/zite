@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user_session_and_create_action
    	
   def only_if_admin
-    unless @user and @user.role = "admin"
+    unless @user and @user.role == "admin"
       redirect_to '/', notice: "must be admin"
     end
   end 
