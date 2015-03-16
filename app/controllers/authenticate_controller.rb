@@ -9,6 +9,8 @@ class AuthenticateController < ApplicationController
   
   def prove_it
     
+    Page.uncache_all
+
     @claim = params[:claim]
     @password = params[:password]
     
@@ -80,13 +82,15 @@ class AuthenticateController < ApplicationController
   
   def from_mail # get
     
-    # this is the link from the email... set the reset_user_id, and immediately redirect
+    # this is the link from the email... set the reset_user_id, 
+    # and immediately redirect
     # redirection will show the ur_secrets dialogue with form to ur_secrets
+    Page.uncache_all
     @user_token = params[:user_token]
     if @user = User.find_by_token( @user_token )
       # REMEMBER this user _id for ur_secrets!
       session[:reset_user_id] = @user.id
-      redirect_to_root_html
+      redirect_to_root_html alert: "please change your password #{@user.id}"
     else
       redirect_to_root_html alert: "the activation link is incorrect, please reset..."
     end      
