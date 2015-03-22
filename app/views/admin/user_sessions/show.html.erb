@@ -10,7 +10,7 @@
 </p>
 
 <p>
-  <strong>Ip:</strong>
+  <strong>IP:</strong>
   <%= @user_session.ip %>
 </p>
 
@@ -22,7 +22,7 @@
 	
 	<% @user_session.user_actions.reverse.each do |action| %>
 	  <tiny>
-	      <%= action.controller %>#<%= action.action %><br />
+	      <%= link_to ( action.controller + "#" + action.action ), action %> <br />
       </tiny>	      
     <% end %>    
 	  

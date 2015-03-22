@@ -25,8 +25,8 @@ class ActiveSupport::TestCase
 	    session[:user_session_id] = user_session.id
 	end
 	def login_4_test
-	    @user = users(:arnaud)
-	    user_session = UserSession.create( user_id: @user.id )
+	    @current_user = users(:arnaud)
+	    user_session = UserSession.create( user_id: @current_user.id )
 	    user_session.save!
 	    session[:user_session_id] = user_session.id
 	end

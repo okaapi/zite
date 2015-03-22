@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :set_current_user_session_and_create_action
    	
   def only_if_admin
-    unless @user and @user.role == "admin"
+    unless @current_user and @current_user.role == "admin"
       redirect_to '/', notice: "must be admin"
     end
   end 
@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
 	                                                               request.env['HTTP_USER_AGENT'])
 	    session[:user_session_id] = @current_user_session.id                                                                           
 	  end 
-	  @user = @current_user_session.user 
+	  @current_user = @current_user_session.user 
       UserAction.add_action( @current_user_session.id, controller_name, action_name, params )            
   end
      

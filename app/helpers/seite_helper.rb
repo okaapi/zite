@@ -17,9 +17,6 @@ module SeiteHelper
   def is_admin( user )
     ( user and user.admin? )
   end
-  def prettytime( t )
-    t.getlocal.strftime("%H:%M %m-%d-%Y")
-  end
   def if_image( pagename, f )
     ext = File.extname( f )
     target = file_target( pagename, f )

@@ -1,7 +1,6 @@
 
 <% #this is kludgy... %>
-<% if session[:reset_user_id] and @user = User.find_by_id( session[:reset_user_id] )%>
-
+<% if session[:reset_user_id] and @current_user = User.find_by_id( session[:reset_user_id] )%>  
   <div id="authentication_dialogue_js" style="display:block" >
     <%= render "authenticate/ur_secrets" %>
   </div>

@@ -158,9 +158,9 @@ class AuthenticateControllerTest < ActionController::TestCase
         assert_select 'fieldset div label', /email/            
       end         
     end
-    assert_equal assigns(:user).errors.count, 2
-    assert_equal assigns(:user).errors.full_messages[0], "Username has already been taken"
-    assert_equal assigns(:user).errors.full_messages[1], "Email not a valid email address"
+    assert_equal assigns(:current_user).errors.count, 2
+    assert_equal assigns(:current_user).errors.full_messages[0], "Username has already been taken"
+    assert_equal assigns(:current_user).errors.full_messages[1], "Email not a valid email address"
   end
   
   test "from_mail get without token" do    
@@ -208,9 +208,9 @@ class AuthenticateControllerTest < ActionController::TestCase
         assert_select 'fieldset div label', /confirmation/            
       end           
     end
-    assert_equal assigns(:user).errors.count, 2
-    assert_equal assigns(:user).errors.full_messages[0], "Password is too short (minimum is 3 characters)"
-    assert_equal assigns(:user).errors.full_messages[1], "Password can't be blank"
+    assert_equal assigns(:current_user).errors.count, 2
+    assert_equal assigns(:current_user).errors.full_messages[0], "Password is too short (minimum is 3 characters)"
+    assert_equal assigns(:current_user).errors.full_messages[1], "Password can't be blank"
     assert_nil session[:reset_user_id]
   end  
  
@@ -228,9 +228,9 @@ class AuthenticateControllerTest < ActionController::TestCase
         assert_select 'fieldset div label', /confirmation/            
       end           
     end
-    assert_equal assigns(:user).errors.count, 2
-    assert_equal assigns(:user).errors.full_messages[0], "Password is too short (minimum is 3 characters)"
-    assert_equal assigns(:user).errors.full_messages[1], "Password can't be blank"
+    assert_equal assigns(:current_user).errors.count, 2
+    assert_equal assigns(:current_user).errors.full_messages[0], "Password is too short (minimum is 3 characters)"
+    assert_equal assigns(:current_user).errors.full_messages[1], "Password can't be blank"
     assert_nil session[:reset_user_id]
   end 
   
@@ -259,8 +259,8 @@ class AuthenticateControllerTest < ActionController::TestCase
         assert_select 'fieldset div label', /confirmation/            
       end  
     end
-    assert_equal assigns(:user).errors.count, 1
-    assert_equal assigns(:user).errors.full_messages[0], "Password confirmation doesn't match Password"
+    assert_equal assigns(:current_user).errors.count, 1
+    assert_equal assigns(:current_user).errors.full_messages[0], "Password confirmation doesn't match Password"
     assert_nil session[:reset_user_id]
   end 
 
@@ -302,7 +302,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 
   #p flash[:notice]
   #p flash[:alert]   
-  #p assert assigns(:user).errors.count  
+  #p assert assigns(:current_user).errors.count  
 
   private
   

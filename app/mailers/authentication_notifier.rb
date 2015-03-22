@@ -9,14 +9,14 @@ require "singleton"
     default from: smtp_settings[:sender_email]
     
     def registration( user, request )
-      @user = user
-      @path = ur_secrets_path( request, @user.token )
+      @current_user = user
+      @path = ur_secrets_path( request, @current_user.token )
       mail to: user.email, subject: 'Okaapi registration confirmation'
     end
 
     def reset( user, request )
-      @user = user    
-      @path = ur_secrets_path( request, @user.token )
+      @current_user = user    
+      @path = ur_secrets_path( request, @current_user.token )
       mail to: user.email, subject: 'Okaapi password reset'
     end
   

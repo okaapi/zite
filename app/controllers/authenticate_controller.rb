@@ -10,7 +10,7 @@ class AuthenticateController < ApplicationController
   def prove_it
     
     Page.uncache_all
-
+    
     @claim = params[:claim]
     @password = params[:password]
     
@@ -19,15 +19,15 @@ class AuthenticateController < ApplicationController
       session[:password_retries] = 0
         
     # now the user has offered a password
-    elsif @user = User.find_by_email_or_username( @claim ) 
+    elsif @current_user = User.find_by_email_or_username( @claim ) 
       
         # if that's ok
-        if @user.authenticate( @password )
+        if @current_user.authenticate( @password )
 
           # and this user is confirmed, log him in, with a new session
-          if @user.confirmed?      
-            create_new_user_session( @user )
-            redirect_to_root_js_or_html notice: "#{@user.username} logged in" 
+          if @current_user.confirmed?      
+            create_new_user_session( @current_user )
+            redirect_to_root_js_or_html notice: "#{@current_user.username} logged in" 
           else
             # else let him now he needs to activate
             redirect_to_root_js_or_html alert: "user is not activated, check your email"
@@ -38,10 +38,10 @@ class AuthenticateController < ApplicationController
           @max_retries = MAX_RETRIES
           if session[:password_retries] >= @max_retries
             # third time... suspend the user
-            @user.suspend_and_save
+            @current_user.suspend_and_save
             begin
               # and send him an email
-              AuthenticationNotifier.reset(@user, request).deliver 
+              AuthenticationNotifier.reset(@current_user, request).deliver 
               redirect_to_root_js_or_html alert: "user suspended, check your email"
             rescue Exception => e           
               redirect_to_root_js_or_html alert: "user suspended, but email sending failed #{e}"
@@ -65,11 +65,11 @@ class AuthenticateController < ApplicationController
     # if email and username are given... otherwise this is the empty dialogue (first time)
     if @email and @username
       # create this new user, but in unconfirmed status
-      @user = User.new_unconfirmed( @email, @username )
-      if @user.save  
+      @current_user = User.new_unconfirmed( @email, @username )
+      if @current_user.save  
         begin  
-          AuthenticationNotifier.registration(@user,request).deliver
-          create_new_user_session( @user )
+          AuthenticationNotifier.registration(@current_user,request).deliver
+          create_new_user_session( @current_user )
           redirect_to_root_js_or_html notice: "you are logged in, we sent an activation email for the next time!"
         rescue Exception => e
           @user.destroy
@@ -82,15 +82,14 @@ class AuthenticateController < ApplicationController
   
   def from_mail # get
     
-    # this is the link from the email... set the reset_user_id, 
-    # and immediately redirect
+    # this is the link from the email... set the reset_user_id, and immediately redirect
     # redirection will show the ur_secrets dialogue with form to ur_secrets
     Page.uncache_all
     @user_token = params[:user_token]
-    if @user = User.find_by_token( @user_token )
+    if @current_user = User.find_by_token( @user_token )
       # REMEMBER this user _id for ur_secrets!
-      session[:reset_user_id] = @user.id
-      redirect_to_root_html alert: "please change your password #{@user.id}"
+      session[:reset_user_id] = @current_user.id
+      redirect_to_root_html  alert: "please set your password"
     else
       redirect_to_root_html alert: "the activation link is incorrect, please reset..."
     end      
@@ -109,13 +108,13 @@ class AuthenticateController < ApplicationController
     end
        
     # set the new password
-    if @user = User.find_by_id( user_id )
-      @user.password = params[:password]
-      @user.password_confirmation = params[:password_confirmation] 
-      @user.active = 'confirmed'
-      @user.token = nil
-      if @user.save # succes!
-        create_new_user_session( @user )   
+    if @current_user = User.find_by_id( user_id )
+      @current_user.password = params[:password]
+      @current_user.password_confirmation = params[:password_confirmation] 
+      @current_user.active = 'confirmed'
+      @current_user.token = nil
+      if @current_user.save # succes!
+        create_new_user_session( @current_user )   
         redirect_to_root_js_or_html notice: "password set!"
       end
     else
