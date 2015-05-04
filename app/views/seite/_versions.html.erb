@@ -9,7 +9,7 @@
       <% @pages.each_with_index do |p,i| %>
         <td>
         <%= link_to( prettytime( p.updated_at), 
-             page_update_path( seite: p.name, updated_at: p.updated_at ) ) if editable( p, @user ) %>
+             page_update_path( seite: p.name, updated_at: p.updated_at ) ) if editable( p, @current_user ) %>
         &nbsp;
         </td>
         <% if (i+1).modulo(4) == 0 %>

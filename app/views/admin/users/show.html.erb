@@ -32,8 +32,9 @@
 	<h1>Sessions for User <%= @user.username %> </h1>
 	
 	<% @user.user_sessions.reverse.each do |session| %>
-	  <h2> <%= session.created_at.to_time.strftime("%m/%d %H:%M:%S") %> - 
-	       <%= session.updated_at.to_time.strftime("%m/%d %H:%M:%S")  %> </h2>
+	  <h2> <%= link_to ( session.created_at.to_time.strftime("%m/%d %H:%M:%S") + " - " +  
+	                     session.updated_at.to_time.strftime("%m/%d %H:%M:%S") ),
+	                     session %> </a></h2>
 	  
 	  <tiny>
 	    <% session.user_actions.each do |action| %>

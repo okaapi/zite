@@ -10,6 +10,7 @@
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-journal
+/db/zite.sql
 
 # Ignore all logfiles and tempfiles.
 /log/*.log
@@ -24,4 +25,4 @@
 /public/storage
 /public/oldweb
 /public/assets
-/public/c
+/public/save

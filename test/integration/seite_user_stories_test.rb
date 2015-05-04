@@ -78,7 +78,9 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '.right', 'INDEX RIGHT' 
     assert_select '.footer', 'INDEX FOOTER'
     # for caching    
-    assert_not File.exists? path
+    if Rails.configuration.page_caching
+      assert_not File.exists? path
+    end 
     
     get "/talks"
     assert_response :success

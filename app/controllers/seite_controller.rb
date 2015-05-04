@@ -1,5 +1,5 @@
 class SeiteController < ApplicationController
-  skip_before_action :verify_authenticity_token #, only: :file_upload
+  #skip_before_action :verify_authenticity_token #, only: :file_upload
   
   def index
         
@@ -8,9 +8,9 @@ class SeiteController < ApplicationController
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
     
-    if !@center and @user 
+    if !@center and @current_user 
       redirect_to page_update_path( seite: @seiten_name )
-    elsif @center and !@user
+    elsif @center and !@current_user
       cached_content = render
       if Rails.configuration.page_caching
         @center.cache( cached_content )
@@ -23,7 +23,7 @@ class SeiteController < ApplicationController
   
   def pageupdate
     
-    if ! @user
+    if ! @current_user
       redirect_to root_path, alert: "need to login first..."
       return
     end
@@ -51,10 +51,10 @@ class SeiteController < ApplicationController
     end
     # remember last editor, and set this page to current editor
     @lastuser = User.find( @page.user_id ) if @page.user_id
-    @page.user_id = @user.id
+    @page.user_id = @current_user.id
     
     # see whether page is editable
-    if ! @page.editable_by_user( @user ? @user.role : nil, @user ? @user.id : nil )
+    if ! @page.editable_by_user( @current_user ? @current_user.role : nil, @current_user ? @current_user.id : nil )
       redirect_to root_path, alert: "not authorized..."
       return    
     end

@@ -1,13 +1,13 @@
 
 
-  <% if viewable( seite, @user ) == true %>
+  <% if viewable( seite, @current_user ) == true %>
     
-    <% @role = @user ? @user.role : nil %>
+    <% @role = @current_user ? @current_user.role : nil %>
     <%= seite.display(@role).html_safe %>
     
     <%= render partial: "edit", locals: { seite: seite } %>
     
-  <% elsif viewable( seite, @user ) == false %>
+  <% elsif viewable( seite, @current_user ) == false %>
   
     <h1> protected content... </h1>
     

@@ -25,7 +25,7 @@
 
   <div class="cleardiv" id="version"> <small> <small> 
   <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> 
-  <%= editable( @center, @user ).to_s[0] %> <%= viewable( @center, @user ).to_s[0] %>
+  <%= editable( @center, @current_user ).to_s[0] %> <%= viewable( @center, @current_user ).to_s[0] %>
   <%= prettytime( Time.now ) %></small> </small> </div>  
 
 </body>
