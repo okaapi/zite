@@ -52,8 +52,8 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   test "viewing a page logged in" do
   
     # for caching
-    if Rails.configuration.page_caching
-      path = File.join( Rails.root , 'public', 'index' ) + '.html'    
+    path = File.join( Rails.root , 'public', 'index' ) + '.html'   
+    if Rails.configuration.page_caching 
       File.open(path, "w") do |f|
         f.write( "this index.html should get deleted when logging in" )
       end
