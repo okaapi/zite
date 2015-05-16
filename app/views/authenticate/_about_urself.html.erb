@@ -1,19 +1,25 @@
-<div class="authenticate">
-  <%= form_tag about_urself_path, remote: js? do %>
-    <fieldset>
-      <%= render "user_errors" %>
-      <legend>Tell us about yourself!</legend>
-      <div class="label_input_div" >
-        <%= label_tag :username, "username:" %>
-        <%= text_field_tag :username, @username, autofocus: true %>
-      </div>
-      <div class="label_input_div"_>
-        <%= label_tag :email, "email:" %>
-        <%= text_field_tag :email, @email %>
-      </div>      
-      <div class="label_input_div">
-        <%= submit_tag 'Send registration email'%>
-      </div>      
-    </fieldset>
-  <% end %>
-</div>
+<%= form_tag about_urself_path, class: 'form-horizontal login_decor', remote: js? do %>
+  <div class="alert alert-info" role="alert">
+    About yourself...
+  </div>
+  <%= render "user_errors" %>
+  <div class="field form-group">
+    <%= label_tag :username, "username:", class: 'col-sm-3 control-label' %>
+    <div class="col-sm-2">
+      <%= text_field_tag :username, @username, autofocus: true, class: 'form-control'  %>
+    </div>
+  </div>
+  <div class="field form-group">
+    <%= label_tag :email, "email:", class: 'col-sm-3 control-label'  %>
+    <div class="col-sm-2">
+      <%= text_field_tag :email, @email, class: 'form-control'  %>
+    </div> 
+  </div>
+  
+  <div class="field form-group">
+    <%= hidden_field_tag :user_id, @current_user.id if @current_user %>  
+    <%= link_to 'cancel', see_u_path, class: 'col-sm-3 control-label' %> 
+    <%= submit_tag 'Send registration email', class: 'col-sm-offset-1' %>
+  </div>  
+
+<% end %>

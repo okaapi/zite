@@ -1,10 +1,8 @@
   <% if @current_user && @current_user.errors.any? %>
-    <div class="error_explanation">
-      <h2><%= pluralize(@current_user.errors.count, "error") %>...</h2>
-      <ul>
-      <% @current_user.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
+      <div class="alert alert-danger" role="alert">
+        <% @current_user.errors.full_messages.each do |msg| %>
+          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <%= msg %><br>
+        <% end %>
+      </div>
   <% end %>

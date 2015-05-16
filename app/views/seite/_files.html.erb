@@ -4,6 +4,7 @@
 	  $("#file_heading").click( function() { $("#files").fadeIn() } );
     </script>		  
     <div id="files">
+      <p>
       <table>
         <tr><td></td><td></td><td colspan=3>copy this address to insert images above</td></tr>
         <% @files.each do |f| %>
@@ -21,14 +22,18 @@
           </tr>
         <% end %>
       </table>
+      </p>
     
+
       <%= form_tag file_upload_path( seite: pagename ), multipart: true do %>
-        <%= file_field_tag :file %>
-        <%= submit_tag 'Upload!', data: { confirm: 'Are you sure? Your current edits will be lost...' } %> 
+        <p> 
+          <%= file_field_tag :file %>
+          <%= submit_tag 'Upload!', data: { confirm: 'Are you sure? Your current edits will be lost...' } %> 
+        </p>
         <p id="note"> Note 1: you will lose your edits... save first! </p>
         <p id="note"> Note 2: all uploaded files are visible to anyone! </p>
       <% end %>
-    
+      
     </div>    
 
   </div>

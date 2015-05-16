@@ -5,29 +5,81 @@
   <title><%= @center ? @center.name : "" %></title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">  
   <%= csrf_meta_tags %>
 </head>
 <body>
   
-  <%= render "authenticate/layout_insert" %>
+
+  <div class="container">
   
-  <% if flash[:alert] %>
-    <p id="alert"><%= flash[:alert] %></p>
-  <% end %>  
-  <% if flash[:notice] %>
-    <p id="notice"><%= flash[:notice] %></p>
-  <% end %>
-  
-  <div id="application">
-    <%= yield %>
+    <div class="row">
+      <div class="col-xs-12">
+		<% if flash[:alert] %>
+		  <div class="alert alert-danger" role="alert">
+		     <%= flash[:alert] %>
+		  </div>
+		<% end %>  
+		<% if flash[:notice] %>
+		  <div class="alert alert-success" role="alert">
+		    <%= flash[:notice] %>
+		  </div>
+		<% end %>
+        <div id="spinner">
+			<!-- %= image_tag "spinner.gif", width: 30 % -->
+                   <div class="alert alert-warning" role="alert">
+                     <i class="glyphicon glyphicon-repeat"></i>
+		      &nbsp; wait...     
+                   </div>
+		</div>        
+      </div>    
+    </div>
+    <div class="row">   
+      <div class="col-xs-8">
+		<% if session[:reset_user_id] and @current_user = User.find_by_id( session[:reset_user_id] )%>  
+		  <div id="authentication_dialogue_js" style="display:block" >
+		    <%= render "authenticate/ur_secrets" %>
+		  </div>
+		<% else %>  
+		  <div id="authentication_dialogue_js"></div>
+		<% end %>     		 
+      </div>
+      <div class="col-xs-4 text-right">
+	    <% if session[:reset_user_id] and @current_user = User.find_by_id( session[:reset_user_id] )%>  
+	    <% else %>  
+	      <div id="authentication_launchpad">
+	        <%= render "authenticate/launchpad" %>
+	      </div>
+	      <br>
+	    <% end %>
+      </div>      
+    </div>
+    
+    <div class="row">    
+      <div id="application" class="col-xs-12">    
+        <%= yield %>
+      </div>     
+    </div>
+    
+    <div class="row" style="margin-top:100px">
+      <div class="col-md-12">
+		  <% if ( @current_user and @current_user.admin? ) %>
+			  <div class="cleardiv" id="version"> <small>
+			    Application <%= controller.controller_name %> / <%= controller.action_name %> 
+			    Ruby <%= RUBY_VERSION%> Rails <%= Rails.version %> <%= Rails.env %> 
+			    user <%= @current_user.username if @current_user %> 
+		 <br> <br>
+			  </small> </div>
+		  <% else %>
+			  <div class="cleardiv" id="version"> <small>
+		      <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> 
+			  </small> </div>  	  
+		  <% end %>      
+      </div>
+    </div>
+    
   </div>
 
 
-  <div class="cleardiv" id="version"> <small> <small> 
-  <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> 
-  <%= editable( @center, @current_user ).to_s[0] %> <%= viewable( @center, @current_user ).to_s[0] %>
-  <%= prettytime( Time.now ) %></small> </small> </div>  
-
 </body>
 </html>
-

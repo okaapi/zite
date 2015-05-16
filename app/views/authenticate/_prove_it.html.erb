@@ -1,21 +1,23 @@
-<div class="authenticate">
-  <%= form_tag prove_it_path, remote: js? do %>
-    <fieldset>  
-	  <% if @retries %>
-	    <div class="error_explanation">
-	      <h2>The password does not match!</h2>
-	      <ul>
-	        <li><%= @retries.ordinalize %> attempt of <%= @max_retries %></li>
-	        <li>or, <%= link_to 'send reset mail', reset_mail_path(:claim => @claim) %></li>
-	      </ul>
-	    </div>
-	  <% end %>  
-      <legend><%= @claim %></legend>
-      <div class="label_input_div">
-        <%= hidden_field_tag :claim, @claim %>
-        <%= label_tag :password, "password:" %>
-        <%= password_field_tag :password, '', autofocus: true, size: 8 %>
+
+<%= form_tag prove_it_path, class: 'form-horizontal login_decor', remote: js? do %>
+  <div class="alert alert-info" role="alert">
+    Prove you are <%= @claim %> !
+  </div>
+  <% if @retries %>
+      <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        The password does not match!
+	    <ul>
+	      <li><%= @retries.ordinalize %> attempt of <%= @max_retries %></li>
+	      <li>or, <%= link_to 'send reset mail', reset_mail_path(:claim => @claim) %></li>
+	    </ul>
       </div>
-    </fieldset>
-  <% end %>
-</div>
+  <% end %>  
+  <div class="field form-group">
+    <%= hidden_field_tag :claim, @claim %>
+    <%= label_tag :password, "password:", class: 'col-sm-2 control-label' %>
+    <div class="col-sm-2">
+      <%= password_field_tag :password, '', autofocus: true, class: 'form-control' %>
+    </div>
+  </div>
+<% end %>

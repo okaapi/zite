@@ -86,7 +86,6 @@
     span:hover { color: red }  
     margin-top: 20px;
     #files {
-      font-size: smaller;
       display: none;
       .grab_box { 
         padding: 2px;
@@ -102,7 +101,7 @@
       }
     }    
     #note { 
-      font-size: smaller;
+      //font-size: smaller;
     }
   }  
 }

@@ -15,7 +15,7 @@
     Enter HTML here:
   <% end %>
   
-  <%= form_tag page_update_save_path( name: @page.name ) do %>
+  <%= form_tag page_update_save_path( name: @page.name ), class: 'form-vertical' do %>
   
     <%= text_area_tag :content, @page.content, id: "pageupdate_textarea",
         class: ckeditorclass,

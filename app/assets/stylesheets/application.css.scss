@@ -1,101 +1,127 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any styles
- * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
- * file per style scope.
- *
- *= require_tree .
- *= require_self
- */
 
-@import "mixins.css.scss";
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "seite";
+ 
+/* generic application stuff */
+#spinner {
+	display: none }
 
-// this is the background if not logged in
-.background_decoration {
-  background: url('freestyle.jpg') no-repeat center center fixed;
-  background-color: #004455; 
-  background-size: cover; 
-  a {
-    color: white
-  }
-
-}
-  
 body {
-  color: #333;
-  font-family: verdana, arial, helvetica, sans-serif;
-  font-size: $text-size;
-  
+  margin-top: 10px;
+}
+
+a {
+ color: #777777;
+ &:visited {
+  color: #777777;
+  text-decoration: none;
+  }  
+ &:hover {
+  color: blue;
+  text-decoration: none;
+  }       
+}
+
+.background_decoration {
+  background: url('hatshoes.jpg') no-repeat  ;
+  background-position: center top ;
+  background-size: cover;
+  background-color: white; 
   a {
-    color: $a-color;
+    color: white;
+    &:visited {
+      color: white;
+    }    
+  }
+}
+.login_decor {
+  background-color:white; 
+  padding:10px;
+  box-shadow: 0px 0px 20px 10px rgba(255,255,255,1.0);
+}
+
+.jumbotron {
+  padding: 5%;
+  width:100%;
+}
+
+/* mindmap stuff */
+
+#termcloud, #people, #mindmap {
+  padding: 30px;
+  .term_color_1 a { color: grey }
+  .term_color_2 a { font-weight: bold; color: teal }  
+  .term_color_3 a { font-weight: bold; color: red }    
+  .term_size_1 a { font-size: 14px; }
+  .term_size_2 a { font-size: 18px; }
+  .term_size_3 a { font-size: 22px; }
+  .term_size_4 a { font-size: 26px; }
+  .term_size_5 a { font-size: 30px; }
+  .person a { 
+    color: #777777; 
+    font-weight: bold; 
+    font-size: 24px; 
     text-decoration: none;
     &:visited {
-      color: $a-color;
-    }
+      color: #777777;
+      text-decoration: none;
+    }     
     &:hover {
-      color: $a-hover-color;
+      color: #555555;
+      text-decoration: none;
     }
-  }
-
-  // alert and notice boxes for the flash
-  #alert {
-    color: black;
-    border-radius: 5px;
-    padding: 1em;
-    margin-bottom: 1em;
-    font-weight: bold;
+  }        
+  
+  .mindmap_drilldown_term a {
     float: left;
-    border: 2px solid red;
-    background-color: rosybrown;
+    padding: 0px;
+	margin: 10px;
+	font-weight: bold; color: grey; font-size: 20px;
   }
-  #notice { 
-    font: bold smaller sans-serif;
-    font-weight: bold;
-    color: green;
-    @include box-shadow;
-  } 
-
-  // hourglass
-  #spinner_wrapper {
-    position: fixed;
-    top: 20%;
-    left: 50%;
-    #spinner {
-      box-shadow: 0px 0px 100px 100px rgba(255,255,255,1.0);
-      background-color: white;
-      position: relative;
-      left: -50%;
-      display: none;
-    }
+	
+  .mindmap_cluster {
+	//border: 1px solid red; 
+	float: left; 
+	padding: 0px;
+	margin: 10px;
+	text-align: center;
+    background: rgba(230,220,230,1.0);
+    box-shadow: 0px 0px 20px 5px rgba(230,220,230,1.0);
+	border-radius: 20px;
   }
   
-  .cleardiv {
-    clear:both;
-  }
-  .whitetext {
-    color: white;
-  }
-
-  // the main application
-  #application {
-    //border: 1px dotted red;
-    width: 98%;  
-    margin-top: 20px;
-    margin-left: 1%;
-    float: left;
-    @include header-block; 
-  }
-  
-  #version {
-    padding-top: 50px;
-  }
+  #term_detail_dialogue { 
+    display:none;
+    padding: 20px }    
 }
+
+#calendar {
+  padding-top: 20px;
+}
+
+#calendar {
+  table tr td {
+    vertical-align: top;
+    .diary_entry {
+      border: 0px blue solid;
+      padding: 0px 0px 0px 5px;
+	  overflow-x: auto;	
+
+          min-height: 100px; 
+          max-height: 200px; 
+          overflow-y: hidden; 
+ 
+    }
+  }
+  #show_diary_entry1 { display:none; padding: 20px }
+  #show_diary_entry2 { display:none; padding: 20px }    
+  #show_diary_entry3 { display:none; padding: 20px }    
+  #show_diary_entry4 { display:none; padding: 20px }    
+  #show_diary_entry5 { display:none; padding: 20px }  
+  #show_diary_entry6 { display:none; padding: 20px }  
+}
+
 
 
 
