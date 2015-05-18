@@ -1,8 +1,4 @@
-<% if @pages.count > 0 %>
-  <div id = "version_heading"> <span>Click here to select different versions:</span>
-    <script>
-	  $("#version_heading").click( function() { $("#versions").toggle() } );
-    </script>		  
+<% if @pages.count > 0 %>  
     <div id="versions">
       <p>
       <table>
@@ -21,5 +17,4 @@
       </table>
       </p>
     </div>
-  </div>
 <% end %>  

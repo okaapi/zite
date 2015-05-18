@@ -5,33 +5,63 @@
   
 <div id="seite">   
 
-	<div class="header">
+  <div class="row">
+	<div class="header col-md-12">
 	  <%= render partial: "seite", locals: { seite: @header } %>
-	</div>
+	</div>	
 	
-	<div class="menu">
+	<div class="menu col-md-12">
 	  <%= render partial: "seite", locals: { seite: @menu } %>	
 	</div>
+  </div>
 	
-	<% if @left %>
-	  <div class="left">
+  <div class="row">		
+  
+    <!--  -center-  -->
+    <% if !@left and !@right %>
+	  <div class="center col-md-12 " >
+	    <%= render partial: "seite", locals: { seite: @center } %>
+	  </div>
+	  
+	<!--  left-center-right  -->
+	<% elsif @left and @right %>
+	  <div class="center col-md-6 col-md-push-3 " >
+	    <%= render partial: "seite", locals: { seite: @center } %>
+	  </div>	
+	  <div class="left col-md-3 col-md-pull-6 col-sm-6 ">
 	    <%= render partial: "seite", locals: { seite: @left } %>	
-	  </div>
-	<% end %>
-	
-	<div class="center <%= center_class( @left, @right ) %>" >
-	  <%= render partial: "seite", locals: { seite: @center } %>
-	</div>
-	
-	<% if @right %>
-	  <div class="right">
+	  </div>	 	  
+	  <div class="right col-md-3 col-sm-6 ">
 	    <%= render partial: "seite", locals: { seite: @right } %>
+	  </div> 	  
+	  
+	<!--  left-center  -->
+    <% elsif @left %>
+	  <div class="center col-md-9 col-md-push-3 " >
+	    <%= render partial: "seite", locals: { seite: @center } %>
+	  </div>	
+	  <div class="left col-md-3 col-md-pull-9 col-sm-6 ">
+	    <%= render partial: "seite", locals: { seite: @left } %>	
+	  </div>	 
+
+    <!--  center-right  -->
+    <% elsif @right %>
+	  <div class="center col-md-9 " >
+	    <%= render partial: "seite", locals: { seite: @center } %>
+	  </div>	
+	  <div class="right col-md-3 col-sm-6 ">
+	    <%= render partial: "seite", locals: { seite: @right } %>	
 	  </div>
+	  	  	  	  	  
 	<% end %>
 	
-	<div class="footer">
+  </div>
+	
+  <div class="row">	
+	<div class="footer col-xs-12">
 	  <%= render partial: "seite", locals: { seite: @footer } %>
 	</div>
+  </div>
   	
 </div> 
 

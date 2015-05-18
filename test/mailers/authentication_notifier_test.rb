@@ -10,7 +10,7 @@ class AuthenticationNotifierTest < ActionMailer::TestCase
     mail = AuthenticationNotifier.registration( @current_user, @request )
     assert_equal "Okaapi registration confirmation", mail.subject
     assert_equal [@current_user.email], mail.to
-    assert_equal ["email@okaapi.com"], mail.from
+    assert_equal ["noreply@okaapi.com"], mail.from
     assert_match @path, mail.body.encoded
     assert_match 'john_token', mail.body.encoded
   end
@@ -22,7 +22,7 @@ class AuthenticationNotifierTest < ActionMailer::TestCase
     mail = AuthenticationNotifier.reset( @current_user, @request )
     assert_equal "Okaapi password reset", mail.subject
     assert_equal [@current_user.email], mail.to
-    assert_equal ["email@okaapi.com"], mail.from
+    assert_equal ["noreply@okaapi.com"], mail.from
     assert_match @path, mail.body.encoded
     assert_match 'john_token', mail.body.encoded
   end

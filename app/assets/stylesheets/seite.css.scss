@@ -3,50 +3,6 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 
-#seite {  
-  .header {
-    //border: 1px solid blue;
-    width: 100%;
-    box-sizing: border-box;
-    float: left;    
-  }
-  .menu {
-    //border: 1px solid purple;
-    width: 100%;
-    box-sizing: border-box;
-    float: left;      
-  }  
-  .left {
-    //border: 1px solid green;
-    width: 15%;
-    box-sizing: border-box;
-    float: left;      
-  }   
-  .center {
-    //border: 1px solid red;
-    width: 70%;
-    box-sizing: border-box;
-    float: left; 
-  }
-  .center_with_left_and_right { width: 70% } 
-  .center_with_left { width: 85% }   
-  .center_with_right { width: 85% }    
-  .center_only { width: 100% }      
-    
-  
-  .right {
-    //border: 1px solid red;
-    width: 15%;
-    box-sizing: border-box;
-    float: right;      
-  }       
-  .footer {
-    //border: 1px solid purple;
-    width: 100%;
-    box-sizing: border-box;
-    float: left;      
-  }  
-} 
   
 #pageupdate {
   a {
@@ -62,46 +18,15 @@
   input[type=submit]:hover {
     color: red 
   }  
-  #version_heading {
-    span:hover { color: red }
-    margin-top: 20px;
-    #versions {
-      font-size: smaller;
-      display: none;
-    }
-  }
-  #permission_heading {
+  #files {
+    td { border: 2px solid white; padding: 10px; }   
     span:hover { color: red }  
-    margin-top: 20px;
-    #permissions {
-      font-size: smaller;
-      display: none;
-    }
-    select:hover {
-      color: red 
-    }      
-  }
-  #file_heading {
-    // border: 1px solid blue;   
-    span:hover { color: red }  
-    margin-top: 20px;
-    #files {
-      display: none;
-      .grab_box { 
-        padding: 2px;
-        border: 1px solid #A9A9A9;
-        background: LightGoldenRodYellow; 
-        &:focus {
-          background: Azure;
-          outline: red;
-        }
-        &:hover {
-          color: red;
-        }
+    .grab_box { 
+      padding: 0px 10px 0px 10px;
+      color: blue; 
+      &:hover {
+       color: red;
       }
-    }    
-    #note { 
-      //font-size: smaller;
     }
   }  
 }

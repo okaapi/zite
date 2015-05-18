@@ -23,7 +23,7 @@ module SeiteHelper
     ext = ext.downcase
     case ext
     when '.jpg', '.gif', '.png', '.ico'
-      "<img src=\"#{target}\" width=20 >".html_safe    
+      "<img src=\"#{target}\" width=40 >".html_safe    
     when '.pdf'
       link_to image_tag( "pdf.ico", width: 20 ), target   
     else
@@ -42,16 +42,6 @@ module SeiteHelper
   def file_grab_target( pagename, f )
     file_target( pagename, f )
   end  
-  def center_class( left, right )
-    if !left and !right 
-      'center_only'
-    elsif left and !right
-      'center_with_left'
-    elsif !left and right
-      'center_with_right'
-    else
-      'center_with_left_and_right'
-    end
-  end
+
 
 end

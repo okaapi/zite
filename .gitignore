@@ -20,6 +20,7 @@
 # Ignore config files
 /config/yml
 /config/*.yml
+Gemfile.lock
 
 # Ignore data files
 /public/storage

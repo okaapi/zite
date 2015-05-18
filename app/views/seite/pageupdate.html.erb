@@ -19,21 +19,26 @@
   
     <%= text_area_tag :content, @page.content, id: "pageupdate_textarea",
         class: ckeditorclass,
-        rows: ( @page.content.scan(/\n/).count + 2 )%>       
+        rows: ( (@page.content||'').scan(/\n/).count + 2 )%>       
     <%= hidden_field_tag :user_id, @page.user_id %>
-    <%= submit_tag 'Save!'%> 
-    <%= link_to "cancel", seite_path( seite: @page.name ) if @page.updated_at %>
-    
-    <%= render partial: "permissions" %>
-        
-  <% end %>
-  
-  <%= render partial: "versions" %>
-  
-  <div id="files_partial">
-    <%= render partial: "files", locals: { pagename: @page.name } %>  
-  </div>
+    <p></p>
+    <div class="row">
+      <div class="left col-sm-2">                   
+        <%= submit_tag 'Save!', class: 'btn btn-default' %> 
+        <%= link_to "cancel", seite_path( seite: @page.name ) if @page.updated_at %>
+      </div>
+      <div class="left col-sm-8">
+        <%= render partial: "permissions" %>
+      </div> 
+    </div> 
 
+  <% end %>  
+  
+  <div class="row">
+    <div class="left col-sm-10">
+      <%= render partial: "pageupdate_options" %>
+    </div>
+  </div>
 
 </div>
 

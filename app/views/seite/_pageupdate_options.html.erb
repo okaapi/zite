@@ -1,0 +1,40 @@
+
+<div class="panel-group" role="tablist" aria-multiselectable="true">
+
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingVersions">
+      <h4 class="panel-title">
+        <a class="collapsed" data-toggle="collapse" 
+           href="#collapseVersions" aria-expanded="false" aria-controls="collapseVersions">
+          Versions
+        </a>
+      </h4>
+    </div>
+    <div id="collapseVersions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingVersions">
+      <div class="panel-body">
+         <%= render partial: "versions" %>
+      </div>
+    </div>
+  </div>  
+  
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingFiles">
+      <h4 class="panel-title">
+        <a class="collapsed" data-toggle="collapse" 
+           href="#collapseFiles" aria-expanded="false" aria-controls="collapseFiles">
+          File Uploads
+        </a>
+      </h4>
+    </div>
+    <div id="collapseFiles" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFiles">
+      <div class="panel-body">
+        <div id="files_partial">
+          <%= render partial: "files", locals: { pagename: @page.name } %>  
+        </div>
+      </div>
+    </div>   
+  </div>
+  
+ 
+  
+</div>  

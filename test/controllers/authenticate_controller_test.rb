@@ -14,14 +14,14 @@ class AuthenticateControllerTest < ActionController::TestCase
     if @not_java
       get :who_are_u
       assert_response :success
-      assert_select '#authentication_dialogue_js .authenticate', false
-      assert_select '.authenticate fieldset div label', /username\/email/ 
+      assert_select '.form-horizontal'
+      assert_select '.control-label', /username\/email/ 
     else
       xhr :get, :who_are_u
       assert_response :success
       assert_select_jquery :html, '#authentication_dialogue_js' do
-        assert_select '.authenticate'
-        assert_select 'fieldset div label', /username\/email/ 
+        assert_select '.form-horizontal'
+        assert_select '.control-label', /username\/email/ 
       end
     end
   end
@@ -31,15 +31,14 @@ class AuthenticateControllerTest < ActionController::TestCase
     if @not_java
       post :prove_it, claim: "some weird name"
       assert_response :success
-      assert_select '#authentication_dialogue_js .authenticate', false      
-      assert_select '.authenticate fieldset legend', /some weird name/
-      assert_select '.authenticate fieldset div label', /password/            
+      assert_select '.alert-info', /some weird name/
+      assert_select '.control-label', /password/           
     else
       xhr :post, :prove_it, claim: "some weird name"
       assert_response :success       
       assert_select_jquery :html, '#authentication_dialogue_js' do    
-        assert_select '.authenticate fieldset legend', /some weird name/
-        assert_select '.authenticate fieldset div label', /password/
+        assert_select '.alert-info', /some weird name/
+        assert_select '.control-label', /password/
       end      
     end
     assert_equal @controller.session[:password_retries], 0  
@@ -66,14 +65,14 @@ class AuthenticateControllerTest < ActionController::TestCase
     if @not_java
       post :prove_it, claim: "wido", password: "secret1"
       assert_response :success   
-      assert_select '#authentication_dialogue_js .authenticate', false
-      assert_select '.authenticate'
+      assert_select '.form-horizontal' 
+      assert_select '.control-label', /password/   
     else 
       xhr :post, :prove_it, claim: "wido", password: "secret1"
       assert_response :success 
       assert_select_jquery :html, '#authentication_dialogue_js' do
-        assert_select '.authenticate' 
-        assert_select 'fieldset div label', /password/        
+        assert_select '.form-horizontal' 
+        assert_select '.control-label', /password/        
       end      
     end      
     assert_equal assigns(:retries), 1
@@ -118,14 +117,16 @@ class AuthenticateControllerTest < ActionController::TestCase
     if @not_java
       post :about_urself
       assert_response :success
-      assert_select '.authenticate fieldset div label', /username/
-      assert_select '.authenticate fieldset div label', /email/         
+      assert_select '.form-horizontal'       
+      assert_select '.control-label', /username/  
+      assert_select '.control-label', /email/        
     else  
       xhr :post, :about_urself
       assert_response :success
       assert_select_jquery :html, '#authentication_dialogue_js' do
-        assert_select '.authenticate fieldset div label', /username/ 
-        assert_select '.authenticate fieldset div label', /email/            
+        assert_select '.form-horizontal'       
+        assert_select '.control-label', /username/  
+        assert_select '.control-label', /email/            
       end    
     end
   end
@@ -147,15 +148,16 @@ class AuthenticateControllerTest < ActionController::TestCase
     if @not_java
       post :about_urself, username: "john", email: "whatever"
       assert_response :success
-      assert_select '#authentication_dialogue_js .authenticate', false
-      assert_select '.authenticate'
+      assert_select '.form-horizontal' 
+      assert_select '.control-label', /username/           
+      assert_select '.control-label', /email/  
     else      
       xhr :post, :about_urself, username: "john", email: "whatever"
       assert_response :success
       assert_select_jquery :html, '#authentication_dialogue_js' do
-        assert_select '.authenticate'
-        assert_select 'fieldset div label', /username/ 
-        assert_select 'fieldset div label', /email/            
+        assert_select '.form-horizontal' 
+        assert_select '.control-label', /username/           
+        assert_select '.control-label', /email/                   
       end         
     end
     assert_equal assigns(:current_user).errors.count, 2
@@ -190,22 +192,22 @@ class AuthenticateControllerTest < ActionController::TestCase
   end  
 
   test "ur_secrets from mail post without anything" do
-    session[:reset_user_id] = @user_john.id  
+    session[:reset_user_id] = @user_john.id         
     if @not_java
       post :ur_secrets
       assert_response :success
-      assert_select '#authentication_dialogue_js .authenticate'   
-      assert_select '.authenticate fieldset legend', /#{@user_john.username}/
-      assert_select 'fieldset div label', /password/ 
-      assert_select 'fieldset div label', /confirmation/       
+      assert_select '.form-horizontal'
+      assert_select '.alert-info', /#{@user_john.username}/
+      assert_select '.control-label', /password/ 
+      assert_select '.control-label', /confirmation/     
     else
       xhr :post, :ur_secrets 
       assert_response :success
       assert_select_jquery :html, '#authentication_dialogue_js' do
-        assert_select '.authenticate'
-        assert_select '.authenticate fieldset legend', /#{@user_john.username}/
-        assert_select 'fieldset div label', /password/ 
-        assert_select 'fieldset div label', /confirmation/            
+        assert_select '.form-horizontal'
+        assert_select '.alert-info', /#{@user_john.username}/
+        assert_select '.control-label', /password/ 
+        assert_select '.control-label', /confirmation/            
       end           
     end
     assert_equal assigns(:current_user).errors.count, 2
@@ -218,14 +220,16 @@ class AuthenticateControllerTest < ActionController::TestCase
     if @not_java
       post :ur_secrets, user_id: @user_john.id  
       assert_response :success
-      assert_select '#authentication_dialogue_js .authenticate'   
+      assert_select '.form-horizontal'
+      assert_select '.control-label', /password/ 
+      assert_select '.control-label', /confirmation/      
     else
       xhr :post, :ur_secrets, user_id: @user_john.id 
       assert_response :success      
       assert_select_jquery :html, '#authentication_dialogue_js' do
-        assert_select '.authenticate'
-        assert_select 'fieldset div label', /password/ 
-        assert_select 'fieldset div label', /confirmation/            
+        assert_select '.form-horizontal'
+        assert_select '.control-label', /password/ 
+        assert_select '.control-label', /confirmation/            
       end           
     end
     assert_equal assigns(:current_user).errors.count, 2
@@ -249,14 +253,16 @@ class AuthenticateControllerTest < ActionController::TestCase
     if @not_java
       post :ur_secrets, user_id: @user_john.id, password: 'secret', password_confirmation: 'secret2' 
       assert_response :success 
-      assert_select '#authentication_dialogue_js .authenticate'    
+      assert_select '.form-horizontal'    
+      assert_select '.control-label', /password/ 
+      assert_select '.control-label', /confirmation/         
     else
       xhr :post, :ur_secrets, user_id: @user_john.id, password: 'secret', password_confirmation: 'secret2' 
       assert_response :success      
       assert_select_jquery :html, '#authentication_dialogue_js' do
-        assert_select '.authenticate'
-        assert_select 'fieldset div label', /password/ 
-        assert_select 'fieldset div label', /confirmation/            
+        assert_select '.form-horizontal'
+        assert_select '.control-label', /password/ 
+        assert_select '.control-label', /confirmation/            
       end  
     end
     assert_equal assigns(:current_user).errors.count, 1
