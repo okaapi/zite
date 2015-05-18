@@ -13,13 +13,16 @@
   float:left;
 }
 .pindiv .pinmargin {
-  max-height: 150px;
+  height: 150px;
   margin: 7px;
   padding: 0px;
   overflow: hidden;
 }
 .pindiv img {
   margin: 3px;
+}
+.pindiv h3 {
+  margin-top: 5px;
 }
 
 #pageupdate {
