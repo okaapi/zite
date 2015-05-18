@@ -1,17 +1,35 @@
-// Place all the styles related to the seite controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
 
+.header { float:left; }
+.menu { float:left; }
+.left { float:left; }
+.center { float:left; }
+.right { float:left; }
+.footer { float:left; }
 
-  
+.pindiv {
+  margin: 5px;
+  display: box;
+  background-color: #EFEFEF;
+  float:left;
+}
+.pindiv .pinmargin {
+  max-height: 150px;
+  margin: 7px;
+  padding: 0px;
+  overflow: hidden;
+}
+.pindiv img {
+  margin: 3px;
+}
+
 #pageupdate {
+  width: 100%; 
   a {
     font-size: smaller;
   }
   textarea {
-    width: 100%; 
+    width: 100%;
     overflow: hidden;
-    box-sizing: border-box;
     border: none;
     background-color: #EEEEEE;
   }
@@ -30,3 +48,10 @@
     }
   }  
 }
+
+
+
+ 
+      
+      
+

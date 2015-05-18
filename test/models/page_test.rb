@@ -242,12 +242,12 @@ class PageTest < ActiveSupport::TestCase
    
   test 'pin' do
     page = Page.find_by_name( 'pin' )
-    assert_equal page.display, "PIN <div class=\"pindiv\">  <h3> 4</h3> (!&) <p><a href= \"https://pic.g?au m/11 4?a t6AE#slc=\"https://  </div>"
+    assert_equal page.display, "PIN <div class=\"pindiv panel panel-default\"><div class=\"pinmargin panel-body \">  <h3> 4</h3> (!&) <p><a href= \"https://pic.g?au m/11 4?a t6AE#slc=\"https://  </div></div>"
   end
 
   test 'questions' do
     page = Page.find_by_name( 'questions' )
-    assert_equal page.display, "QUESTIONS <p> green is=?</p><br><p> blue is=?</p><br>"
+    assert_equal page.display, "QUESTIONS <p> [\"green is=\", \"blue is=\"]?</p><br>"
   end
   
   test 'basepage' do

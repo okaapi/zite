@@ -13,7 +13,7 @@
   <div class="container">
   
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-sm-12">
 		<% if flash[:alert] %>
 		  <div class="alert alert-danger" role="alert">
 		     <%= flash[:alert] %>
@@ -25,7 +25,7 @@
 		  </div>
 		<% end %>
         <div id="spinner">
-			<!-- %= image_tag "spinner.gif", width: 30 % -->
+			<%= image_tag "spinner.gif", width: 30 %>
                    <div class="alert alert-warning" role="alert">
                      <i class="glyphicon glyphicon-repeat"></i>
 		      &nbsp; wait...     
@@ -34,7 +34,7 @@
       </div>    
     </div>
     <div class="row">   
-      <div class="col-md-8">
+      <div class="col-sm-8">
 		<% if session[:reset_user_id] and @current_user = User.find_by_id( session[:reset_user_id] )%>  
 		  <div id="authentication_dialogue_js" style="display:block" >
 		    <%= render "authenticate/ur_secrets" %>
@@ -43,7 +43,7 @@
 		  <div id="authentication_dialogue_js"></div>
 		<% end %>     		 
       </div>
-      <div class="col-md-4 text-right">
+      <div class="col-sm-4 text-right">
 	    <% if session[:reset_user_id] and @current_user = User.find_by_id( session[:reset_user_id] )%>  
 	    <% else %>  
 	      <div id="authentication_launchpad">
@@ -57,8 +57,8 @@
  
     <%= yield %>
     
-    <div class="row" style="margin-top:100px">
-      <div class="col-xs-md">
+    <div class="row" >
+      <div class="col-sm-12" style="color: #CFCFCF; margin-top:20px">
 		  <% if ( @current_user and @current_user.admin? ) %>
 			  <div class="cleardiv" id="version"> <small>
 			    Application <%= controller.controller_name %> / <%= controller.action_name %> 

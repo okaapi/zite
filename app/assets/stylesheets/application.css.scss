@@ -2,14 +2,8 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "seite";
- 
-/* generic application stuff */
-#spinner {
-	display: none }
 
-body {
-  margin-top: 10px;
-}
+#spinner { display: none }
 
 a {
  color: #777777;
@@ -23,104 +17,12 @@ a {
   }       
 }
 
-.background_decoration {
-  background: url('hatshoes.jpg') no-repeat  ;
-  background-position: center top ;
-  background-size: cover;
-  background-color: white; 
-  a {
-    color: white;
-    &:visited {
-      color: white;
-    }    
-  }
-}
 .login_decor {
   background-color:white; 
   padding:10px;
   box-shadow: 0px 0px 20px 10px rgba(255,255,255,1.0);
 }
 
-.jumbotron {
-  padding: 5%;
-  width:100%;
-}
-
-/* mindmap stuff */
-
-#termcloud, #people, #mindmap {
-  padding: 30px;
-  .term_color_1 a { color: grey }
-  .term_color_2 a { font-weight: bold; color: teal }  
-  .term_color_3 a { font-weight: bold; color: red }    
-  .term_size_1 a { font-size: 14px; }
-  .term_size_2 a { font-size: 18px; }
-  .term_size_3 a { font-size: 22px; }
-  .term_size_4 a { font-size: 26px; }
-  .term_size_5 a { font-size: 30px; }
-  .person a { 
-    color: #777777; 
-    font-weight: bold; 
-    font-size: 24px; 
-    text-decoration: none;
-    &:visited {
-      color: #777777;
-      text-decoration: none;
-    }     
-    &:hover {
-      color: #555555;
-      text-decoration: none;
-    }
-  }        
-  
-  .mindmap_drilldown_term a {
-    float: left;
-    padding: 0px;
-	margin: 10px;
-	font-weight: bold; color: grey; font-size: 20px;
-  }
-	
-  .mindmap_cluster {
-	//border: 1px solid red; 
-	float: left; 
-	padding: 0px;
-	margin: 10px;
-	text-align: center;
-    background: rgba(230,220,230,1.0);
-    box-shadow: 0px 0px 20px 5px rgba(230,220,230,1.0);
-	border-radius: 20px;
-  }
-  
-  #term_detail_dialogue { 
-    display:none;
-    padding: 20px }    
-}
-
-#calendar {
-  padding-top: 20px;
-}
-
-#calendar {
-  table tr td {
-    vertical-align: top;
-    .diary_entry {
-      border: 0px blue solid;
-      padding: 0px 0px 0px 5px;
-	  overflow-x: auto;	
-
-          min-height: 100px; 
-          max-height: 200px; 
-          overflow-y: hidden; 
- 
-    }
-  }
-  #show_diary_entry1 { display:none; padding: 20px }
-  #show_diary_entry2 { display:none; padding: 20px }    
-  #show_diary_entry3 { display:none; padding: 20px }    
-  #show_diary_entry4 { display:none; padding: 20px }    
-  #show_diary_entry5 { display:none; padding: 20px }  
-  #show_diary_entry6 { display:none; padding: 20px }  
-}
 
 
 

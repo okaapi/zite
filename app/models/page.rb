@@ -1,3 +1,8 @@
+# this is to include modules from the lib directory...
+
+include Questions
+include GoogleMap
+
 class Page < ActiveRecord::Base
   validates :user_id, :presence => true
   validate :id_valid  
@@ -183,9 +188,16 @@ class Page < ActiveRecord::Base
             sub = ''
           end
         when 'pin'
-          "<div class=\"pindiv\">  #{operands}  </div>"
+          "<div class=\"pindiv panel panel-default\"><div class=\"pinmargin panel-body \">  #{operands}  </div></div>"
+        # look for these in the lib folder...
+        when 'gmap'
+          eval 'gmap ' + operands
+        when 'gmarker'
+          eval 'gmarker ' + operands
+        when 'gline'
+          eval 'gline ' + operands       
         when 'questions'
-          eval 'questions ' + operands
+          eval 'Questions::questions ' + operands
         else
           '<B>Bad Call to #{func}</B>'
         end

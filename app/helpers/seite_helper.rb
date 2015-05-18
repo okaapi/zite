@@ -1,5 +1,5 @@
 module SeiteHelper
-  
+    
   def editable( seite, user )
     if seite
       return seite.editable_by_user( user ? user.role : nil, user ? user.id : nil )

@@ -6,11 +6,11 @@
 <div id="seite">   
 
   <div class="row">
-	<div class="header col-sm-12">
+	<div class="header col-xs-12">
 	  <%= render partial: "seite", locals: { seite: @header } %>
 	</div>	
 	
-	<div class="menu col-sm-12">
+	<div class="menu col-xs-12">
 	  <%= render partial: "seite", locals: { seite: @menu } %>	
 	</div>
   </div>
@@ -19,44 +19,44 @@
   
     <!--  -center-  -->
     <% if !@left and !@right %>
-	  <div class="center col-sm-12 " >
+	  <div class="center col-xs-12 " >
 	    <%= render partial: "seite", locals: { seite: @center } %>
 	  </div>
 	  
 	<!--  left-center-right  -->
 	<% elsif @left and @right %>
-	  <div class="center col-sm-6 col-sm-push-3 " >
+	  <div class="center col-sm-8 col-sm-push-2 " >
 	    <%= render partial: "seite", locals: { seite: @center } %>
 	  </div>	
-	  <div class="left col-sm-3 col-sm-pull-6 col-xs-6 ">
+	  <div class="left col-sm-2 col-sm-pull-8 col-xs-6 ">
 	    <%= render partial: "seite", locals: { seite: @left } %>	
 	  </div>	 	  
-	  <div class="right col-sm-3 col-xs-6 ">
+	  <div class="right col-sm-2 col-xs-6 ">
 	    <%= render partial: "seite", locals: { seite: @right } %>
 	  </div> 	  
 	  
 	<!--  left-center  -->
     <% elsif @left %>
-	  <div class="center col-sm-9 col-sm-push-3 " >
+	  <div class="center col-sm-10 col-sm-push-2 " >
 	    <%= render partial: "seite", locals: { seite: @center } %>
 	  </div>	
-	  <div class="left col-sm-3 col-sm-pull-9 col-xs-6 ">
+	  <div class="left col-sm-2 col-sm-pull-10 col-xs-6 ">
 	    <%= render partial: "seite", locals: { seite: @left } %>	
 	  </div>	 
 
     <!--  center-right  -->
     <% elsif @right %>
-	  <div class="center col-sm-9 " >
+	  <div class="center col-sm-10 " >
 	    <%= render partial: "seite", locals: { seite: @center } %>
 	  </div>	
-	  <div class="right col-sm-3 col-xs-6 ">
+	  <div class="right col-sm-2 col-xs-6 ">
 	    <%= render partial: "seite", locals: { seite: @right } %>	
 	  </div>
 	  	  	  	  	  
 	<% end %>
 	
   </div>
-	
+
   <div class="row">	
 	<div class="footer col-xs-12">
 	  <%= render partial: "seite", locals: { seite: @footer } %>

@@ -20,6 +20,7 @@ module Zite
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    config.google_maps_key = "ABQIAAAAvcKz1RRF8lAoiL2aymojbhRnzfmXfmy7N6zpZ9vIX0gKSf2fjxRUsJjvF0H8vlauUDLdU0R4kq4z2g"
     config.use_javascript = false
     config.page_caching = false
     mail_config = (YAML::load( File.open(config.root + 'config/auth_mail.yml') ))
