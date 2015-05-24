@@ -66,7 +66,7 @@ private
       embed_script = "var #{opt[:gmapid]} = google_map_by_adr_js( '#{opt[:gmapid]}', " +
                        "'#{opt[:address]}',#{opt[:zoom]} );"
     end                                                  
-    content_tag( :div, "",
+    content_tag( :div, "may have to refresh the page to show",
                  { :id => opt[:gmapid],
                    :style => div_style } ) + "\n" +
     content_tag( :script, embed_script, { :type=>"text/javascript" } ) + "\n"

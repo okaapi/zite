@@ -190,6 +190,8 @@ class Page < ActiveRecord::Base
         when 'pin'
           "<div class=\"pindiv panel panel-default\"><div class=\"pinmargin panel-body \">  #{operands}  </div></div>"
         # look for these in the lib folder...
+        when 'ginit'
+          eval 'ginit ' + operands        
         when 'gmap'
           eval 'gmap ' + operands
         when 'gmarker'

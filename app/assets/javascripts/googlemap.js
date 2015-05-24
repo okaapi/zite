@@ -9,18 +9,21 @@ function google_map_js( div, lat, long, zoom ) {
                      new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(10, 10)));  
   return map;
 } 
+
 function google_map_by_adr_js( div, address, zoom ) { 
   var map = new GMap2(document.getElementById(div));
   map.addControl(new GSmallMapControl(),
                  new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(10, 10)));
   var geocoder = new GClientGeocoder();        
   geocoder.getLatLng( address,
+    alert(address);
     function(pnt) { 
       if (!pnt) { alert( address + " not found" ); }
       else { map.setCenter(pnt,zoom); }
       } );  
   return map;  
 } 
+
 function google_map_icon_add_js( map, point, content, icn, shadow, thumb ) {
   var icon = new GIcon(); 
   if ( icn ) {
@@ -30,7 +33,6 @@ function google_map_icon_add_js( map, point, content, icn, shadow, thumb ) {
     icon.infoWindowAnchor = new GPoint(10, 10);
     icon.iconSize = new GSize(20, 20);
     icon.shadowSize = new GSize(50, 30);
-    alert( icn );
   }
   else {       
     icon.shadow = 'http://www.google.com/intl/en_ALL/mapfiles/arrowshadow.png'; 
@@ -88,6 +90,7 @@ function google_map_icon_js( map, lat, long, content, icon, shadow, thumb ) {
   var point = new GLatLng(long,lat); 
   google_map_icon_add_js( map, point, content, icon, shadow, thumb );
 }
+
 function google_map_icon_by_adr_js( map, address, content, icon, shadow, thumb ) { 
   var geocoder = new GClientGeocoder();        
   geocoder.getLatLng( address,
@@ -96,6 +99,7 @@ function google_map_icon_by_adr_js( map, address, content, icon, shadow, thumb )
       else { google_map_icon_add_js( map, point, content, icon, shadow, thumb  ); }
       } );    
 }
+
 function google_map_boundary_add_js( map, points ) {
   var pline = new GPolyline( points ); 
   map.addOverlay(pline);
