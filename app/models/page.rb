@@ -1,7 +1,7 @@
 # this is to include modules from the lib directory...
 
 include Questions
-include GoogleMap
+
 
 class Page < ActiveRecord::Base
   validates :user_id, :presence => true

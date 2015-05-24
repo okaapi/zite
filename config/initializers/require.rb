@@ -1,3 +1,3 @@
 require 'questions'
-require 'gmap'
+
 
