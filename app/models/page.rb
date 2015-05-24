@@ -190,6 +190,7 @@ class Page < ActiveRecord::Base
         when 'pin'
           "<div class=\"pindiv panel panel-default\"><div class=\"pinmargin panel-body \">  #{operands}  </div></div>"
         # look for these in the lib folder...
+=begin
         when 'ginit'
           eval 'ginit ' + operands        
         when 'gmap'
@@ -197,7 +198,8 @@ class Page < ActiveRecord::Base
         when 'gmarker'
           eval 'gmarker ' + operands
         when 'gline'
-          eval 'gline ' + operands       
+          eval 'gline ' + operands
+=end                 
         when 'questions'
           eval 'Questions::questions ' + operands
         else
