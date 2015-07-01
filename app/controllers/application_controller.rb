@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
 	  end 
 	  @current_user = @current_user_session.user 
       UserAction.add_action( @current_user_session.id, controller_name, action_name, params )            
+      @request = request
   end
      
 end

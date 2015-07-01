@@ -58,7 +58,7 @@
     <%= yield %>
     
     <div class="row" >
-      <div class="col-sm-12" style="color: #CFCFCF; margin-top:20px">
+      <div class="col-sm-12" style="color: #0F0F0F; margin-top:20px">
 		  <% if ( @current_user and @current_user.admin? ) %>
 			  <div class="cleardiv" id="version"> <small>
 			    Application <%= controller.controller_name %> / <%= controller.action_name %> 
@@ -71,6 +71,7 @@
 		      <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> 
 			  </small> </div>  	  
 		  <% end %>      
+              <%= debug @request %>
       </div>
     </div>
     
