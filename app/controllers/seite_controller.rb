@@ -8,7 +8,7 @@ class SeiteController < ApplicationController
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
     
-    if !@center and @current_user 
+    if !@center and @current_user and Page.editor_roles.include? @current_user.role
       redirect_to page_update_path( seite: @seiten_name )
     elsif @center and !@current_user
       cached_content = render
@@ -54,7 +54,8 @@ class SeiteController < ApplicationController
     @page.user_id = @current_user.id
     
     # see whether page is editable
-    if ! @page.editable_by_user( @current_user ? @current_user.role : nil, @current_user ? @current_user.id : nil )
+    if ! @page.editable_by_user( @current_user ? @current_user.role : nil, 
+                                 @current_user ? @current_user.id : nil )
       redirect_to root_path, alert: "not authorized..."
       return    
     end
@@ -94,12 +95,12 @@ class SeiteController < ApplicationController
     if params[:file]
           
       # see whether there are any files associated with this
-      @files = Dir.glob( File.join( Rails.root , 'public', 'storage', @pagename, '*' ) )
+      @files = Dir.glob( File.join( Rails.root , 'public/storage', @pagename, '*' ) )
       @files.delete_if {|f| File.directory?(f) }
           
       # sanitize and get file/directory names   
       filename = File.basename(params[:file].original_filename).gsub(/[^\w._-]/,'').downcase
-      directory = File.join( Rails.root , 'public', 'storage', @pagename )
+      directory = File.join( Rails.root , 'public/storage', @pagename )
 
       # does the directory exist?
       if ! Dir.exists? directory
@@ -130,7 +131,7 @@ class SeiteController < ApplicationController
   
   def file_delete
     @pagename = params[:seite]
-    directory = File.join( Rails.root , 'public', 'storage', @pagename )
+    directory = File.join( Rails.root , 'public/storage', @pagename )
     filename = params[:filename]
     path = File.join( directory, filename )
 

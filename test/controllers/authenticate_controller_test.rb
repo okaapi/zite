@@ -3,10 +3,12 @@ require 'test_helper'
 class AuthenticateControllerTest < ActionController::TestCase
 
   setup do
+    Rails.configuration.site = 'testsite'
     @user_wido = users(:wido)
     @user_john = users(:john)    
     @session_wido = user_sessions(:session_one)    
     @not_java = ! Rails.configuration.use_javascript
+    request.host = 'testsite'	    
   end
   
   test "should get who_are_u" do
@@ -144,15 +146,15 @@ class AuthenticateControllerTest < ActionController::TestCase
   end
           
 
-  test "about_urself incorrect credentials" do
+  test "about_urself incorrect credentials - duplicate" do
     if @not_java
-      post :about_urself, username: "john", email: "whatever"
+      post :about_urself, username: "john", email: "john@menhardt.com"
       assert_response :success
       assert_select '.form-horizontal' 
       assert_select '.control-label', /username/           
       assert_select '.control-label', /email/  
     else      
-      xhr :post, :about_urself, username: "john", email: "whatever"
+      xhr :post, :about_urself, username: "john", email: "john@menhardt.com"
       assert_response :success
       assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.form-horizontal' 
@@ -162,8 +164,38 @@ class AuthenticateControllerTest < ActionController::TestCase
     end
     assert_equal assigns(:current_user).errors.count, 2
     assert_equal assigns(:current_user).errors.full_messages[0], "Username has already been taken"
-    assert_equal assigns(:current_user).errors.full_messages[1], "Email not a valid email address"
+    assert_equal assigns(:current_user).errors.full_messages[1], "Email has already been taken"
   end
+  
+  test "about_urself incorrect credentials - bad email" do
+    if @not_java
+      post :about_urself, username: "john17", email: "whatever"
+      assert_response :success
+      assert_select '.form-horizontal' 
+      assert_select '.control-label', /username/           
+      assert_select '.control-label', /email/  
+    else      
+      xhr :post, :about_urself, username: "john17", email: "whatever"
+      assert_response :success
+      assert_select_jquery :html, '#authentication_dialogue_js' do
+        assert_select '.form-horizontal' 
+        assert_select '.control-label', /username/           
+        assert_select '.control-label', /email/                   
+      end         
+    end
+    assert_equal assigns(:current_user).errors.count, 1
+    assert_equal assigns(:current_user).errors.full_messages[0], "Email not a valid email address"
+  end  
+  
+  test "about_urself dublicate credentials other site" do
+    request.host = 'othersite'
+    if @not_java
+      post :about_urself, username: "john", email: "john@menhardt.com"
+    else      
+      xhr :post, :about_urself, username: "john", email: "john@menhardt.com"       
+    end
+    assert_equal assigns(:current_user).errors.count, 0
+  end  
   
   test "from_mail get without token" do    
     get :from_mail, user_token: 'bla'

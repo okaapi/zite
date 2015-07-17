@@ -5,7 +5,8 @@ module Auth
 class UserTest < ActiveSupport::TestCase
   
   setup do
-    @wido = users(:wido)
+    Rails.configuration.site = 'testsite'
+    @wido = users(:wido)    
   end
   
   test 'find user by primary email' do

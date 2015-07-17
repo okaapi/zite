@@ -4,9 +4,11 @@ module Admin
 
 	class UserActionsControllerTest < ActionController::TestCase
 	  setup do
+	    Rails.configuration.site = 'testsite'
 	    @user_action = user_actions(:action_one)
 	    @user_session = user_sessions(:session_one)
 	    admin_login_4_test
+	    request.host = 'testsite'	    
 	  end
 	 
 	  test "should get index" do

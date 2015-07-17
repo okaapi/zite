@@ -3,6 +3,7 @@ require 'test_helper'
 class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   
   setup do
+    Rails.configuration.site = 'testsite'
     @user_arnaud = users(:arnaud)
     @wido = users(:admin)
     # need to change <#= #> to <%= %>
@@ -14,9 +15,24 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
       end  
     end
     @not_java = ! Rails.configuration.use_javascript
-          
+    # not sure why request has to be called first, but it won't work without
+    request
+    open_session.host! "testsite"
   end
 
+  test "different site" do
+
+    open_session.host! "othersite"
+    get_via_redirect "/"    
+    assert_response :success
+    assert_select '.center', ''      
+    
+    get_via_redirect "/talks"
+    assert_response :success
+    assert_select '.center', 'Talks On Othersite'  
+        
+  end
+  
   test "viewing a page not logged in" do
      
     # this for caching

@@ -3,8 +3,10 @@ require 'test_helper'
 class SeiteControllerTest < ActionController::TestCase
   
   setup do 
+    Rails.configuration.site = 'testsite'
     @page = pages(:one)
     @wido = users(:admin)
+    request.host = 'testsite'	    
   end
   
   test "should get index" do

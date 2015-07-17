@@ -3,7 +3,7 @@
 include Questions
 
 
-class Page < ActiveRecord::Base
+class Page < ZiteActiveRecord
   validates :user_id, :presence => true
   validate :id_valid  
   before_create :name_downcase
@@ -75,7 +75,9 @@ class Page < ActiveRecord::Base
   def self.editabilities
     ['admin', 'self', 'editor']
   end
-  
+  def self.editor_roles
+    ['admin', 'editor']
+  end
   def editable_by_user( role, user_id = nil )
   
     case self.editability

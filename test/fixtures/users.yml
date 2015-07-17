@@ -7,7 +7,8 @@ admin:
   role: admin
   token: w1w2
   active: confirmed
-  
+  site: testsite
+    
 editor:
   username: wido_editor
   email: wido_editor@menhardt.com
@@ -15,7 +16,8 @@ editor:
   role: editor
   token: w1w2
   active: confirmed  
-  
+  site: testsite
+    
 user:
   username: wido_user
   email: wido_user@menhardt.com
@@ -23,7 +25,8 @@ user:
   role: user
   token: w1w2
   active: confirmed  
-  
+  site: testsite
+    
 wido:
   username: wido
   email: wido@menhardt.com
@@ -32,6 +35,7 @@ wido:
   role: admin
   token: w1w2
   active: confirmed
+  site: testsite
   
 john:
   username: john
@@ -40,16 +44,18 @@ john:
   role: user
   active: not confirmed
   token: john_token
-
+  site: testsite
+  
 arnaud:
   username: arnaud
   email: arnaud@gmail.com
   password_digest: <%= BCrypt::Password.create('secret') %>
   active: confirmed
-  
+  site: testsite
+    
 francois:
   username: francois
   email: francoise@gmail.com
   password_digest: <%= BCrypt::Password.create('secret') %>
   token: francois_token
-
+  site: testsite

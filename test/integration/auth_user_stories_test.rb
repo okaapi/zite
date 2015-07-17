@@ -3,21 +3,24 @@ require 'test_helper'
 class AuthUserStoriesTest < ActionDispatch::IntegrationTest
   
   setup do
+    # need this so the users fixtures can be loaded
+    Rails.configuration.site = 'testsite'
     @user_arnaud = users(:arnaud)                    
     @user_francois = users(:francois)    
     @not_java = ! Rails.configuration.use_javascript
+    # not sure why request has to be called first, but it won't work without
+    request
+    open_session.host! "testsite"
   end
   
- 
   #
   #   these tests are all set up to NOT examine internals of the app (session 
-  #   object, models etc...  only testing flash, notice, and HTML
+  #   object, models etc...  only testing flash, notice, and HTML)
   #
   test "root path" do
     assert_equal root_path, '/'
-
   end
-  
+
   #
   #  user logs in and out with correct credentials
   #  (error handling is tested in the controller)
@@ -41,7 +44,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
         assert_select '.control-label', /username\/email/ 
       end
     end
-        
+
     # enters username and gets password entry field with username legend
     if @not_java
       post "/_prove_it", claim: "arnaud"
@@ -82,7 +85,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '#authentication_launchpad', /login/ 
                  
   end
-    
+
   #
   #  user registers, gets an email, and is also logged in
   #  (error handling is tested in the controller)
@@ -158,9 +161,6 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
       
   end
 
-
-
-  
   private
      
     def root_path
@@ -175,6 +175,6 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
         assert @response.body =~ /window.location/  
       end
     end
-    
+
 end
 

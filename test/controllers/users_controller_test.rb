@@ -5,12 +5,15 @@ module Admin
 	class UsersControllerTest < ActionController::TestCase
 	
 	  setup do
+	    # this is required so 'testsite' fixtures get loaded
+	    Rails.configuration.site = 'testsite'
 	    @user = users(:wido)
 	    admin_login_4_test
+	    request.host = 'testsite'	    
 	  end
 	
 	  test "should get index" do
-	    get :index
+	    get :index    
 	    assert_response :success
 	    assert_not_nil assigns(:users)
 	  end
@@ -122,7 +125,7 @@ module Admin
 	    assert_redirected_to users_path    
 	    
 	  end 
-	
+
 	end
 
 end

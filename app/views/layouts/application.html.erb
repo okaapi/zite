@@ -6,6 +6,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <meta name="viewport" content="width=device-width, initial-scale=1">  
   <%= csrf_meta_tags %>
+  <%= favicon_link_tag 'favicon.ico' %>
 </head>
 <body>
   
@@ -63,12 +64,13 @@
 			  <div class="cleardiv" id="version"> <small>
 			    Application <%= controller.controller_name %> / <%= controller.action_name %> 
 			    Ruby <%= RUBY_VERSION%> Rails <%= Rails.version %> <%= Rails.env %> 
-			    user <%= @current_user.username if @current_user %> 
+			    Site <%= Rails.configuration.site %> 
+			    User <%= @current_user.username if @current_user %> 
 		 <br> <br>
 			  </small> </div>
 		  <% else %>
 			  <div class="cleardiv" id="version"> <small>
-		      <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> 
+		      <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> <%= Rails.configuration.site %> <%= Time.now %>
 			  </small> </div>  	  
 		  <% end %>      
       </div>

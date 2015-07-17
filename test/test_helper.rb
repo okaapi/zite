@@ -17,19 +17,18 @@ class ActiveSupport::TestCase
   puts "[ javascript is " + ( Rails.configuration.use_javascript ? "on ]" : "off ]" ) 
   puts "[ caching is " + ( Rails.configuration.page_caching ? "on ]" : "off ]" )   
 
-
-	def admin_login_4_test
-	    @admin = users(:admin)
-	    user_session = UserSession.create( user_id: @admin.id )
-	    user_session.save!
-	    session[:user_session_id] = user_session.id
-	end
-	def login_4_test
-	    @current_user = users(:arnaud)
-	    user_session = UserSession.create( user_id: @current_user.id )
-	    user_session.save!
-	    session[:user_session_id] = user_session.id
-	end
+  def admin_login_4_test
+	@admin = users(:admin)
+	user_session = UserSession.create( user_id: @admin.id )
+	user_session.save!
+	session[:user_session_id] = user_session.id
+  end
+  def login_4_test
+	@current_user = users(:arnaud)
+	user_session = UserSession.create( user_id: @current_user.id )
+	user_session.save!
+	session[:user_session_id] = user_session.id
+  end
 
 end
 

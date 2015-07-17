@@ -1,13 +1,13 @@
 require 'securerandom'
 
-  class User < ActiveRecord::Base
+  class User < ZiteActiveRecord
   
-    validates :username, presence: true, uniqueness: true
-    validates :email, presence: true, uniqueness: true, email: true   
+    validates :username, presence: true, uniqueness: { scope: :site }
+    validates :email, presence: true, uniqueness: { scope: :site }, email: true   
     validates :password, length: { minimum: 3 }
     has_secure_password
     has_many :user_sessions, dependent: :destroy
-  
+    
     def self.find_by_email_or_alternate( email )
       user = User.find_by_email( email )
       if !user 
@@ -20,7 +20,7 @@ require 'securerandom'
       User.find_by_email( claim ) || User.find_by_username( claim )
     end
   
-    def self.new_unconfirmed( email, username )
+    def self. new_unconfirmed( email, username )
       user = User.new( email: email, username: username )
       user.password = user.password_confirmation = SecureRandom.urlsafe_base64(8)
       user.token = SecureRandom.urlsafe_base64(16)

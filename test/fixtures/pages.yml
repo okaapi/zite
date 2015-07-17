@@ -5,55 +5,65 @@ one_oldest:
   content: "<h1> Oldest Index Page </h1>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   updated_at: <%= (Time.now - 2000000) %>  
+  site: testsite
 
 one_older:
   name: index
   content: "<h1> Old Index Page </h1>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   updated_at: <%= Time.now - 1000000 %>
+  site: testsite
  
 one:
   name: index
   content: "<h1> Index Page </h1>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   updated_at: <%= Time.now %>
+  site: testsite
    
 one_header_older:
   name: index_header
   content: "OLD INDEX HEADER" 
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
   updated_at: <%= Time.now - 2000000 %>
+  site: testsite
 
 one_header:
   name: index_header
   content: "INDEX HEADER"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
   updated_at: <%= Time.now - 1000000 %>
+  site: testsite
     
 one_menu:
   name: index_menu
   content: "INDEX MENU"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
+  site: testsite
   
 one_left:
   name: index_left
   content: "INDEX LEFT"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  site: testsite
   
 one_menu:
   name: index_menu
   content: "INDEX MENU"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
-  
+  site: testsite  
+
 one_right:
   name: index_right
   content: "INDEX RIGHT"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
+  site: testsite
   
 one_footer:
   name: index_footer
   content: "INDEX FOOTER"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>    
+  site: testsite
       
 two:
   name: talks
@@ -62,125 +72,152 @@ two:
   visibility: 'admin'
   editability: 'admin'
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
+  site: testsite
+
+twob:
+  name: talks
+  content: "<h1> Talks On Othersite </h1>"
+  menu: 'false'
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
+  site: othersite
   
 two_left:
   name: talks_left
   content: "talks left"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>     
+  site: testsite
  
 two_books:
   name: talks_books
   content: "<h1> Talks on books </h1>"
   menu: 'false'  
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  site: testsite
   
 two_films:
   name: talks_films
   menu: 'false' 
   content: "<h1> Talks on films </h1>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  site: testsite
   
 two_films_left:
   name: talks_films_left
   content: "Talks on films left"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
+  site: testsite
   
 three:
   name: presentations
   content: "<h1> Presentations </h1>"
   menu: 'false'
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>        
-  
+  site: testsite  
 
 menu:
   name: menu
   content: "GENERIC MENU"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>    
+  site: testsite
   
 footer:
   name: footer
   content: "GENERIC FOOTER"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
+  site: testsite
   
 inclusion:
   name: inclusion
   content: "INCLUSION"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  site: testsite
   
 include:
   name: include
   content: 'INCLUDE <#= include index #>'
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
-
+  site: testsite
   
 imagelink:
   name: imagelink
   content: "IMAGELINK <#= imagelink lifebetterinflipflops.jpg #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
-  
+  site: testsite  
   
 imagelink2:
   name: imagelink2
   content: "IMAGELINK2 <#= imagelink lifebetterinflipflops.jpg, width = 200 #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>    
+  site: testsite
     
 pagelink:
   name: pagelink
   content: "PAGELINK <#= pagelink index #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
+  site: testsite
   
 pagelink2:
   name: pagelink2
   content: "PAGELINK2 <#= pagelink index, link to index... #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
+  site: testsite
 
 pagelink3:
   name: pagelink3
   content: "PAGELINK3 <#= pagelink index #> SOME TEXT <#= pagelink index, link to index #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
+  site: testsite
   
 admin:
   name: admin
   content: "ADMIN <#= admin  <h1> Admin Heading</h1> to 'admin stuff' #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>  
+  site: testsite
   
 adminlink:
   name: adminlink
   content: "ADMINLINK <#= adminlink admin #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
+  site: testsite
   
 adminlink2:
   name: adminlink2
   content: "ADMINLINK2 <#= adminlink admin, stuff... #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>      
+  site: testsite
     
 editor:
   name: editor
   content: "EDITOR <#= editor  <h1> Editor Heading</h1> to 'editor stuff' #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>    
+  site: testsite
   
 css: 
   name: css
   content: "<PRE></PRE><P>{ color: red }</P><BR />&nbsp;<pre></pre><p></p><br />"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  site: testsite
 
 user:
   name: user
   content: "USER <#= user  <h1> User Heading</h1> to 'user stuff' #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  site: testsite
   
 pin:
   name: pin
   content: 'PIN <#= pin <h3> 4</h3> (!&) <p><a href= "https://pic.g?au m/11 4?a t6AE#slc="https:// #>'
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  site: testsite
 
 nil_page:
   name: nil_page
   content:
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  site: testsite
 
 questions:
   name: questions
   content: "QUESTIONS <#= questions ['green is=', 'blue is=']"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
-
+  site: testsite
