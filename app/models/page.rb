@@ -129,7 +129,8 @@ class Page < ZiteActiveRecord
 	  Dir.mkdir cache_directory
 	end     
     path = File.join( Rails.root , 'public/cache', self.site, self.name ) + '.html'    
-    File.open(path, "w") { |f| f.write( content[0].force_encoding('ISO-8859-1') ) }
+    to_write = content[0] + ' cached'
+    File.open(path, "w") { |f| f.write( to_write.force_encoding('ISO-8859-1') ) }
   end
   
   def uncache
@@ -191,7 +192,7 @@ class Page < ZiteActiveRecord
         when 'imagelink'
           link = operands.split(',')
           link.each {|l| l[0].strip!}
-          linktarget = '/storage/' + self.name + '/' + link[0]
+          linktarget = '/storage/' + self.site + '/' + self.name + '/' + link[0]
           imagespecs = link[1] ? link[1] : ""
           "<a href=\"#{linktarget}\"> <img src=\"#{linktarget}\" #{imagespecs}> </a>" 
         when 'admin', 'editor'
