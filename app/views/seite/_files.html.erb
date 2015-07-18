@@ -1,21 +1,21 @@
 
 
-	  
     <div id="files">
       <p>
       <table class="filetable">
+        <% @files = page.file_list %>
         <% if @files and @files.count > 0 %>
           <tr><td></td><td></td><td>copy this address to insert above </td></tr>
         <% end %>
+     
         <% @files.each do |f| %>
           <tr>
+            <td> <%= link_to if_image( page, f), page.file_target( f) %></td>
+            <td> <%= link_to truncate( file_basename(f), length: 30), page.file_target( f) %> </td>
 
-            <td> <%= link_to if_image(pagename, f), file_target( pagename, f) %></td>
-            <td> <%= link_to truncate( file_basename(f), length: 30), file_target( pagename, f) %> </td>
-
-            <td class="grab_box"> <%= file_grab_target( pagename, f) %> </td>
+            <td class="grab_box"> <%= page.file_target( f) %> </td>
             <td> <%= link_to 'delete', 
-                      file_delete_path( seite: pagename, filename: file_basename(f) ),
+                      file_delete_path( seite: page.name, filename: file_basename(f) ),
                       method: :post,
                       data: { confirm: 'Are you sure?' } %> &nbsp; </td>            
             <td> <%= file_encoding( f ) %> </td>
@@ -25,7 +25,8 @@
       </p>
     
 
-      <%= form_tag file_upload_path( seite: pagename ), multipart: true do %>
+
+      <%= form_tag file_upload_path( seite: page.name ), multipart: true do %>
         <p> 
           <%= file_field_tag :file, class: 'btn  btn-default' %>
           <p></p>

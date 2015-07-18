@@ -113,13 +113,27 @@ class Page < ZiteActiveRecord
     
   end  
   
+  def file_list
+    files = Dir.glob( File.join( Rails.root , 'public', 'storage', self.site, self.name, '*' ) )
+    files.delete_if {|f| File.directory?(f) }
+    return files 
+  end
+  
+  def file_target( f )
+    File.join( '/storage', self.site, self.name, File.basename( f ) ).force_encoding("ASCII-8BIT") 
+  end
+  
   def cache( content )
-    path = File.join( Rails.root , 'public', self.name ) + '.html'    
+    cache_directory = File.join( Rails.root , 'public/cache', self.site )    
+	if ! Dir.exists? cache_directory
+	  Dir.mkdir cache_directory
+	end     
+    path = File.join( Rails.root , 'public/cache', self.site, self.name ) + '.html'    
     File.open(path, "w") { |f| f.write( content[0].force_encoding('ISO-8859-1') ) }
   end
   
   def uncache
-    path = File.join( Rails.root , 'public', self.name ) + '.html'  
+    path = File.join( Rails.root , 'public/cache', self.site, self.name ) + '.html'  
     if File.exists? path
       File.delete( path )
     end

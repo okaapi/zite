@@ -26,4 +26,4 @@ Gemfile.lock
 /public/storage
 /public/oldweb
 /public/assets
-/public/save
+/public/cache

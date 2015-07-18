@@ -2,7 +2,7 @@
 
 admin:
   username: wido_admin
-  email: wido_admin@menhardt.com
+  email: wido_admin@mmm.com
   password_digest: <%= BCrypt::Password.create('secret') %>
   role: admin
   token: w1w2
@@ -11,7 +11,7 @@ admin:
     
 editor:
   username: wido_editor
-  email: wido_editor@menhardt.com
+  email: wido_editor@mmm.com
   password_digest: <%= BCrypt::Password.create('secret') %>
   role: editor
   token: w1w2
@@ -20,7 +20,7 @@ editor:
     
 user:
   username: wido_user
-  email: wido_user@menhardt.com
+  email: wido_user@mmm.com
   password_digest: <%= BCrypt::Password.create('secret') %>
   role: user
   token: w1w2
@@ -29,8 +29,8 @@ user:
     
 wido:
   username: wido
-  email: wido@menhardt.com
-  alternate_email: wmenhardt@beckman.com
+  email: wido@mmm.com
+  alternate_email: wmenhardt@bbb.com
   password_digest: <%= BCrypt::Password.create('secret') %>
   role: admin
   token: w1w2
@@ -39,7 +39,7 @@ wido:
   
 john:
   username: john
-  email: john@menhardt.com
+  email: john@mmm.com
   password_digest: <%= BCrypt::Password.create('secret') %>
   role: user
   active: not confirmed

@@ -30,14 +30,23 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     get_via_redirect "/talks"
     assert_response :success
     assert_select '.center', 'Talks On Othersite'  
-        
+
+    if Rails.configuration.page_caching
+      path = File.join( Rails.root , 'public/cache/othersite' )  
+      assert File.exists? ( path  + '/talks.html' )  
+      File.delete( path  + '/talks.html'   )
+      Dir.delete( path )
+    end
+            
   end
   
   test "viewing a page not logged in" do
      
     # this for caching
-    path = File.join( Rails.root , 'public', 'index' ) + '.html'    
-    File.delete( path ) if File.exists? path
+    if Rails.configuration.page_caching
+      path = File.join( Rails.root , 'public/cache/testsite', 'index' ) + '.html'    
+      File.delete( path ) if File.exists? path
+    end
 
     get_via_redirect "/"
     assert_response :success
@@ -57,18 +66,18 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select '.center', 'protected content...'
     if Rails.configuration.page_caching
-      path = File.join( Rails.root , 'public', 'talks' ) + '.html'    
-      assert File.exists? path
-      File.delete( path )
+      path = File.join( Rails.root , 'public/cache/testsite' )  
+      assert File.exists? ( path  + '/talks.html' )  
+      File.delete( path  + '/talks.html'   )
+      Dir.delete( path )
     end
     
   end
 
-  #
   test "viewing a page logged in" do
   
     # for caching
-    path = File.join( Rails.root , 'public', 'index' ) + '.html'   
+    path = File.join( Rails.root , 'public/cache/testsite', 'index' ) + '.html'   
     if Rails.configuration.page_caching 
       File.open(path, "w") do |f|
         f.write( "this index.html should get deleted when logging in" )
@@ -104,7 +113,6 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
      
   end
   
-  #
   test "viewing a page logged in as admin" do
   
     # enters correct password and gets logged in and session is created
@@ -131,5 +139,5 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '.center', 'Talks'
      
   end
-  
+
 end

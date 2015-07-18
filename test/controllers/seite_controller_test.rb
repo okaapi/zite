@@ -13,7 +13,7 @@ class SeiteControllerTest < ActionController::TestCase
     get :index
     assert_response :success
   end
-
+  
   test "should get index logged in" do
     admin_login_4_test
     get :index, seite: 'some_page_that_does_not_exist'
@@ -44,7 +44,40 @@ class SeiteControllerTest < ActionController::TestCase
     get :pageupdate, seite: 'index'
     assert_response :success
   end
+
+  test "should get file list" do
+  
+    # check site directory does exist
+    site_path = File.join( Rails.root, 'public/storage/testsite')       
+    if ! Dir.exists? site_path
+      Dir.mkdir site_path
+    end
+    assert Dir.exists? site_path
     
+    # check directory does exist
+    path = File.join( Rails.root, 'public/storage/testsite/filetest')       
+    if ! Dir.exists? path
+      Dir.mkdir path
+    end
+    assert Dir.exists? path    
+    
+    # write a file
+    File.open((path + '/testfile'), "wb") { |f| f.write('filetest testfile seite_controller_test.rb') }
+    assert File.exists? path + '/testfile'  
+        
+    admin_login_4_test
+    get :pageupdate, seite: 'filetest'
+    assert_response :success
+    assert_select '.filetable'
+    assert_select "tr", 2
+    assert_select 'a', /testfile/ 
+    
+    File.delete path + '/testfile'  
+    Dir.delete path
+    assert_not Dir.exists? path    
+    
+  end    
+
   test "should get pageupdate for index for previous version logged in" do
     pages = Page.where( name: 'index').order( :updated_at )
     assert_equal pages.count, 3
@@ -98,9 +131,9 @@ class SeiteControllerTest < ActionController::TestCase
   end  
   
   test "upload and delete" do
-    
+           
     # first check directory does not exit
-    path = File.join( Rails.root, 'public/storage/test')
+    path = File.join( Rails.root, 'public/storage/testsite/test')    
     if File.exists? path + '/test.txt'
       File.delete( path + '/test.txt' )
     end    
@@ -109,7 +142,14 @@ class SeiteControllerTest < ActionController::TestCase
       Dir.delete path
     end
     assert_not Dir.exists? path
-     
+
+    # check site directory does not exit
+    site_path = File.join( Rails.root, 'public/storage/testsite')       
+    if Dir.exists? site_path
+      Dir.delete site_path
+    end
+    assert_not Dir.exists? site_path
+         
     # upload the file
     post :file_upload, seite: 'test',
       file: fixture_file_upload('files/test.txt','text/txt')      
@@ -128,5 +168,5 @@ class SeiteControllerTest < ActionController::TestCase
     assert_not File.exists? path + '/test.txt'  
       
   end
-    
+ 
 end

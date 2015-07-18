@@ -17,9 +17,9 @@ module SeiteHelper
   def is_admin( user )
     ( user and user.admin? )
   end
-  def if_image( pagename, f )
+  def if_image( page, f )
     ext = File.extname( f )
-    target = file_target( pagename, f )
+    target = page.file_target( f )
     ext = ext.downcase
     case ext
     when '.jpg', '.gif', '.png', '.ico'
@@ -36,12 +36,5 @@ module SeiteHelper
   def file_basename( f )
     File.basename( f ).force_encoding("ASCII-8BIT") 
   end
-  def file_target( pagename, f )
-    File.join( '/storage', pagename, File.basename( f ) ).force_encoding("ASCII-8BIT") 
-  end
-  def file_grab_target( pagename, f )
-    file_target( pagename, f )
-  end  
-
 
 end

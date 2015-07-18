@@ -61,9 +61,8 @@ class SeiteController < ApplicationController
     end
     
     # see whether there are any files associated with this
-    @files = Dir.glob( File.join( Rails.root , 'public', 'storage', @seiten_name, '*' ) )
-    @files.delete_if {|f| File.directory?(f) }
-
+    @site = @current_user_session.site
+    
     render
 
   end
@@ -88,58 +87,26 @@ class SeiteController < ApplicationController
           
   end
   
-  def file_upload
-    
+  def file_upload    
     @pagename = params[:seite]
+    @site = @current_user_session.site
       
-    if params[:file]
-          
-      # see whether there are any files associated with this
-      @files = Dir.glob( File.join( Rails.root , 'public/storage', @pagename, '*' ) )
-      @files.delete_if {|f| File.directory?(f) }
-          
-      # sanitize and get file/directory names   
-      filename = File.basename(params[:file].original_filename).gsub(/[^\w._-]/,'').downcase
-      directory = File.join( Rails.root , 'public/storage', @pagename )
-
-      # does the directory exist?
-      if ! Dir.exists? directory
-        Dir.mkdir directory
-      end
-    
-      # copy the old file if necessary
-      path = File.join( directory, filename )
-      if File.exists? path
-        newfilename = File.basename(filename, File.extname(filename) ) + '.' +
-             Time.now.to_s.gsub(/\D/,'') + File.extname(filename) 
-        newpath = File.join( directory, newfilename )
-        FileUtils.cp( path, newpath )
-      end
-    
-      # write the new file
-      File.open(path, "wb") { |f| f.write(params[:file].read) }
-    
-      redirect_to page_update_path( seite: @pagename),  notice: "uploaded file"
-      
-    else
-      
-      redirect_to page_update_path( seite: @pagename)
-      
+    if params[:file]          
+      FileUpload.upload( @site, @pagename, params[:file] )    
+      redirect_to page_update_path( seite: @pagename),  notice: "uploaded file"      
+    else      
+      redirect_to page_update_path( seite: @pagename),  notice: "nothing uploaded"   
     end
     
   end
   
   def file_delete
     @pagename = params[:seite]
-    directory = File.join( Rails.root , 'public/storage', @pagename )
-    filename = params[:filename]
-    path = File.join( directory, filename )
-
-    if File.exists? path
-      File.delete( path )
-    end
-    
+    @site = @current_user_session.site
+        
+    FileUpload.delete( @site, @pagename, params[:filename] )    
     redirect_to page_update_path( seite: @pagename),  notice: "file deleted"
+    
   end
   
   private

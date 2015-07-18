@@ -269,19 +269,27 @@ class PageTest < ActiveSupport::TestCase
   
   test 'cache a page and delete it' do
     
-    strange = 'asdjk_lwqfij_orieg'
-    page = Page.new( name: strange, user_id: @wido.id )
-    page.save!
+    if Rails.configuration.page_caching
+      cachedir = File.join( Rails.root , 'public', 'cache' )    
+      if !Dir.exists? cachedir
+        Dir.mkdir cachedir
+      end
+      assert Dir.exists? cachedir
     
-    # cache a page... first check it doesn't exist
-    path = File.join( Rails.root , 'public', strange ) + '.html'    
-    assert_not File.exists?(path), "cached file is present in /public"
-    page.cache( 'this is a cached test page' )
-    assert File.exists?(path)
+      strange = 'asdjk_lwqfij_orieg'
+      page = Page.new( name: strange, user_id: @wido.id )
+      page.save!
     
-    # now delete cached files
-    Page.uncache_all
-    assert_not File.exists?(path)
+      # cache a page... first check it doesn't exist
+      path = File.join( Rails.root , 'public/cache/testsite', strange ) + '.html'    
+      assert_not File.exists?(path), "cached file is present in /public/cache/testsite"
+      page.cache( 'this is a cached test page' )
+      assert File.exists?(path)
+    
+      # now delete cached files
+      Page.uncache_all
+      assert_not File.exists?(path)
+    end
     
   end
 

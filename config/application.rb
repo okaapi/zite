@@ -23,7 +23,7 @@ module Zite
     config.site = 'confighost'
     config.google_maps_key = "ABQIAAAAvcKz1RRF8lAoiL2aymojbhRnzfmXfmy7N6zpZ9vIX0gKSf2fjxRUsJjvF0H8vlauUDLdU0R4kq4z2g"
     config.use_javascript = false
-    config.page_caching = false
+    config.page_caching = true
     mail_config = (YAML::load( File.open(config.root + 'config/auth_mail.yml') ))
     config.action_mailer.smtp_settings = 
       mail_config["server"].merge(mail_config["credentials"]).symbolize_keys

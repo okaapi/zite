@@ -148,13 +148,13 @@ class AuthenticateControllerTest < ActionController::TestCase
 
   test "about_urself incorrect credentials - duplicate" do
     if @not_java
-      post :about_urself, username: "john", email: "john@menhardt.com"
+      post :about_urself, username: "john", email: "john@mmm.com"
       assert_response :success
       assert_select '.form-horizontal' 
       assert_select '.control-label', /username/           
       assert_select '.control-label', /email/  
     else      
-      xhr :post, :about_urself, username: "john", email: "john@menhardt.com"
+      xhr :post, :about_urself, username: "john", email: "john@mmm.com"
       assert_response :success
       assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.form-horizontal' 
@@ -190,9 +190,9 @@ class AuthenticateControllerTest < ActionController::TestCase
   test "about_urself dublicate credentials other site" do
     request.host = 'othersite'
     if @not_java
-      post :about_urself, username: "john", email: "john@menhardt.com"
+      post :about_urself, username: "john", email: "john@mmm.com"
     else      
-      xhr :post, :about_urself, username: "john", email: "john@menhardt.com"       
+      xhr :post, :about_urself, username: "john", email: "john@mmm.com"       
     end
     assert_equal assigns(:current_user).errors.count, 0
   end  
