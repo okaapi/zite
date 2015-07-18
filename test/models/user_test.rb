@@ -6,6 +6,7 @@ class UserTest < ActiveSupport::TestCase
   
   setup do
     Rails.configuration.site = 'testsite'
+    ZiteActiveRecord.site( 'testsite' )
     @wido = users(:wido)    
   end
   

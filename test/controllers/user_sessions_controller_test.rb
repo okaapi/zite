@@ -3,8 +3,8 @@ require 'test_helper'
 module Admin
 
   class UserSessionsControllerTest < ActionController::TestCase
-    setup do
-	  Rails.configuration.site = 'testsite'    
+    setup do 
+      ZiteActiveRecord.site( 'testsite' )
       @user_session = user_sessions(:session_one)
       admin_login_4_test
 	  request.host = 'testsite'	          

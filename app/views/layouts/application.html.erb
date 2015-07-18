@@ -63,13 +63,13 @@
 			  <div class="cleardiv" id="version"> <small>
 			    Application <%= controller.controller_name %> / <%= controller.action_name %> 
 			    Ruby <%= RUBY_VERSION%> Rails <%= Rails.version %> <%= Rails.env %> 
-			    Site <%= Rails.configuration.site %> 
+			    Site <%= ZiteActiveRecord.site? %> 
 			    User <%= @current_user.username if @current_user %> 
 		 <br> <br>
 			  </small> </div>
 		  <% else %>
 			  <div class="cleardiv" id="version"> <small>
-		      <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> <%= Rails.configuration.site %> <%= Time.now %>
+		      <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> <%= ZiteActiveRecord.site? %> <%= Time.now %>
 			  </small> </div>  	  
 		  <% end %>      
       </div>

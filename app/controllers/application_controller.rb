@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
       # set the site name - this is like a global variable, it will be used
       # in each model (via ZiteActiveRecord)
       #  
-      Rails.configuration.site = request.host
+      ZiteActiveRecord.site( request.host )
       
       #
       #  set the current user session

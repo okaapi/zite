@@ -4,6 +4,7 @@ class PageTest < ActiveSupport::TestCase
   
   setup do
     Rails.configuration.site = 'testsite'  
+    ZiteActiveRecord.site( 'testsite' )
     @wido = User.find_by_username('wido_admin')
     # need to change <#= #> to <%= %> in fixtures
     pages = Page.all

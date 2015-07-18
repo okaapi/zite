@@ -3,7 +3,7 @@ require 'test_helper'
 class AuthenticateControllerTest < ActionController::TestCase
 
   setup do
-    Rails.configuration.site = 'testsite'
+    ZiteActiveRecord.site( 'testsite' )
     @user_wido = users(:wido)
     @user_john = users(:john)    
     @session_wido = user_sessions(:session_one)    

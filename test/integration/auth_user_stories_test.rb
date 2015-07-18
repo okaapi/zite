@@ -4,7 +4,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
   
   setup do
     # need this so the users fixtures can be loaded
-    Rails.configuration.site = 'testsite'
+    ZiteActiveRecord.site( 'testsite' )
     @user_arnaud = users(:arnaud)                    
     @user_francois = users(:francois)    
     @not_java = ! Rails.configuration.use_javascript

@@ -6,7 +6,7 @@ module Admin
 	
 	  setup do
 	    # this is required so 'testsite' fixtures get loaded
-	    Rails.configuration.site = 'testsite'
+	    ZiteActiveRecord.site( 'testsite' )
 	    @user = users(:wido)
 	    admin_login_4_test
 	    request.host = 'testsite'	    

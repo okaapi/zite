@@ -3,7 +3,7 @@ require 'test_helper'
 class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   
   setup do
-    Rails.configuration.site = 'testsite'
+    ZiteActiveRecord.site( 'testsite' )
     @user_arnaud = users(:arnaud)
     @wido = users(:admin)
     # need to change <#= #> to <%= %>

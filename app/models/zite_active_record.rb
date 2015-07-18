@@ -1,13 +1,20 @@
 class ZiteActiveRecord < ActiveRecord::Base
 
     self.abstract_class = true
-  
+    @@site = nil
+
+    def self.site( s )
+      @@site = s
+    end
+    def self.site?
+      @@site
+    end    
     def initialize(*args)
       super
-      self.site = Rails.configuration.site
+      self.site = @@site
     end
     def self.default_scope
-      where site: Rails.configuration.site
+      where site: @@site
     end
  
  end
