@@ -4,11 +4,11 @@ module Admin
 
 	class UserActionsControllerTest < ActionController::TestCase
 	  setup do
-	    ZiteActiveRecord.site( 'testsite' )
+	    ZiteActiveRecord.site( 'testsite45A67' )
 	    @user_action = user_actions(:action_one)
 	    @user_session = user_sessions(:session_one)
 	    admin_login_4_test
-	    request.host = 'testsite'	    
+	    request.host = 'testsite45A67'	    
 	  end
 	 
 	  test "should get index" do

@@ -4,11 +4,11 @@ module Admin
 
 	class PagesControllerTest < ActionController::TestCase
 	  setup do
-	    Rails.configuration.site = 'testsite'  
+	    Rails.configuration.site = 'testsite45A67'  
 	    @page = pages(:one)
 	    @wido = users(:wido)
 	    admin_login_4_test    
-	    request.host = 'testsite'	    
+	    request.host = 'testsite45A67'	    
 	  end
 	
 	  test "should get index" do

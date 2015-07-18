@@ -5,11 +5,11 @@ action_one:
   controller: MyString
   action: MyString
   updated_at: <%= Time.now - 100000 %>
-  site: testsite
+  site: testsite45A67
 
 action_two:
   user_session_id: <%= ActiveRecord::FixtureSet.identify(:session_one) %>
   controller: MyString
   action: MyString
   updated_at: <%= Time.now - 100010 %>
-  site: testsite
+  site: testsite45A67

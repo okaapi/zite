@@ -3,15 +3,19 @@ require 'test_helper'
 class SeiteControllerTest < ActionController::TestCase
   
   setup do 
-    ZiteActiveRecord.site( 'testsite' )
+    ZiteActiveRecord.site( 'testsite45A67' )
     @page = pages(:one)
     @wido = users(:admin)
-    request.host = 'testsite'	    
+    request.host = 'testsite45A67'	    
   end
   
   test "should get index" do
     get :index
     assert_response :success
+            
+    if Rails.configuration.page_caching            
+      delete_cache_directories_with_content
+    end 
   end
   
   test "should get index logged in" do
@@ -48,14 +52,14 @@ class SeiteControllerTest < ActionController::TestCase
   test "should get file list" do
   
     # check site directory does exist
-    site_path = File.join( Rails.root, 'public/storage/testsite')       
+    site_path = File.join( Rails.root, 'public/storage/testsite45A67')       
     if ! Dir.exists? site_path
       Dir.mkdir site_path
     end
     assert Dir.exists? site_path
     
     # check directory does exist
-    path = File.join( Rails.root, 'public/storage/testsite/filetest')       
+    path = File.join( Rails.root, 'public/storage/testsite45A67/filetest')       
     if ! Dir.exists? path
       Dir.mkdir path
     end
@@ -133,7 +137,7 @@ class SeiteControllerTest < ActionController::TestCase
   test "upload and delete" do
            
     # first check directory does not exit
-    path = File.join( Rails.root, 'public/storage/testsite/test')    
+    path = File.join( Rails.root, 'public/storage/testsite45A67/test')    
     if File.exists? path + '/test.txt'
       File.delete( path + '/test.txt' )
     end    
@@ -144,7 +148,7 @@ class SeiteControllerTest < ActionController::TestCase
     assert_not Dir.exists? path
 
     # check site directory does not exit
-    site_path = File.join( Rails.root, 'public/storage/testsite')       
+    site_path = File.join( Rails.root, 'public/storage/testsite45A67')       
     if Dir.exists? site_path
       Dir.delete site_path
     end

@@ -5,11 +5,11 @@ module Admin
 	class UsersControllerTest < ActionController::TestCase
 	
 	  setup do
-	    # this is required so 'testsite' fixtures get loaded
-	    ZiteActiveRecord.site( 'testsite' )
+	    # this is required so 'testsite45A67' fixtures get loaded
+	    ZiteActiveRecord.site( 'testsite45A67' )
 	    @user = users(:wido)
 	    admin_login_4_test
-	    request.host = 'testsite'	    
+	    request.host = 'testsite45A67'	    
 	  end
 	
 	  test "should get index" do

@@ -6,10 +6,10 @@ session_one:
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>
   client: MyClient
   ip: MyString
-  site: testsite  
+  site: testsite45A67  
 
 session_two:
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   client: MyString
   ip: MyString
-  site: testsite  
+  site: testsite45A67  

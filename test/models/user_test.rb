@@ -5,8 +5,8 @@ module Auth
 class UserTest < ActiveSupport::TestCase
   
   setup do
-    Rails.configuration.site = 'testsite'
-    ZiteActiveRecord.site( 'testsite' )
+    Rails.configuration.site = 'testsite45A67'
+    ZiteActiveRecord.site( 'testsite45A67' )
     @wido = users(:wido)    
   end
   

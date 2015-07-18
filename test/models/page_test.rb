@@ -3,8 +3,8 @@ require 'test_helper'
 class PageTest < ActiveSupport::TestCase
   
   setup do
-    Rails.configuration.site = 'testsite'  
-    ZiteActiveRecord.site( 'testsite' )
+    Rails.configuration.site = 'testsite45A67'  
+    ZiteActiveRecord.site( 'testsite45A67' )
     @wido = User.find_by_username('wido_admin')
     # need to change <#= #> to <%= %> in fixtures
     pages = Page.all
@@ -233,11 +233,11 @@ class PageTest < ActiveSupport::TestCase
   test 'imagelink' do
     page = Page.find_by_name( 'imagelink')
     assert_equal page.content, "IMAGELINK <%= imagelink lifebetterinflipflops.jpg %>"
-    assert_equal page.display, "IMAGELINK <a href=\"/storage/imagelink/lifebetterinflipflops.jpg\"> <img src=\"/storage/imagelink/lifebetterinflipflops.jpg\" > </a>"
+    assert_equal page.display, "IMAGELINK <a href=\"/storage/testsite45A67/imagelink/lifebetterinflipflops.jpg\"> <img src=\"/storage/testsite45A67/imagelink/lifebetterinflipflops.jpg\" > </a>"
     
     page = Page.find_by_name( 'imagelink2')
     assert_equal page.content, "IMAGELINK2 <%= imagelink lifebetterinflipflops.jpg, width = 200 %>"
-    assert_equal page.display, "IMAGELINK2 <a href=\"/storage/imagelink2/lifebetterinflipflops.jpg\"> <img src=\"/storage/imagelink2/lifebetterinflipflops.jpg\"  width = 200> </a>"
+    assert_equal page.display, "IMAGELINK2 <a href=\"/storage/testsite45A67/imagelink2/lifebetterinflipflops.jpg\"> <img src=\"/storage/testsite45A67/imagelink2/lifebetterinflipflops.jpg\"  width = 200> </a>"
     
   end
     
@@ -282,14 +282,16 @@ class PageTest < ActiveSupport::TestCase
       page.save!
     
       # cache a page... first check it doesn't exist
-      path = File.join( Rails.root , 'public/cache/testsite', strange ) + '.html'    
-      assert_not File.exists?(path), "cached file is present in /public/cache/testsite"
+      path = File.join( Rails.root , 'public/cache/testsite45A67', strange ) + '.html'    
+      assert_not File.exists?(path), "cached file is present in /public/cache/testsite45A67"
       page.cache( 'this is a cached test page' )
       assert File.exists?(path)
     
       # now delete cached files
       Page.uncache_all
       assert_not File.exists?(path)
+      
+      delete_cache_directories_with_content
     end
     
   end

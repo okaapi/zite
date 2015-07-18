@@ -3,7 +3,7 @@ require 'test_helper'
 class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   
   setup do
-    ZiteActiveRecord.site( 'testsite' )
+    ZiteActiveRecord.site( 'testsite45A67' )
     @user_arnaud = users(:arnaud)
     @wido = users(:admin)
     # need to change <#= #> to <%= %>
@@ -17,12 +17,12 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     @not_java = ! Rails.configuration.use_javascript
     # not sure why request has to be called first, but it won't work without
     request
-    open_session.host! "testsite"
+    open_session.host! "testsite45A67"
   end
 
   test "different site" do
 
-    open_session.host! "othersite"
+    open_session.host! "othersite45A67"
     get_via_redirect "/"    
     assert_response :success
     assert_select '.center', ''      
@@ -32,10 +32,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '.center', 'Talks On Othersite'  
 
     if Rails.configuration.page_caching
-      path = File.join( Rails.root , 'public/cache/othersite' )  
-      assert File.exists? ( path  + '/talks.html' )  
-      File.delete( path  + '/talks.html'   )
-      Dir.delete( path )
+      delete_cache_directories_with_content
     end
             
   end
@@ -44,7 +41,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
      
     # this for caching
     if Rails.configuration.page_caching
-      path = File.join( Rails.root , 'public/cache/testsite', 'index' ) + '.html'    
+      path = File.join( Rails.root , 'public/cache/testsite45A67', 'index' ) + '.html'    
       File.delete( path ) if File.exists? path
     end
 
@@ -65,20 +62,19 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     get_via_redirect "/talks"
     assert_response :success
     assert_select '.center', 'protected content...'
+    
     if Rails.configuration.page_caching
-      path = File.join( Rails.root , 'public/cache/testsite' )  
-      assert File.exists? ( path  + '/talks.html' )  
-      File.delete( path  + '/talks.html'   )
-      Dir.delete( path )
+      delete_cache_directories_with_content
     end
     
   end
 
   test "viewing a page logged in" do
   
-    # for caching
-    path = File.join( Rails.root , 'public/cache/testsite', 'index' ) + '.html'   
+    # for caching 
     if Rails.configuration.page_caching 
+      make_cache_directories( 'testsite45A67' )     
+      path = File.join( Rails.root , 'public/cache/testsite45A67', 'index' ) + '.html'        
       File.open(path, "w") do |f|
         f.write( "this index.html should get deleted when logging in" )
       end
@@ -110,6 +106,10 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     get "/talks"
     assert_response :success
     assert_select '.center', 'protected content...'
+    
+    if Rails.configuration.page_caching
+      delete_cache_directories_with_content
+    end
      
   end
   

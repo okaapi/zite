@@ -4,13 +4,13 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
   
   setup do
     # need this so the users fixtures can be loaded
-    ZiteActiveRecord.site( 'testsite' )
+    ZiteActiveRecord.site( 'testsite45A67' )
     @user_arnaud = users(:arnaud)                    
     @user_francois = users(:francois)    
     @not_java = ! Rails.configuration.use_javascript
     # not sure why request has to be called first, but it won't work without
     request
-    open_session.host! "testsite"
+    open_session.host! "testsite45A67"
   end
   
   #

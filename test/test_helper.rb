@@ -1,4 +1,5 @@
 require 'bcrypt'
+require 'fileutils'
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
@@ -28,6 +29,22 @@ class ActiveSupport::TestCase
 	user_session = UserSession.create( user_id: @current_user.id )
 	user_session.save!
 	session[:user_session_id] = user_session.id
+  end
+  def make_cache_directories( site )
+    cachedir = File.join( Rails.root , 'public', 'cache' )    
+    if !Dir.exists? cachedir
+      Dir.mkdir cachedir
+    end
+    if site    
+      cache_directory = File.join( Rails.root , 'public/cache', site )    
+	  if ! Dir.exists? cache_directory
+	    Dir.mkdir cache_directory
+	  end  
+	end  
+  end
+  def delete_cache_directories_with_content
+    FileUtils.rm_rf( File.join( Rails.root , 'public/cache/othersite45A67' )  )
+    FileUtils.rm_rf( File.join( Rails.root , 'public/cache/testsite45A67' )  )
   end
 
 end

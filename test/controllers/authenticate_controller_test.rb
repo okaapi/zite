@@ -3,12 +3,12 @@ require 'test_helper'
 class AuthenticateControllerTest < ActionController::TestCase
 
   setup do
-    ZiteActiveRecord.site( 'testsite' )
+    ZiteActiveRecord.site( 'testsite45A67' )
     @user_wido = users(:wido)
     @user_john = users(:john)    
     @session_wido = user_sessions(:session_one)    
     @not_java = ! Rails.configuration.use_javascript
-    request.host = 'testsite'	    
+    request.host = 'testsite45A67'	    
   end
   
   test "should get who_are_u" do
@@ -188,7 +188,7 @@ class AuthenticateControllerTest < ActionController::TestCase
   end  
   
   test "about_urself dublicate credentials other site" do
-    request.host = 'othersite'
+    request.host = 'othersite45A67'
     if @not_java
       post :about_urself, username: "john", email: "john@mmm.com"
     else      
