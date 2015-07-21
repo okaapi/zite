@@ -9,7 +9,8 @@
   
   <% if @page.updated_at %>
     <small> Last edited <%= prettytime( @page.updated_at ) %> 
-    <%= ( 'by ' + @lastuser.username ) %>: page.user_id <%= @page.user_id %>
+    <%= ( 'by ' + ( @lastuser ? @lastuser.username : 'a stranger' ) ) %>: 
+       page.user_id <%= @page.user_id %>
     </small>
   <% else %>
     Enter HTML here:

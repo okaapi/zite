@@ -50,7 +50,7 @@ class SeiteController < ApplicationController
       @page = @pages.first
     end
     # remember last editor, and set this page to current editor
-    @lastuser = User.find( @page.user_id ) if @page.user_id
+    @lastuser = User.where( id: @page.user_id ).first if @page.user_id
     @page.user_id = @current_user.id
     
     # see whether page is editable
