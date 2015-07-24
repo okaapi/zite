@@ -18,8 +18,12 @@ class ApplicationController < ActionController::Base
       # set the site name - this is like a global variable, it will be used
       # in each model (via ZiteActiveRecord)
       #  
-      ZiteActiveRecord.site( request.host )
-      
+      if ( host = SiteMap.find_by_external( request.host ) )
+        ZiteActiveRecord.site( host.internal )
+      else 
+        ZiteActiveRecord.site( request.host )
+      end
+
       #
       #  set the current user session
       #
@@ -29,9 +33,8 @@ class ApplicationController < ActionController::Base
 	                                                               request.env['HTTP_USER_AGENT'])
 	    session[:user_session_id] = @current_user_session.id                                                                           
 	  end 
-	  if @current_user_session.site != request.host
-	    puts "name mismatch #{request.host} #{@current_user_session.site}"
-	    #redirect_to '/', alert: "name mismatch #{@current_user_session.site} #{request.host}"
+	  if @current_user_session.site != ZiteActiveRecord.site?
+	    redirect_to '/', alert: "name mismatch #{@current_user_session.site} #{request.host}"
 	  end
 	  
 	  #

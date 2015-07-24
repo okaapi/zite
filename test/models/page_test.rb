@@ -3,7 +3,6 @@ require 'test_helper'
 class PageTest < ActiveSupport::TestCase
   
   setup do
-    Rails.configuration.site = 'testsite45A67'  
     ZiteActiveRecord.site( 'testsite45A67' )
     @wido = User.find_by_username('wido_admin')
     # need to change <#= #> to <%= %> in fixtures

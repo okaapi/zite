@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>External:</strong>
+  <%= @site_map.external %>
+</p>
+
+<p>
+  <strong>Internal:</strong>
+  <%= @site_map.internal %>
+</p>
+
+<p>
+  <strong>Aux:</strong>
+  <%= @site_map.aux %>
+</p>
+
+<%= link_to 'Edit', edit_site_map_path(@site_map) %> |
+<%= link_to 'Back', site_maps_path %>

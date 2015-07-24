@@ -6,9 +6,9 @@ class AuthenticateControllerTest < ActionController::TestCase
     ZiteActiveRecord.site( 'testsite45A67' )
     @user_wido = users(:wido)
     @user_john = users(:john)    
-    @session_wido = user_sessions(:session_one)    
+    @session_wido = user_sessions(:session_one)   
     @not_java = ! Rails.configuration.use_javascript
-    request.host = 'testsite45A67'	    
+    request.host = 'testhost45A67'	    
   end
   
   test "should get who_are_u" do
@@ -28,7 +28,7 @@ class AuthenticateControllerTest < ActionController::TestCase
     end
   end
   
- 
+
   test "should post prove_it_with_user_name" do
     if @not_java
       post :prove_it, claim: "some weird name"
@@ -46,8 +46,6 @@ class AuthenticateControllerTest < ActionController::TestCase
     assert_equal @controller.session[:password_retries], 0  
   end
   
-
-    
   test "prove_it with correct password" do
     @controller.session[:password_retries] = 0
     if @not_java  
@@ -61,7 +59,6 @@ class AuthenticateControllerTest < ActionController::TestCase
     assert_equal @controller.session[:user_session_id], UserSession.last.id   
   end
   
-
   test "prove_it with incorrect password" do
     @controller.session[:password_retries] = 0
     if @not_java
@@ -82,7 +79,6 @@ class AuthenticateControllerTest < ActionController::TestCase
     assert_equal @controller.session[:password_retries], 1
   end  
   
-
   test "prove_it with incorrect password too often" do
     @controller.session[:password_retries] = 3
     if @not_java

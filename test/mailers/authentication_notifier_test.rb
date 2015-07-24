@@ -2,6 +2,11 @@ require 'test_helper'
 
 class AuthenticationNotifierTest < ActionMailer::TestCase
   
+
+  setup do
+    ZiteActiveRecord.site( 'testsite45A67' )  	    
+  end
+	  
   test "registration" do
     @current_user = users( :john )
     @request = ActionController::TestRequest.new

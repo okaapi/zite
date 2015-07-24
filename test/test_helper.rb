@@ -46,6 +46,9 @@ class ActiveSupport::TestCase
     FileUtils.rm_rf( File.join( Rails.root , 'public/cache/othersite45A67' )  )
     FileUtils.rm_rf( File.join( Rails.root , 'public/cache/testsite45A67' )  )
   end
-
+  def delete_storage_directories_with_content
+    FileUtils.rm_rf( File.join( Rails.root , 'public/storage/testsite45A67' )  )
+  end
+  
 end
 

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-    
+   
   # these are the actions related to authentication
   get "_who_are_u" => "authenticate#who_are_u", as: 'who_are_u'
   post "_prove_it" => "authenticate#prove_it", as: 'prove_it'
@@ -14,7 +14,8 @@ Rails.application.routes.draw do
     resources :users
     resources :user_actions
     resources :user_sessions  
-    resources :pages    
+    resources :pages 
+    resources :site_maps   
   end
   
   # these are the actual routes for editing

@@ -10,7 +10,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     @not_java = ! Rails.configuration.use_javascript
     # not sure why request has to be called first, but it won't work without
     request
-    open_session.host! "testsite45A67"
+    open_session.host! "testhost45A67"
   end
   
   #

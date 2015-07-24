@@ -1,0 +1,29 @@
+<%= form_for(@site_map) do |f| %>
+  <% if @site_map.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@site_map.errors.count, "error") %> prohibited this site_map from being saved:</h2>
+
+      <ul>
+      <% @site_map.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :external %><br>
+    <%= f.text_field :external %>
+  </div>
+  <div class="field">
+    <%= f.label :internal %><br>
+    <%= f.text_field :internal %>
+  </div>
+  <div class="field">
+    <%= f.label :aux %><br>
+    <%= f.text_field :aux %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

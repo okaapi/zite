@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  external: testhost45A67
+  internal: testsite45A67
+  aux: MyString
+
+two:
+  external: MyString
+  internal: MyString
+

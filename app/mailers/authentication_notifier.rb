@@ -7,7 +7,8 @@ require "singleton"
     self.smtp_settings = mail_config["server"].merge(mail_config["credentials"]).symbolize_keys
       
     default from: smtp_settings[:sender_email]
-    
+
+	      
     def registration( user, request )
       @current_user = user
       @path = ur_secrets_path( request, @current_user.token )

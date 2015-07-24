@@ -4,11 +4,11 @@ module Admin
 
 	class PagesControllerTest < ActionController::TestCase
 	  setup do
-	    Rails.configuration.site = 'testsite45A67'  
+	    ZiteActiveRecord.site( 'testsite45A67' ) 
 	    @page = pages(:one)
 	    @wido = users(:wido)
 	    admin_login_4_test    
-	    request.host = 'testsite45A67'	    
+	    request.host = 'testhost45A67'	    
 	  end
 	
 	  test "should get index" do
@@ -36,8 +36,9 @@ module Admin
 	    end
 	
 	    assert_redirected_to page_path(assigns(:page))
+	    
 	  end
-	
+
 	  test "should not create page without user ID" do
 	    assert_no_difference('Page.count') do
 	      post :create, page: { content: @page.content, 
@@ -71,6 +72,7 @@ module Admin
 	
 	    assert_redirected_to pages_path
 	  end
+	  
 	end
 
 end

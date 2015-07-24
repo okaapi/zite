@@ -45,8 +45,7 @@
         else
           return nil
         end
-      rescue ActiveRecord::RecordNotFound
-        puts "not found"      
+      rescue ActiveRecord::RecordNotFound   
         return nil
       end
             

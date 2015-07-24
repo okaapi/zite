@@ -7,7 +7,7 @@ module Admin
       ZiteActiveRecord.site( 'testsite45A67' )
       @user_session = user_sessions(:session_one)
       admin_login_4_test
-	  request.host = 'testsite45A67'	          
+	  request.host = 'testhost45A67'	          
     end
   
     test "should get index" do

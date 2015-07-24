@@ -6,7 +6,7 @@ class SeiteControllerTest < ActionController::TestCase
     ZiteActiveRecord.site( 'testsite45A67' )
     @page = pages(:one)
     @wido = users(:admin)
-    request.host = 'testsite45A67'	    
+    request.host = 'testhost45A67'	    
   end
   
   test "should get index" do
@@ -170,6 +170,8 @@ class SeiteControllerTest < ActionController::TestCase
     # delete the file
     post :file_delete, seite: 'test', filename: 'test.txt'
     assert_not File.exists? path + '/test.txt'  
+    
+    delete_storage_directories_with_content
       
   end
  
