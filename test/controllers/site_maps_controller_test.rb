@@ -43,7 +43,7 @@ module Admin
 	
 	  test "should create site_map" do
 	    assert_difference('SiteMap.count') do
-	      post :create, site_map: { aux: @site_map.aux, external: @site_map.external, internal: @site_map.internal }
+	      post :create, site_map: { aux: @site_map.aux, external: @site_map.external+'1', internal: @site_map.internal }
 	    end
 	
 	    assert_redirected_to site_map_path(assigns(:site_map))

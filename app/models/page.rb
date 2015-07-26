@@ -123,26 +123,26 @@ class Page < ZiteActiveRecord
     File.join( '/storage', self.site, self.name, File.basename( f ) ).force_encoding("ASCII-8BIT") 
   end
   
-  def cache( content )
-    cache_directory = File.join( Rails.root , 'public/cache', self.site )    
+  def cache( content, cache_dir )
+    cache_directory = File.join( Rails.root , 'public/cache', cache_dir )    
 	if ! Dir.exists? cache_directory
 	  Dir.mkdir cache_directory
 	end     
-    path = File.join( Rails.root , 'public/cache', self.site, self.name ) + '.html'    
+    path = File.join( Rails.root , 'public/cache', cache_dir, self.name ) + '.html'    
     to_write = content[0] + ' cached'
     File.open(path, "w") { |f| f.write( to_write.force_encoding('ISO-8859-1') ) }
   end
   
-  def uncache
-    path = File.join( Rails.root , 'public/cache', self.site, self.name ) + '.html'  
+  def uncache( cache_dir )
+    path = File.join( Rails.root , 'public/cache', cache_dir, self.name ) + '.html'  
     if File.exists? path
       File.delete( path )
     end
   end
   
-  def self.uncache_all
+  def self.uncache_all( cache_dir )
     pages = self.all
-    pages.each { |p| p.uncache }
+    pages.each { |p| p.uncache( cache_dir ) }
   end
     
   def self.good_name?

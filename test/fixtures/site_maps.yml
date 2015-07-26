@@ -5,7 +5,4 @@ one:
   internal: testsite45A67
   aux: MyString
 
-two:
-  external: MyString
-  internal: MyString
 

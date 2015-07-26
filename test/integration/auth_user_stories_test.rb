@@ -106,7 +106,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
         assert_select '.control-label', /email/           
       end
     end
-    
+
     # user enters proper username / email combo
     if @not_java
       post "/_about_urself", username: "jim", email: "jim@gmail.com"
@@ -125,9 +125,10 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     # refreshes and confirms that user is shown as logged in
     get "/"
     assert_response :success
-    assert_select '#authentication_launchpad', /jim/       
+    assert_select '#authentication_launchpad', /jim/    
+       
   end
-  
+
   #
   #  user clicks on the link in the email sets password, and gets logged in
   #  (error handling is tested in the controller)
@@ -138,6 +139,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     get "/_from_mail", user_token: 'francois_token'       
     assert_redirected_to root_path
     
+
     # refreshes and still gets the correct user displayed
     get_via_redirect "/"
     assert_response :success
@@ -151,14 +153,19 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
       xhr :post, "/_ur_secrets", user_id: @user_francois.id, 
                         password: 'secret', password_confirmation: 'secret'   
     end
+    
     assert_root_path_redirect
     assert_equal flash[:notice], "password set!"         
-    
+
     # user refreshes and username is displayed
     get "/"
     assert_response :success
     assert_select '#authentication_launchpad', /francois/
-      
+
+    if Rails.configuration.page_caching
+      delete_cache_directories_with_content
+    end
+     
   end
 
   private

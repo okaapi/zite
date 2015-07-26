@@ -30,13 +30,13 @@ class ActiveSupport::TestCase
 	user_session.save!
 	session[:user_session_id] = user_session.id
   end
-  def make_cache_directories( site )
+  def make_cache_directories( external_host )
     cachedir = File.join( Rails.root , 'public', 'cache' )    
     if !Dir.exists? cachedir
       Dir.mkdir cachedir
     end
-    if site    
-      cache_directory = File.join( Rails.root , 'public/cache', site )    
+    if external_host
+      cache_directory = File.join( Rails.root , 'public/cache', external_host )    
 	  if ! Dir.exists? cache_directory
 	    Dir.mkdir cache_directory
 	  end  
@@ -44,7 +44,7 @@ class ActiveSupport::TestCase
   end
   def delete_cache_directories_with_content
     FileUtils.rm_rf( File.join( Rails.root , 'public/cache/othersite45A67' )  )
-    FileUtils.rm_rf( File.join( Rails.root , 'public/cache/testsite45A67' )  )
+    FileUtils.rm_rf( File.join( Rails.root , 'public/cache/testhost45A67' )  )
   end
   def delete_storage_directories_with_content
     FileUtils.rm_rf( File.join( Rails.root , 'public/storage/testsite45A67' )  )

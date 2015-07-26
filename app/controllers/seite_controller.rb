@@ -12,8 +12,12 @@ class SeiteController < ApplicationController
       redirect_to page_update_path( seite: @seiten_name )
     elsif @center and !@current_user
       cached_content = render
-      if Rails.configuration.page_caching
-        @center.cache( cached_content )
+      if Rails.configuration.page_caching    
+        if ( site_map = SiteMap.find_by_internal( @center.site ) )
+          @center.cache( cached_content, site_map.external )
+        else
+          @center.cache( cached_content, @center.site )
+        end
       end
     else
       render
@@ -78,7 +82,8 @@ class SeiteController < ApplicationController
                       editability: params[:editability] )
     begin
       @page.save!
-      @page.uncache
+      site = SiteMap.find_by_internal( @page.site )
+      @page.uncache( site.external )
       redirect_to seite_path( seite: Page.basepage( params[:name] ) ), 
                               notice: "page #{@page.name} saved..."
     rescue Exception => e           

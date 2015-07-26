@@ -27,21 +27,27 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select '.center', ''      
     
+    # should get the right "talks" page (exists in both othersite and testsite)
     get_via_redirect "/talks"
     assert_response :success
     assert_select '.center', 'Talks On Othersite'  
 
+    # should NOT get "talks_books" page (exists only in testsite)
+    get_via_redirect "/talks_books"
+    assert_response :success
+    assert_select '.center', ''  
+    
     if Rails.configuration.page_caching
       delete_cache_directories_with_content
     end
             
   end
   
-  test "viewing a page not logged in" do
+  test "viewing a page not logged in from testhost" do
      
     # this for caching
     if Rails.configuration.page_caching
-      path = File.join( Rails.root , 'public/cache/testsite45A67', 'index' ) + '.html'    
+      path = File.join( Rails.root , 'public/cache/testhost45A67', 'index' ) + '.html'    
       File.delete( path ) if File.exists? path
     end
 
@@ -68,13 +74,40 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     end
     
   end
+  
+  test "viewing a page not logged in from othersite (no site_map)" do
+     
+    request
+    open_session.host! "othersite45A67"
+    ZiteActiveRecord.site( "othersite45A67" )
+    assert_equal ZiteActiveRecord.site?, "othersite45A67"
+    
+    # this for caching
+    if Rails.configuration.page_caching
+      path = File.join( Rails.root , 'public/cache/othersite45A67', 'talks' ) + '.html'    
+      File.delete( path ) if File.exists? path
+    end
+
+    get_via_redirect "/talks"
+    assert_response :success
+        
+    if Rails.configuration.page_caching
+      assert (File.exists? path), message: "othersite45A67 index not cached...."
+      File.delete( path )
+    end
+    
+    if Rails.configuration.page_caching
+      delete_cache_directories_with_content
+    end
+    
+  end  
 
   test "viewing a page logged in" do
   
     # for caching 
     if Rails.configuration.page_caching 
-      make_cache_directories( 'testsite45A67' )     
-      path = File.join( Rails.root , 'public/cache/testsite45A67', 'index' ) + '.html'        
+      make_cache_directories( 'testhost45A67' )     
+      path = File.join( Rails.root , 'public/cache/testhost45A67', 'index' ) + '.html'        
       File.open(path, "w") do |f|
         f.write( "this index.html should get deleted when logging in" )
       end
@@ -112,7 +145,8 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     end
      
   end
-  
+
+
   test "viewing a page logged in as admin" do
   
     # enters correct password and gets logged in and session is created
@@ -137,7 +171,6 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     get "/talks"
     assert_response :success
     assert_select '.center', 'Talks'
-     
   end
 
 end

@@ -9,7 +9,7 @@ class AuthenticateController < ApplicationController
   
   def prove_it
     
-    Page.uncache_all
+    Page.uncache_all( request.host )
     
     @claim = params[:claim]
     @password = params[:password]
@@ -84,7 +84,7 @@ class AuthenticateController < ApplicationController
     
     # this is the link from the email... set the reset_user_id, and immediately redirect
     # redirection will show the ur_secrets dialogue with form to ur_secrets
-    Page.uncache_all
+    Page.uncache_all( request.host )
     @user_token = params[:user_token]
     if @current_user = User.find_by_token( @user_token )
       # REMEMBER this user _id for ur_secrets!
@@ -173,7 +173,7 @@ class AuthenticateController < ApplicationController
     
     def create_new_user_session( user )   
       reset_session
-      Page.uncache_all
+      Page.uncache_all( request.host )
       user_session = UserSession.new_ip_and_client( user, request.remote_ip(),
                                                    request.env['HTTP_USER_AGENT'])
       session[:user_session_id] = user_session.id     
