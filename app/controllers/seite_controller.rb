@@ -82,8 +82,11 @@ class SeiteController < ApplicationController
                       editability: params[:editability] )
     begin
       @page.save!
-      site = SiteMap.find_by_internal( @page.site )
-      @page.uncache( site.external )
+      if ( site_map = SiteMap.find_by_internal( @page.site ) )
+        @page.uncache( site.external )
+      else
+        @page.uncache( @page.site )
+      end
       redirect_to seite_path( seite: Page.basepage( params[:name] ) ), 
                               notice: "page #{@page.name} saved..."
     rescue Exception => e           
