@@ -20,7 +20,7 @@ require 'securerandom'
       User.find_by_email( claim ) || User.find_by_username( claim )
     end
   
-    def self. new_unconfirmed( email, username )
+    def self.new_unconfirmed( email, username )
       user = User.new( email: email, username: username )
       user.password = user.password_confirmation = SecureRandom.urlsafe_base64(8)
       user.token = SecureRandom.urlsafe_base64(16)

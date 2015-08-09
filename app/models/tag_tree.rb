@@ -69,7 +69,7 @@ class TagTree
         str = str[open..-1]       
       else
         # this is not possible...
-        return nil
+        # return nil
       end
     end
     return tree_root

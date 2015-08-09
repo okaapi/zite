@@ -191,6 +191,12 @@ editor:
   content: "EDITOR <#= editor  <h1> Editor Heading</h1> to 'editor stuff' #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>    
   site: testsite45A67
+
+badcall:
+  name: bad call
+  content: 'BAAAD <#= something blue #>'
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
+  site: testsite45A67
   
 css: 
   name: css

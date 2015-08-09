@@ -62,8 +62,18 @@ module Admin
 	  test "should update page" do
 	    patch :update, id: @page, page: { content: @page.content, editability: @page.editability, 
 	      lock: @page.lock, menu: @page.menu, user_id: @wido.id, visibility: @page.visibility }
-	    assert_redirected_to page_path(assigns(:page))
+        assert_equal flash[:notice], 'Page was successfully updated.'	
+        assert_equal flash[:alert], nil      
+        assert_redirected_to page_path(assigns(:page))
 	  end
+	  
+	  test "error updating page" do
+	    patch :update, id: @page, page: { content: @page.content, editability: @page.editability, 
+	      lock: @page.lock, menu: @page.menu, user_id: nil, visibility: @page.visibility }
+        assert_equal flash[:notice], nil 
+        assert_equal flash[:alert], nil
+	    assert_response :success   
+	  end	  
 	
 	  test "should destroy page" do
 	    assert_difference('Page.count', -1) do

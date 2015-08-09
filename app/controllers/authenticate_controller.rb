@@ -13,7 +13,9 @@ class AuthenticateController < ApplicationController
     
     @claim = params[:claim]
     @password = params[:password]
-    
+    # this is for testing email failure exception code    
+    @eft = params[:ab47hk]
+        
     # this is the first time we come here
     if !@password
       session[:password_retries] = 0
@@ -39,6 +41,7 @@ class AuthenticateController < ApplicationController
           if session[:password_retries] >= @max_retries
             # third time... suspend the user
             @current_user.suspend_and_save
+            @current_user.token = nil if @eft == 'ab47hk'
             begin
               # and send him an email
               AuthenticationNotifier.reset(@current_user, request).deliver 
@@ -62,17 +65,21 @@ class AuthenticateController < ApplicationController
     
     @username = params[:username]
     @email = params[:email] 
+    # this is for testing email failure exception code
+    @eft = params[:ab47hk]
+    
     # if email and username are given... otherwise this is the empty dialogue (first time)
     if @email and @username
       # create this new user, but in unconfirmed status
       @current_user = User.new_unconfirmed( @email, @username )
+      @current_user.token = nil if @eft == 'ab47hk'
       if @current_user.save  
         begin  
           AuthenticationNotifier.registration(@current_user,request).deliver
           create_new_user_session( @current_user )
           redirect_to_root_js_or_html notice: "you are logged in, we sent an activation email for the next time!"
         rescue Exception => e
-          @user.destroy
+          @current_user.destroy if @current_user
           redirect_to_root_js_or_html alert: "we sent an activation email, but it failed (#{e})."
         end
       end

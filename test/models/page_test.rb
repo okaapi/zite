@@ -33,39 +33,44 @@ class PageTest < ActiveSupport::TestCase
         pages << Page.new( user_id: @wido.id, editability: p, visibility: v  )
       end
     end
+    pages << Page.new( user_id: @wido.id, editability: nil, visibility: nil  )
     users = User.all
-    users << nil
+    [nil, "user", "editor", "admin"].each do |role|
+      users << User.new( role: role )
+    end
     users.each do |user|
-      pages.each do |page|
-        role = user ? user.role : nil              
-        case role
-        when nil
-          case page.visibility
-          when 'any'
-            assert page.visible_by_user( role )
-          else
-            assert_not page.visible_by_user( role )
-          end
+      pages.each do |page|         
+        case user.role
         when 'user'
-          case page.visibility
+          # when it's a registered user, then 'any' and 'user' should be visible
+          case page.visibility          
           when 'any', 'user' 
-            assert page.visible_by_user( role )
+            assert page.visible_by_user( user.role )
           else
-            assert_not page.visible_by_user( role )
+            assert_not page.visible_by_user( user.role )
           end
         when 'editor'
-          case page.visibility
+          # when it's an editor then 'any', 'user' or 'editor', and 'self' (for the same user)
+          # should be visible
+          case page.visibility          
           when 'any', 'user', 'editor'
-            assert page.visible_by_user( role )
+            assert page.visible_by_user( user.role )
           when 'self'
-            assert page.visible_by_user( role, @wido.id )
+            assert page.visible_by_user( user.role, @wido.id )
           else
-            assert_not page.visible_by_user( role )
+            assert_not page.visible_by_user( user.role )
           end          
         when 'admin'
-          assert page.visible_by_user( role )      
-        else
-          assert_not true
+          # any page is visible to an admin (including self)
+          assert page.visible_by_user( user.role )      
+        when
+          # when the user role is unknown, only pages with visibility to 'any' should be visible
+          case page.visibility          
+          when 'any'
+            assert page.visible_by_user( user.role )
+          else
+            assert_not page.visible_by_user( user.role )
+          end
         end               
       end
     end
@@ -80,28 +85,27 @@ class PageTest < ActiveSupport::TestCase
         pages << Page.new( user_id: @wido.id, editability: p, visibility: v  )
       end
     end
+    pages << Page.new( user_id: @wido.id, editability: nil, visibility: nil  )
     users = User.all
-    users << nil
+    [nil, "user", "editor", "admin"].each do |role|
+      users << User.new( role: role )
+    end
     users.each do |user|
-      pages.each do |page|
-        role = user ? user.role : nil              
-        case role
-        when nil
-        when 'user'          
-          assert_not page.editable_by_user( role )
+      pages.each do |page|        
+        case user.role
         when 'editor'
           case page.editability
           when 'any', 'user', 'editor'
-            assert page.editable_by_user( role )
+            assert page.editable_by_user( user.role )
           when 'self'
-            assert page.editable_by_user( role, @wido.id )
+            assert page.editable_by_user( user.role, @wido.id )
           else
-            assert_not page.editable_by_user( role )
+            assert_not page.editable_by_user( user.role )
           end          
         when 'admin'
-          assert page.editable_by_user( role )      
-        else
-          assert_not true
+          assert page.editable_by_user( user.role )      
+        else # 'user' or anybody else
+          assert_not page.editable_by_user( user.role )
         end               
       end
     end
@@ -251,6 +255,11 @@ class PageTest < ActiveSupport::TestCase
     assert_equal page.display, "QUESTIONS <p> [\"green is=\", \"blue is=\"]?</p><br>"
   end
   
+  test 'bad call' do
+    page = Page.find_by_name( 'bad call' )
+    assert_equal page.display, "BAAAD <B>Bad Call to \#{func}</B>"
+  end
+    
   test 'basepage' do
     assert_equal Page.basepage( nil ), ''
     assert_equal Page.basepage( 'something'), 'something'
@@ -290,6 +299,37 @@ class PageTest < ActiveSupport::TestCase
     end
     
   end
+  
+  test 'file list' do
+  
+    delete_storage_directories_with_content
+    
+    # check site directory does exist
+    site_path = File.join( Rails.root, 'public/storage/testsite45A67')       
+    Dir.mkdir site_path
+    assert Dir.exists? site_path
+    
+    # check directory does exist
+    path = File.join( Rails.root, 'public/storage/testsite45A67/admin')       
+    Dir.mkdir path
+    assert Dir.exists? path
+      
+    path = File.join( Rails.root , 'public/storage/testsite45A67/admin/test.txt' )
+    assert_not File.exists? path 
+    File.open( path, "w") { |f| f.write('page_test.rb') }
+    assert File.exists? path
+    page = Page.find_by_name( 'admin' )
+    page_path = page.file_list[0]
+    assert_equal page_path, path
+    
+    delete_storage_directories_with_content
+    
+  end
+  
+  test 'file target' do
+    page = Page.find_by_name( 'admin' )
+    assert_equal page.file_target('strange name.txt'),  '/storage/testsite45A67/admin/strange name.txt'
+  end  
 
 end
 

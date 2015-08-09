@@ -6,7 +6,7 @@ module ApplicationHelper
     if t
       t.getlocal.strftime("%H:%M %m-%d-%Y")
     else
-      'prettytime'
+      'sometime'
     end
   end
 end

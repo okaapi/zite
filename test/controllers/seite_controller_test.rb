@@ -17,7 +17,7 @@ class SeiteControllerTest < ActionController::TestCase
       delete_cache_directories_with_content
     end 
   end
-  
+ 
   test "should get index logged in" do
     admin_login_4_test
     get :index, seite: 'some_page_that_does_not_exist'
@@ -105,17 +105,20 @@ class SeiteControllerTest < ActionController::TestCase
   end    
 
   test "save update" do
+    assert_equal @page.name, 'index'
     assert_difference('Page.count', 1) do
       post :pageupdate_save, name: @page.name, content: "newly added content", 
         editability: @page.editability, user_id: @wido.id,
         menu: @page.menu, visibility: @page.visibility
-      assert_redirected_to '/'+@page.name
+      assert_redirected_to '/index'
+      assert_nil flash[:alert]
+      assert_equal flash[:notice], 'page index saved...'             
     end
     pg = Page.get_latest( @page.name )
     assert_equal pg.content, 'newly added content'
     
   end
-  
+ 
   test "save update return to base page" do
 
     @page = pages(:two_films)
@@ -135,9 +138,20 @@ class SeiteControllerTest < ActionController::TestCase
   end  
   
   test "upload and delete" do
-           
-    # first check directory does not exit
-    path = File.join( Rails.root, 'public/storage/testsite45A67/test')    
+          
+    # first create test file to make sure it works (permissions etc) 
+    path = File.join( Rails.root, 'public/storage/testsite45A67/test')             
+    if ! Dir.exists? path
+	  Dir.mkdir path
+	end
+	assert Dir.exists? path
+    if ! File.exists? path + '/test.txt'
+      File.open(path + '/test.txt', "wb") { |f| f.write("will be deleted right away") }
+    end	
+    assert File.exists? path + '/test.txt' 
+	  
+	# now clean up...
+    # first ensure directory does not exit  
     if File.exists? path + '/test.txt'
       File.delete( path + '/test.txt' )
     end    
@@ -174,5 +188,5 @@ class SeiteControllerTest < ActionController::TestCase
     delete_storage_directories_with_content
       
   end
- 
+
 end

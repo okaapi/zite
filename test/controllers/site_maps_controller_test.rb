@@ -42,12 +42,20 @@ module Admin
 	  end
 	
 	  test "should create site_map" do
+	    assert_equal SiteMap.count, 1
 	    assert_difference('SiteMap.count') do
-	      post :create, site_map: { aux: @site_map.aux, external: @site_map.external+'1', internal: @site_map.internal }
+	      post :create, site_map: { external: 'ext', internal: 'int' }
 	    end
-	
 	    assert_redirected_to site_map_path(assigns(:site_map))
 	  end
+	  
+	  test "should create site_map error" do
+	    assert_equal SiteMap.count, 1
+	    assert_difference('SiteMap.count', 0) do
+	      post :create, site_map: { external: @site_map.external , internal: 'int' }
+	    end
+	    assert_response :success
+	  end	  
 	
 	  test "should show site_map" do
 	    get :show, id: @site_map

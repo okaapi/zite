@@ -22,5 +22,11 @@ class TagTreeTest < ActiveSupport::TestCase
     assert_equal remainder, 'green blue'
   end
   
+  test 'first_term empty' do
+    first, remainder = TagTree.first_term( ' ')
+    assert_equal first, ' '
+    assert_equal remainder, ''    
+  end  
+  
 end
 

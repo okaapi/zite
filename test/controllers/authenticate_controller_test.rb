@@ -90,7 +90,18 @@ class AuthenticateControllerTest < ActionController::TestCase
     assert_equal flash[:alert], 'user suspended, check your email'      
     assert_equal @controller.session[:password_retries], 3
   end
-         
+
+  test "prove_it with incorrect password too often email failed" do
+    @controller.session[:password_retries] = 3
+    if @not_java
+      post :prove_it, claim: "wido", password: "secret1", ab47hk: "ab47hk"
+    else 
+      xhr :post, :prove_it, claim: "wido", password: "secret1", ab47hk: "ab47hk"
+    end   
+    assert_root_path_redirect  
+    assert flash[:alert] =~ /sending failed/
+  end
+          
   test "prove_it with suspended user" do
     if @not_java
       post :prove_it, claim: "john", password: "secret"    
@@ -135,12 +146,22 @@ class AuthenticateControllerTest < ActionController::TestCase
     else  
       xhr :post, :about_urself, username: "jim", email: "jim@gmail.com"       
     end
-    assert_root_path_redirect    
+    assert_root_path_redirect  
+    assert_equal flash[:alert], nil
     assert_equal flash[:notice], 
         "you are logged in, we sent an activation email for the next time!"
     assert_equal @controller.session[:user_session_id], UserSession.last.id       
   end
-          
+         
+  test "about_urself correct credentials email send failure" do
+    if @not_java
+      post :about_urself, username: "jim", email: "jim@gmail.com", ab47hk: "ab47hk"
+    else  
+      xhr :post, :about_urself, username: "jim", email: "jim@gmail.com", ab47hk: "ab47hk"    
+    end
+    assert_root_path_redirect  
+    assert flash[:alert] =~ /it failed/
+  end          
 
   test "about_urself incorrect credentials - duplicate" do
     if @not_java
