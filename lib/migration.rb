@@ -1,13 +1,13 @@
 require "../config/environment" unless defined?(::Rails.root)
 
-MAXWIKI_DB = "maxwiki_prod"
-MAXWIKI_USER = "rails"
-MAXWIKI_PWD = "activerecord23"
-MAXWIKI_STORE = "bichon"
-MAXWIKI_WIKI = 17
+MAXWIKI_DB = ""
+MAXWIKI_USER = ""
+MAXWIKI_PWD = ""
+MAXWIKI_STORE = ""
+MAXWIKI_WIKI = 
 
-ME_USERID = 13
-ME_SITE = 'bichon'
+ME_USERID = 
+ME_SITE = ''
 
 ActiveRecord::Base.establish_connection(
   :adapter  => "mysql",
