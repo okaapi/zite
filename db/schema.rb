@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150723195726) do
+ActiveRecord::Schema.define(version: 20150916012017) do
 
   create_table "pages", force: true do |t|
     t.string   "name"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20150723195726) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "site",        default: "localhost"
+    t.string   "desc",        default: "no description"
   end
 
   create_table "site_maps", force: true do |t|

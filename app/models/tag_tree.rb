@@ -71,6 +71,9 @@ class TagTree
         # this is not possible...
         # return nil
       end
+      if !current
+        return tree_root
+      end
     end
     return tree_root
   end

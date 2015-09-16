@@ -28,5 +28,47 @@ class TagTreeTest < ActiveSupport::TestCase
     assert_equal remainder, ''    
   end  
   
+  test 'unbalanced left' do
+    original = "a B <%= C c %> d %> e"
+    root = TagTree.parse( original, '<%=', '%>' )
+    result = root.process do |depth, str|
+      if depth > 0 
+        func, operands = TagTree.first_term( str )
+          "#{func}(#{operands})"
+      else
+        str
+      end
+    end
+    assert_equal result, "a B C(c) d"
+  end
+  
+  test 'unbalanced right' do
+    original = "a <%= B <%= C c %> d"
+    root = TagTree.parse( original, '<%=', '%>' )
+    result = root.process do |depth, str|
+      if depth > 0 
+        func, operands = TagTree.first_term( str )
+          "#{func}(#{operands})"
+      else
+        str
+      end
+    end
+    assert_equal result, "a B(C(c) d)"
+  end
+  
+  test 'tight' do
+    original = "<%=%>"
+    root = TagTree.parse( original, '<%=', '%>' )
+    result = root.process do |depth, str|
+      if depth > 0 
+        func, operands = TagTree.first_term( str )
+          "#{func}(#{operands})"
+      else
+        str
+      end
+    end
+    assert_equal result, "()"
+  end  
+  
 end
 
