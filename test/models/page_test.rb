@@ -19,7 +19,7 @@ class PageTest < ActiveSupport::TestCase
     page = pages(:nil_page)
     assert_equal page.display, 'empty page'  
   end
-  
+
   test 'visibilities and editabilities' do
     assert_equal Page.visibilities, ["any", "user", "editor", "self", "admin"]
     assert_equal Page.editabilities, ['admin', 'self', 'editor']
@@ -113,7 +113,7 @@ class PageTest < ActiveSupport::TestCase
   end  
   
   test 'test include' do
-    page = Page.find_by_name( 'include')
+    page = Page.get_latest( 'include')
     assert_equal page.content, "INCLUDE <%= include index %>"
     assert_equal page.display, "INCLUDE <h1> Index Page </h1>"
   end
@@ -121,29 +121,29 @@ class PageTest < ActiveSupport::TestCase
 
   test 'test pagelink' do
      
-    page = Page.find_by_name( 'pagelink')
+    page = Page.get_latest( 'pagelink')
     assert_equal page.content, "PAGELINK <%= pagelink index %>"
     assert_equal page.display, "PAGELINK <a href=\"/index\" class=\"pagelink\">index</a>" 
   
-    page = Page.find_by_name( 'pagelink2')
+    page = Page.get_latest( 'pagelink2')
     assert_equal page.content, "PAGELINK2 <%= pagelink index, link to index... %>"
     assert_equal page.display, "PAGELINK2 <a href=\"/index\" class=\"pagelink\"> link to index...</a>"
     
-    page = Page.find_by_name( 'pagelink3')
+    page = Page.get_latest( 'pagelink3')
     assert_equal page.content, 
          "PAGELINK3 <%= pagelink index %> SOME TEXT <%= pagelink index, link to index %>"
     assert_equal page.display, "PAGELINK3 <a href=\"/index\" class=\"pagelink\">index</a> SOME TEXT <a href=\"/index\" class=\"pagelink\"> link to index</a>"    
     
          
-    page = Page.find_by_name( 'adminlink')
+    page = Page.get_latest( 'adminlink')
     assert_equal page.content, "ADMINLINK <%= adminlink admin %>"
     assert_equal page.display, "ADMINLINK "   
         
-    page = Page.find_by_name( 'adminlink')
+    page = Page.get_latest( 'adminlink')
     assert_equal page.content, "ADMINLINK <%= adminlink admin %>"
     assert_equal page.display('admin'), "ADMINLINK <a href=\"/admin\" class=\"adminlink\">admin</a>"   
     
-    page = Page.find_by_name( 'adminlink2')
+    page = Page.get_latest( 'adminlink2')
     assert_equal page.content, "ADMINLINK2 <%= adminlink admin, stuff... %>"
     assert_equal page.display('admin'), "ADMINLINK2 <a href=\"/admin\" class=\"adminlink\"> stuff...</a>"      
         
@@ -151,23 +151,23 @@ class PageTest < ActiveSupport::TestCase
 
   test 'test roles' do
     
-    page = Page.find_by_name( 'admin' )
+    page = Page.get_latest( 'admin' )
     assert_equal page.content, "ADMIN <%= admin  <h1> Admin Heading</h1> to 'admin stuff' %>"
     assert_equal page.display(  ), "ADMIN "
     
-    page = Page.find_by_name( 'admin' )
+    page = Page.get_latest( 'admin' )
     assert_equal page.content, "ADMIN <%= admin  <h1> Admin Heading</h1> to 'admin stuff' %>"
     assert_equal page.display( 'admin' ), "ADMIN <h1> Admin Heading</h1> to 'admin stuff'" 
     
-    page = Page.find_by_name( 'editor')
+    page = Page.get_latest( 'editor')
     assert_equal page.content, "EDITOR <%= editor  <h1> Editor Heading</h1> to 'editor stuff' %>"
     assert_equal page.display, "EDITOR "   
     
-    page = Page.find_by_name( 'editor')
+    page = Page.get_latest( 'editor')
     assert_equal page.content, "EDITOR <%= editor  <h1> Editor Heading</h1> to 'editor stuff' %>"
     assert_equal page.display( 'editor' ), "EDITOR <h1> Editor Heading</h1> to 'editor stuff'"      
         
-    page = Page.find_by_name( 'editor')  
+    page = Page.get_latest( 'editor')  
     assert_equal page.content, "EDITOR <%= editor  <h1> Editor Heading</h1> to 'editor stuff' %>"
     assert_equal page.display( 'admin' ), "EDITOR <h1> Editor Heading</h1> to 'editor stuff'" 
                 
@@ -234,11 +234,11 @@ class PageTest < ActiveSupport::TestCase
   
 
   test 'imagelink' do
-    page = Page.find_by_name( 'imagelink')
+    page = Page.get_latest( 'imagelink')
     assert_equal page.content, "IMAGELINK <%= imagelink lifebetterinflipflops.jpg %>"
     assert_equal page.display, "IMAGELINK <a href=\"/storage/testsite45A67/imagelink/lifebetterinflipflops.jpg\"> <img src=\"/storage/testsite45A67/imagelink/lifebetterinflipflops.jpg\" > </a>"
     
-    page = Page.find_by_name( 'imagelink2')
+    page = Page.get_latest( 'imagelink2')
     assert_equal page.content, "IMAGELINK2 <%= imagelink lifebetterinflipflops.jpg, width = 200 %>"
     assert_equal page.display, "IMAGELINK2 <a href=\"/storage/testsite45A67/imagelink2/lifebetterinflipflops.jpg\"> <img src=\"/storage/testsite45A67/imagelink2/lifebetterinflipflops.jpg\"  width = 200> </a>"
     
@@ -246,17 +246,17 @@ class PageTest < ActiveSupport::TestCase
     
    
   test 'pin' do
-    page = Page.find_by_name( 'pin' )
+    page = Page.get_latest( 'pin' )
     assert_equal page.display, "PIN <div class=\"pindiv panel panel-default\"><div class=\"pinmargin panel-body \">  <h3> 4</h3> (!&) <p><a href= \"https://pic.g?au m/11 4?a t6AE#slc=\"https://  </div></div>"
   end
 
   test 'questions' do
-    page = Page.find_by_name( 'questions' )
+    page = Page.get_latest( 'questions' )
     assert_equal page.display, "QUESTIONS <p> [\"green is=\", \"blue is=\"]?</p><br>"
   end
   
   test 'bad call' do
-    page = Page.find_by_name( 'bad call' )
+    page = Page.get_latest( 'bad call' )
     assert_equal page.display, "BAAAD <B>Bad Call to \#{func}</B>"
   end
     
@@ -318,7 +318,7 @@ class PageTest < ActiveSupport::TestCase
     assert_not File.exists? path 
     File.open( path, "w") { |f| f.write('page_test.rb') }
     assert File.exists? path
-    page = Page.find_by_name( 'admin' )
+    page = Page.get_latest( 'admin' )
     page_path = page.file_list[0]
     assert_equal page_path, path
     
@@ -327,9 +327,31 @@ class PageTest < ActiveSupport::TestCase
   end
   
   test 'file target' do
-    page = Page.find_by_name( 'admin' )
+    page = Page.get_latest( 'admin' )
     assert_equal page.file_target('strange name.txt'),  '/storage/testsite45A67/admin/strange name.txt'
   end  
+
+  test 'meta' do
+
+    page = Page.get_latest( 'index' )
+    assert_equal page.get_meta_desc, 'index meta'
+    page = Page.get_latest( 'talks' )    
+    assert_equal page.get_meta_desc, 'talks meta'   
+    page = Page.get_latest( 'presentations' )    
+    assert_equal page.get_meta_desc, 'index meta' 
+    
+    page = Page.get_latest( 'index' )
+    page.meta_desc = nil
+    page.save!
+
+    page = Page.get_latest( 'index' )
+    assert_equal page.get_meta_desc, 'index' 
+    page = Page.get_latest( 'talks' )    
+    assert_equal page.get_meta_desc, 'talks meta'  
+    page = Page.get_latest( 'presentations' )    
+    assert_equal page.get_meta_desc, 'presentations'     
+        
+  end
 
 end
 

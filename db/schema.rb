@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20150916012017) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "site",        default: "localhost"
-    t.string   "desc",        default: "no description"
+    t.string   "meta_desc"
   end
 
   create_table "site_maps", force: true do |t|

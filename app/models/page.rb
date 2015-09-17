@@ -104,6 +104,25 @@ class Page < ZiteActiveRecord
   
 #-----------------------------------------------------------------------------------------
 #
+# meta is the meta description for search engines; if it is not defined, use the one of
+# the index page; if that is not defined, use the page name 
+#
+  def get_meta_desc
+    if self.meta_desc
+      self.meta_desc
+    else   
+      page = Page.get_latest( 'index' )
+      if page and page.meta_desc
+        page.meta_desc
+      else
+        self.name
+      end
+    end
+  end
+  
+    
+#-----------------------------------------------------------------------------------------
+#
 # display parses the content (<%= %> tags) and then returns the parsed content; if there is 
 # no content, display an 'empty page message'
 #  
@@ -255,11 +274,6 @@ class Page < ZiteActiveRecord
   #  
   def parse_content( role )
     
-    puts "@@@"
-    puts self.name
-    puts "@@@"
-    puts self.content
-    puts "@@@"
     root = TagTree.parse( self.content, '<%=', '%>' )
     parsed = root.process do |depth, str|
       if depth > 0         

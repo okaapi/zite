@@ -7,6 +7,7 @@ class SeiteController < ApplicationController
             
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
+    @meta_desc = @center.get_meta_desc if @center
     
     if !@center and @current_user and Page.editor_roles.include? @current_user.role
       redirect_to page_update_path( seite: @seiten_name )
@@ -72,7 +73,7 @@ class SeiteController < ApplicationController
     # save even if the user isn't logged in anymore... they were logged in
     # when they started editing the page...
     @page = Page.new( content: params[:content], name: params[:name],
-                      desc: params[:desc],
+                      meta_desc: params[:meta_desc],
                       user_id: params[:user_id], menu: params[:menu],
                       lock: params[:lock], editor: params[:editor],
                       visibility: params[:visibility], 

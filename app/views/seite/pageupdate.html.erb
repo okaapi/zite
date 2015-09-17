@@ -24,16 +24,16 @@
     <%= hidden_field_tag :user_id, @page.user_id %>
     <p></p>
     <div class="row" >
-      <div class="left col-sm-2" >                   
+      <div class="col-sm-2" >                   
         <%= submit_tag 'Save!', class: 'btn btn-default' %> 
         <%= link_to "cancel", seite_path( seite: @page.name ) if @page.updated_at %>
       </div>
-      <div class="left col-sm-10" >
+      <div class="col-sm-10" >
         <%= render partial: "permissions" %>
       </div>
     </div>  
     <div class="row" >     
-      <div class="left col-sm-12" >         
+      <div class="col-sm-12" >         
         <%= render partial: "meta_description" %>
       </div>      
     </div>     
@@ -41,14 +41,14 @@
   <% end %>  
   
   <div class="row" >
-    <div class="left col-sm-12" >
+    <div class="col-sm-12" >
       <%= render partial: "pageupdate_options" %>
     </div>
   </div>
 
 </div>
 
-<!-- this only applies to non-ckeditor -->
+<%# this only applies to non-ckeditor %>
 <script>
 $("#pageupdate_textarea").keyup(function(e) {
     while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) 
@@ -58,11 +58,9 @@ $("#pageupdate_textarea").keyup(function(e) {
 });
 </script>
 
+<%# a bit of a hack %>
 <script>
 $('.panel-group').css('margin-bottom', '5px');
-$('.left').css('padding-top', '0px');
-$('.left').css('padding-bottom
-', '0px');
 </script>
 
 

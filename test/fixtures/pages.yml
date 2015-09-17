@@ -19,6 +19,7 @@ one:
   content: "<h1> Index Page </h1>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   updated_at: <%= Time.now %>
+  meta_desc: "index meta"
   site: testsite45A67
    
 one_header_older:
@@ -71,6 +72,7 @@ two:
   menu: 'false'
   visibility: 'admin'
   editability: 'admin'
+  meta_desc: "talks meta"  
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
   site: testsite45A67
 
