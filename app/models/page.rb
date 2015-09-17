@@ -255,6 +255,11 @@ class Page < ZiteActiveRecord
   #  
   def parse_content( role )
     
+    puts "@@@"
+    puts self.name
+    puts "@@@"
+    puts self.content
+    puts "@@@"
     root = TagTree.parse( self.content, '<%=', '%>' )
     parsed = root.process do |depth, str|
       if depth > 0         
