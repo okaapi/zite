@@ -23,25 +23,25 @@
         rows: ( (@page.content||'').scan(/\n/).count + 10 )%>       
     <%= hidden_field_tag :user_id, @page.user_id %>
     <p></p>
-    <div class="row">
-      <div class="left col-sm-2">                   
+    <div class="row" >
+      <div class="left col-sm-2" >                   
         <%= submit_tag 'Save!', class: 'btn btn-default' %> 
         <%= link_to "cancel", seite_path( seite: @page.name ) if @page.updated_at %>
       </div>
-      <div class="left col-sm-10">
+      <div class="left col-sm-10" >
         <%= render partial: "permissions" %>
-      </div> 
-    </div> 
-    <div class="row">
-      <div class="left col-sm-12">    
-        <%= render partial: "meta_description" %>
       </div>
+    </div>  
+    <div class="row" >     
+      <div class="left col-sm-12" >         
+        <%= render partial: "meta_description" %>
+      </div>      
     </div>     
 
   <% end %>  
   
-  <div class="row">
-    <div class="left col-sm-12">
+  <div class="row" >
+    <div class="left col-sm-12" >
       <%= render partial: "pageupdate_options" %>
     </div>
   </div>
@@ -56,6 +56,12 @@ $("#pageupdate_textarea").keyup(function(e) {
         $(this).height($(this).height()+1);
     };   
 });
+</script>
+
+<script>
+$('.panel-group').css('margin-bottom', '5px');
+$('.left').css('padding-top', '0px');
+$('.left').css('padding-bottom', '0px');
 </script>
 
 

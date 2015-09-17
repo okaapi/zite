@@ -72,6 +72,7 @@ class SeiteController < ApplicationController
     # save even if the user isn't logged in anymore... they were logged in
     # when they started editing the page...
     @page = Page.new( content: params[:content], name: params[:name],
+                      desc: params[:desc],
                       user_id: params[:user_id], menu: params[:menu],
                       lock: params[:lock], editor: params[:editor],
                       visibility: params[:visibility], 

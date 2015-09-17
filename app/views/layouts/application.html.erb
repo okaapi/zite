@@ -3,14 +3,14 @@
 <head>
   <title><%= @center ? @center.name.capitalize.gsub(/_/,' ') : "" %></title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <style type="text/css">
+    <%= @css %>
+  </style>  
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <meta name="viewport" content="width=device-width, initial-scale=1">  
   <meta name="robots" content="index,follow" />
   <%= csrf_meta_tags %>
   <%= favicon_link_tag 'favicon.ico' %>
-  <style type="text/css">
-    <%= @css %>
-  </style>
   <meta property="og:description" content="Wido Menhardt is a seasoned technology executive with a passion for taking technology ideas from scratch to market,  and to then scale them to volume deployment. He also likes to surf, hike, yoga and ski. He lives in Los Gatos, California." />
 </head>
 <body>

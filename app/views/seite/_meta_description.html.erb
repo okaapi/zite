@@ -1,5 +1,5 @@
-
-  <div class="panel panel-default">
+<div class="panel-group" role="tablist" aria-multiselectable="true" >
+  <div class="panel panel-default" >
     <div class="panel-heading" role="tab" id="metaDescription">
       <h4 class="panel-title">
         <a class="collapsed" data-toggle="collapse" 
@@ -11,8 +11,14 @@
     <div id="collapseMetaDescription" class="panel-collapse collapse" role="tabpanel" aria-labelledby="metaDescription">
       <div class="panel-body">
         <div id="meta_description_partial">
-          META
+          <div class="field form-group">
+            <%= label_tag :claim, "Description for search engines:", class: 'col-sm-3 control-label' %>
+	        <div class="col-sm-9">
+	          <%= text_field_tag :desc, @page.desc, class: 'form-control' %>
+	        </div>
+	      </div>        
         </div>
       </div>
     </div>   
   </div>
+</div>  
