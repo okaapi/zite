@@ -14,7 +14,7 @@ CKEDITOR.editorConfig = function( config ) {
 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },		
 		//{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },		
 		{ name: 'links' },			
-		{ name: 'insert' },
+		{ name: 'insert', groups: [ 'image', 'youtube' ] },
 		{ name: 'tools' },
 	    { name: 'document',	   groups: [ 'mode', 'document', 'doctools' ] },
 		{ name: 'others' },
@@ -31,6 +31,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// not needed in the Standard(s) toolbar.
 	config.removeButtons = 'Anchor,Styles,Preview,Templates,NewPage,Print,Cut, Copy';
 	config.removePlugins = 'iframe,flash';
+        config.extraPlugins = 'youtube';
 
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
