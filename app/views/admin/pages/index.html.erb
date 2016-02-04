@@ -16,8 +16,8 @@
   <tbody>
     <% @pages.each do |page| %>
       <tr>
-        <td><%= link_to page.name, root_path( seite:page.name ) %></td>
-        <td><%= User.find( page.user_id ).username %></td>
+        <td><%= link_to page.name, root_path + page.name %></td>
+        <td><%= User.where( id: page.user_id ).count == 0 ? page.user_id  : User.find( page.user_id ).username  %></td>
         <td><%= page.visibility %></td>
         <td><%= page.editability %></td>
         <td><%= page.menu %></td>

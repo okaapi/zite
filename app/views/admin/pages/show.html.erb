@@ -10,7 +10,8 @@
 
 <p>
   <strong>Owner:</strong>
-  <%= User.find( @page.user_id ).username %> ( <%= @page.user_id %> )
+  <%= User.where( id: @page.user_id ).count == 0 ? 
+           @page.user_id  : User.find( @page.user_id ).username  %>  ( <%= @page.user_id %> )
 </p>
 
 <p>
