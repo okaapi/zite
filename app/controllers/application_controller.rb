@@ -35,12 +35,12 @@ class ApplicationController < ActionController::Base
 	                                                               request.env['HTTP_USER_AGENT'])
 	    session[:user_session_id] = @current_user_session.id    
 	  end 
-  
+  	  
 	  if @current_user_session.site != ZiteActiveRecord.site?
 	    redirect_to '/', alert: "name mismatch #{@current_user_session.site} #{request.host}"
 		return
 	  end
-	  
+
 	  #
 	  #  current user (this is just a shorthand for @current_user_session.user throughout)
 	  #

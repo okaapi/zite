@@ -7,10 +7,10 @@ require 'rails/test_help'
 
 ActiveRecord::Migration.maintain_test_schema!
 
-require 'simplecov'
-SimpleCov.start do
-end
-puts "simple cov started"
+#require 'simplecov'
+#SimpleCov.start do
+#end
+#puts "simple cov started"
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.

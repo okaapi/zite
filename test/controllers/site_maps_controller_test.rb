@@ -4,18 +4,15 @@ module Admin
 
     class SiteMapsControllerTest < ActionController::TestCase
 	  setup do
-        ZiteActiveRecord.site( 'testsite45A67' )
+            ZiteActiveRecord.site( 'testsite45A67' )
 	    @site_map = site_maps(:one)
 	    @wido = users(:wido)
 	    admin_login_4_test    
 	    request.host = 'testhost45A67'	  
-        # bizzarly, this seemed to fix problems with :random test order
-        # puts "prepared test user session #{UserSession.find(session[:user_session_id]).user.username}" +
-		#                " user site #{UserSession.find(session[:user_session_id]).site}"
 	  end
 	  
 	  test "wrong sitemap with no sitemap in db" do
-        SiteMap.delete_all
+            SiteMap.delete_all
 	    get :index
 	    assert_equal flash[:alert], 'name mismatch testsite45A67 testhost45A67'     
 	  end	
@@ -23,10 +20,9 @@ module Admin
 	  test "wrong sitemap" do
 	    request.host = 'wrongtesthost'
 	    get :index
-        assert_equal flash[:alert], 'name mismatch testsite45A67 wrongtesthost' 	    
+            assert_equal flash[:alert], 'name mismatch testsite45A67 wrongtesthost' 	    
 	  end
 
-  
 	  test "no sitemap in db" do
 	    request.host = 'testsite45A67'	
         SiteMap.delete_all
