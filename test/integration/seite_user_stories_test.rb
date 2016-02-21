@@ -3,6 +3,7 @@ require 'test_helper'
 class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   
   setup do
+
     ZiteActiveRecord.site( 'testsite45A67' )
     @user_arnaud = users(:arnaud)
     @wido = users(:admin)
@@ -20,13 +21,15 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     open_session.host! "testhost45A67"
   end
 
+
   test "different site" do
+
 
     open_session.host! "othersite45A67"
     get_via_redirect "/"    
     assert_response :success
     assert_select '.center', ''      
-    
+
     # should get the right "talks" page (exists in both othersite and testsite)
     get_via_redirect "/talks"
     assert_response :success
@@ -36,13 +39,13 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     get_via_redirect "/talks_books"
     assert_response :success
     assert_select '.center', ''  
-    
+   
     if Rails.configuration.page_caching
       delete_cache_directories_with_content
     end
-            
+             
   end
-  
+
   test "viewing a page not logged in from testhost" do
      
     # this for caching
@@ -74,7 +77,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     end
     
   end
-  
+
   test "viewing a page not logged in from othersite (no site_map)" do
      
     request
@@ -115,10 +118,10 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     
     # enters correct password and gets logged in and session is created
     if @not_java
-      post "/_prove_it", claim: "arnaud", password: "secret"
+      post "/_prove_it", claim: "arnaud", xylophone: "secret"
       assert_redirected_to root_path
     else
-      xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
+      xhr :post, "/_prove_it", claim: "arnaud", xylophone: "secret"
       assert_response :success
     end
     assert_equal flash[:notice], 'arnaud logged in'
@@ -146,15 +149,14 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
      
   end
 
-
   test "viewing a page logged in as admin" do
   
     # enters correct password and gets logged in and session is created
     if @not_java
-      post "/_prove_it", claim: "wido_admin", password: "secret"
+      post "/_prove_it", claim: "wido_admin", xylophone: "secret"
       assert_redirected_to root_path
     else
-      xhr :post, "/_prove_it", claim: "wido_admin", password: "secret"
+      xhr :post, "/_prove_it", claim: "wido_admin", xylophone: "secret"
       assert_response :success
     end
     assert_equal flash[:notice], 'wido_admin logged in'
@@ -170,7 +172,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     
     get "/talks"
     assert_response :success
-    assert_select '.center', 'Talks'
+	assert_select '.center', 'Talks'
   end
 
 end

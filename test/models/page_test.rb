@@ -36,7 +36,10 @@ class PageTest < ActiveSupport::TestCase
     pages << Page.new( user_id: @wido.id, editability: nil, visibility: nil  )
     users = User.all
     [nil, "user", "editor", "admin"].each do |role|
-      users << User.new( role: role )
+	  # changed from 
+	  # users += User.new( role: role )
+	  # for Rails 5
+      users.create(role: role)
     end
     users.each do |user|
       pages.each do |page|         
@@ -88,7 +91,10 @@ class PageTest < ActiveSupport::TestCase
     pages << Page.new( user_id: @wido.id, editability: nil, visibility: nil  )
     users = User.all
     [nil, "user", "editor", "admin"].each do |role|
-      users << User.new( role: role )
+	  # changed from 
+	  # users += User.new( role: role )
+	  # for Rails 5
+      users.create(role: role)
     end
     users.each do |user|
       pages.each do |page|        

@@ -15,7 +15,7 @@ puts "simple cov started"
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
- 
+  
   (1..10).each {puts "."}
   puts "[ javascript is " + ( Rails.configuration.use_javascript ? "on ]" : "off ]" ) 
   puts "[ caching is " + ( Rails.configuration.page_caching ? "on ]" : "off ]" )   
@@ -51,6 +51,6 @@ class ActiveSupport::TestCase
   def delete_storage_directories_with_content
     FileUtils.rm_rf( File.join( Rails.root , 'public/storage/testsite45A67' )  )
   end
-  
+
 end
 

@@ -62,9 +62,9 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
       
     # enters correct password and gets logged in and session is created
     if @not_java  
-      post "/_prove_it", claim: "arnaud", password: "secret"
+      post "/_prove_it", claim: "arnaud", xylophone: "secret"
     else
-      xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
+      xhr :post, "/_prove_it", claim: "arnaud", xylophone: "secret"
     end
     assert_root_path_redirect    
     assert_equal flash[:notice], 'arnaud logged in'
@@ -148,10 +148,10 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     
     # sets the password and gets logged in
     if @not_java
-      post "/_ur_secrets", user_id: @user_francois.id, password: 'secret', password_confirmation: 'secret' 
+      post "/_ur_secrets", user_id: @user_francois.id, xylophone: 'secret', xylophone_confirmation: 'secret' 
     else
       xhr :post, "/_ur_secrets", user_id: @user_francois.id, 
-                        password: 'secret', password_confirmation: 'secret'   
+                        xylophone: 'secret', xylophone_confirmation: 'secret'   
     end
     
     assert_root_path_redirect

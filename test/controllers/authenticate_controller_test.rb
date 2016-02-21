@@ -29,6 +29,7 @@ class AuthenticateControllerTest < ActionController::TestCase
   end
   
 
+
   test "should post prove_it_with_user_name" do
     if @not_java
       post :prove_it, claim: "some weird name"
@@ -49,25 +50,25 @@ class AuthenticateControllerTest < ActionController::TestCase
   test "prove_it with correct password" do
     @controller.session[:password_retries] = 0
     if @not_java  
-      post :prove_it, claim: "wido", password: "secret"
+      post :prove_it, claim: "wido", xylophone: "secret"
     else
-      xhr :post, :prove_it, claim: "wido", password: "secret"
+      xhr :post, :prove_it, claim: "wido", xylophone: "secret"
     end
     assert_root_path_redirect    
     assert_equal flash[:notice], 'wido logged in'
     assert_equal @controller.session[:password_retries], nil
     assert_equal @controller.session[:user_session_id], UserSession.last.id   
   end
-  
+     
   test "prove_it with incorrect password" do
     @controller.session[:password_retries] = 0
     if @not_java
-      post :prove_it, claim: "wido", password: "secret1"
+      post :prove_it, claim: "wido", xylophone: "secret1"
       assert_response :success   
       assert_select '.form-horizontal' 
       assert_select '.control-label', /password/   
     else 
-      xhr :post, :prove_it, claim: "wido", password: "secret1"
+      xhr :post, :prove_it, claim: "wido", xylophone: "secret1"
       assert_response :success 
       assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.form-horizontal' 
@@ -82,9 +83,9 @@ class AuthenticateControllerTest < ActionController::TestCase
   test "prove_it with incorrect password too often" do
     @controller.session[:password_retries] = 3
     if @not_java
-      post :prove_it, claim: "wido", password: "secret1"
+      post :prove_it, claim: "wido", xylophone: "secret1"
     else 
-      xhr :post, :prove_it, claim: "wido", password: "secret1"
+      xhr :post, :prove_it, claim: "wido", xylophone: "secret1"
     end   
     assert_root_path_redirect    
     assert_equal flash[:alert], 'user suspended, check your email'      
@@ -94,9 +95,9 @@ class AuthenticateControllerTest < ActionController::TestCase
   test "prove_it with incorrect password too often email failed" do
     @controller.session[:password_retries] = 3
     if @not_java
-      post :prove_it, claim: "wido", password: "secret1", ab47hk: "ab47hk"
+      post :prove_it, claim: "wido", xylophone: "secret1", ab47hk: "ab47hk"
     else 
-      xhr :post, :prove_it, claim: "wido", password: "secret1", ab47hk: "ab47hk"
+      xhr :post, :prove_it, claim: "wido", xylophone: "secret1", ab47hk: "ab47hk"
     end   
     assert_root_path_redirect  
     assert flash[:alert] =~ /sending failed/
@@ -104,9 +105,9 @@ class AuthenticateControllerTest < ActionController::TestCase
           
   test "prove_it with suspended user" do
     if @not_java
-      post :prove_it, claim: "john", password: "secret"    
+      post :prove_it, claim: "john", xylophone: "secret"    
     else 
-      xhr :post, :prove_it, claim: "john", password: "secret"
+      xhr :post, :prove_it, claim: "john", xylophone: "secret"
     end
     assert_root_path_redirect    
     assert_equal flash[:alert], 'user is not activated, check your email'     
@@ -114,9 +115,9 @@ class AuthenticateControllerTest < ActionController::TestCase
   
   test "prove_it with noexisting user" do
     if @not_java
-      post :prove_it, claim: "john1", password: "secret" 
+      post :prove_it, claim: "john1", xylophone: "secret" 
     else 
-      xhr :post, :prove_it, claim: "john1", password: "secret"
+      xhr :post, :prove_it, claim: "john1", xylophone: "secret"
     end
     assert_root_path_redirect    
     assert_equal flash[:alert], "username/password is incorrect!" 
@@ -300,13 +301,13 @@ class AuthenticateControllerTest < ActionController::TestCase
 
   test "ur_secrets post with correct user_id and not matching passwords" do
     if @not_java
-      post :ur_secrets, user_id: @user_john.id, password: 'secret', password_confirmation: 'secret2' 
+      post :ur_secrets, user_id: @user_john.id, xylophone: 'secret', xylophone_confirmation: 'secret2' 
       assert_response :success 
       assert_select '.form-horizontal'    
       assert_select '.control-label', /password/ 
       assert_select '.control-label', /confirmation/         
     else
-      xhr :post, :ur_secrets, user_id: @user_john.id, password: 'secret', password_confirmation: 'secret2' 
+      xhr :post, :ur_secrets, user_id: @user_john.id, xylophone: 'secret', xylophone_confirmation: 'secret2' 
       assert_response :success      
       assert_select_jquery :html, '#authentication_dialogue_js' do
         assert_select '.form-horizontal'
@@ -321,10 +322,10 @@ class AuthenticateControllerTest < ActionController::TestCase
 
   test "ur_secrets post with correct user_id and correct passwords" do
     if @not_java
-      post :ur_secrets, user_id: @user_john.id, password: 'secret', password_confirmation: 'secret' 
+      post :ur_secrets, user_id: @user_john.id, xylophone: 'secret', xylophone_confirmation: 'secret' 
     else
       xhr :post, :ur_secrets, user_id: @user_john.id, 
-                        password: 'secret', password_confirmation: 'secret'   
+                        xylophone: 'secret', xylophone_confirmation: 'secret'   
     end
     assert_root_path_redirect
     assert_equal flash[:notice], "password set!"         
@@ -355,9 +356,6 @@ class AuthenticateControllerTest < ActionController::TestCase
     assert_nil session[:reset_user_id]
   end
 
-  #p flash[:notice]
-  #p flash[:alert]   
-  #p assert assigns(:current_user).errors.count  
 
   private
   
