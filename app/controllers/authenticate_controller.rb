@@ -42,7 +42,7 @@ class AuthenticateController < ApplicationController
             @current_user.token = nil if @eft == 'ab47hk'
             begin
               # and send him an email
-              AuthenticationNotifier.reset(@current_user, request).deliver_now
+              AuthenticationNotifier.reset(@current_user, request).deliver #_now
               redirect_to_root_js_or_html alert: "user suspended, check your email"
             rescue Exception => e           
               redirect_to_root_js_or_html alert: "user suspended, but email sending failed #{e}"
@@ -73,7 +73,7 @@ class AuthenticateController < ApplicationController
       @current_user.token = nil if @eft == 'ab47hk'
       if @current_user.save  
         begin  
-          AuthenticationNotifier.registration(@current_user,request).deliver_now
+          AuthenticationNotifier.registration(@current_user,request).deliver #_now
           create_new_user_session( @current_user )
           redirect_to_root_js_or_html notice: "you are logged in, we sent an activation email for the next time!"
         rescue Exception => e
@@ -135,7 +135,7 @@ class AuthenticateController < ApplicationController
     if user = User.find_by_email_or_username( params[:claim] ) 
       begin
         user.suspend_and_save
-        AuthenticationNotifier.reset(user, request).deliver_now        
+        AuthenticationNotifier.reset(user, request).deliver #_now        
         redirect_to_root_html notice: "user #{user.username} suspended, check your email"
       rescue Exception => e           
         redirect_to_root_html alert: "user suspended, but email sending failed #{e}"
