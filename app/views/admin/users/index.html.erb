@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>ID</th>
-      <th>Username</th>
+      <th>Username </th>
       <th>Email</th>
       <th>Role</th>
       <th>Active</th>
@@ -18,7 +18,7 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= user.id %></td>
-        <td><%= user.username %></td>
+        <td><%= link_to user.username, user %></td>
         <td><%= user.email %></td>
         <td><%= user.role %></td>
         <td><%= user.active %></td>

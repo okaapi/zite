@@ -14,6 +14,8 @@
       parameters.delete(:action)
       parameters.delete(:controller)      
       parameters.delete(:password) if parameters[:password]      
+      parameters.delete(:authenticity_token)
+      parameters.delete(:utf8)
       parameters[:filename] = p[:file].original_filename if p[:file]
       user_action.params = parameters.to_s[0..PARAMS_CLIP]   
       user_action.save

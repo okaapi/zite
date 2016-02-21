@@ -184,6 +184,7 @@ class AuthenticateController < ApplicationController
       user_session = UserSession.new_ip_and_client( user, request.remote_ip(),
                                                    request.env['HTTP_USER_AGENT'])
       session[:user_session_id] = user_session.id     
+      UserAction.add_action( user_session.id, controller_name, action_name, params )            
     end
   
 end

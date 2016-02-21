@@ -47,6 +47,7 @@ class ApplicationController < ActionController::Base
 	  #  
       UserAction.add_action( @current_user_session.id, controller_name, action_name, params )            
 
+
   end
      
 end
