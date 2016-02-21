@@ -8,11 +8,13 @@ module SeiteHelper
     end
   end
   def viewable( seite, user )
+  
     if seite
       return seite.visible_by_user( user ? user.role : nil, user ? user.id : nil )
     else
       nil
     end
+
   end  
   def is_admin( user )
     ( user and user.admin? )

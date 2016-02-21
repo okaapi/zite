@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   post "_prove_it" => "authenticate#prove_it", as: 'prove_it'
   post "_about_urself" => "authenticate#about_urself", as: 'about_urself'
   get "_from_mail/(:user_token)" => "authenticate#from_mail", as: 'from_mail'
-  post "_ur_secrets" => "authenticate#ur_secrets", as: "ur_secrets", as: 'ur_secrets'
+  post "_ur_secrets" => "authenticate#ur_secrets", as: "ur_secrets"
   get "_reset_mail" => "authenticate#reset_mail", as: 'reset_mail'
   get "_see_u" => "authenticate#see_u", as: 'see_u'
     

@@ -3,15 +3,16 @@ source 'https://rubygems.org'
 gem 'tzinfo-data'
 gem 'simplecov'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.6'
+gem 'rails', '5.0.0.beta2' #  '4.2.5.1' 
 # Use mysql as the database for Active Record
-gem 'mysql'
+#gem 'mysql2'
+gem 'mysql2', '~> 0.3.18'
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.3'
+gem 'sass-rails'  
 # Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
+gem 'uglifier'  
 # Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
+gem 'coffee-rails' 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer',  platforms: :ruby
 
@@ -21,7 +22,7 @@ gem 'jquery-ui-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder' 
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
@@ -40,8 +41,9 @@ gem 'bcrypt-ruby'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'rails-controller-testing'
 # not sure why I need this
-gem 'docile', '1.1.5'
+gem 'docile' 
 
 gem 'bootstrap-sass'   
 gem 'autoprefixer-rails'   

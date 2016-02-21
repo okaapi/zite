@@ -1,3 +1,5 @@
+
+
 class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -23,7 +25,7 @@ class ApplicationController < ActionController::Base
       else 
         ZiteActiveRecord.site( request.host )
       end
-
+	  
       #
       #  set the current user session
       #
@@ -31,10 +33,12 @@ class ApplicationController < ActionController::Base
 
 	    @current_user_session = UserSession.new_ip_and_client( nil, request.remote_ip(),
 	                                                               request.env['HTTP_USER_AGENT'])
-	    session[:user_session_id] = @current_user_session.id                                                                           
+	    session[:user_session_id] = @current_user_session.id    
 	  end 
+  
 	  if @current_user_session.site != ZiteActiveRecord.site?
 	    redirect_to '/', alert: "name mismatch #{@current_user_session.site} #{request.host}"
+		return
 	  end
 	  
 	  #
