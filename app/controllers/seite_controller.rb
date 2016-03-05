@@ -24,6 +24,7 @@ class SeiteController < ApplicationController
   
   def pageupdate
     
+
     if ! @current_user
       redirect_to root_path, alert: "need to login first..."
       return
