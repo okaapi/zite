@@ -27,6 +27,12 @@ module Admin
 	  def edit
 	  end
 	
+	  def role_change
+	    @user = User.find( params[:id] )
+	    @user.change_role( params[:role] )
+	    redirect_to action: :index
+	  end
+	  
 	  # POST /users
 	  # POST /users.json
 	  def create
@@ -49,7 +55,7 @@ module Admin
 	    respond_to do |format|
 	      if @user.update(user_params)
 	        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-	        format.json { head :no_content }
+	        format.json { render :show, status: :ok, location: @union }
 	      else
 	        format.html { render action: 'edit' }
 	        format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -66,7 +72,7 @@ module Admin
 	      format.json { head :no_content }
 	    end
 	  end
-	
+	  	
 	  private
 	    # Use callbacks to share common setup or constraints between actions.
 	    def set_user

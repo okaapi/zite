@@ -34,7 +34,7 @@ require 'securerandom'
       self.active = 'suspended'
       self.save
     end
-   
+       
     def confirmed?
       ( active == 'confirmed' )
     end
@@ -43,5 +43,15 @@ require 'securerandom'
       ( role == 'admin')
     end
 
+    def change_role( new_role )
+      if ['admin','user','editor'].include? new_role
+        self.update_attribute( :role, new_role )
+      end
+    end
+    
+    def confirm
+      self.update_attribute( :active, confirmed )
+    end    
+    
   end
   

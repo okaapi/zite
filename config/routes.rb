@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   # these should only be available to administrators...
   scope module: 'admin' do  
     resources :users
+    get 'users/:id/role_change/:role' => 'users#role_change', as: 'role_change'    
     resources :user_actions
     resources :user_sessions  
     resources :pages 

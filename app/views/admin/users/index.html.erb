@@ -7,7 +7,10 @@
       <th>Username </th>
       <th>Email</th>
       <th>Role</th>
+      <th></th>
+      <th></th>            
       <th>Active</th>
+      <th>Token</th>
       <th></th>
       <th></th>
       <th></th>
@@ -20,8 +23,13 @@
         <td><%= user.id %></td>
         <td><%= link_to user.username, user %></td>
         <td><%= user.email %></td>
-        <td><%= user.role %></td>
+        <% ['user','editor','admin'].each do |r| %>
+          <td>
+            <%= ( user.role == r ) ? r.upcase : link_to( r, role_change_path( user, r) ) %>
+          </td>
+        <% end %>
         <td><%= user.active %></td>
+        <td><%= link_to( user.token, from_mail_path( user.token ) ) if user.token %></td>        
         <td><%= link_to 'Show', user %></td>
         <td><%= link_to 'Edit', edit_user_path(user) %></td>
         <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
