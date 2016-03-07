@@ -27,8 +27,6 @@ module Zite
       mail_config["server"].merge(mail_config["credentials"]).symbolize_keys
     config.action_mailer.raise_delivery_errors = true
 
-    # attempt to use a different path for images...
-    #config.assets.paths << Rails.root.join('attachments').to_s
     config.autoload_paths << Rails.root.join('lib')
     
     
