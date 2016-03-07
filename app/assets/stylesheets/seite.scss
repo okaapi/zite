@@ -1,0 +1,62 @@
+
+.header { float:left; }
+.menu { float:left; }
+.left { float:left; }
+.center { float:left; }
+.right { float:left; }
+.footer { float:left; }
+
+
+
+.pindiv {
+  margin: 5px;
+  display: flex; /* was: box */
+  background-color: #EFEFEF;
+  float:left;
+}
+.pindiv .pinmargin {
+  height: 150px;
+  margin: 7px;
+  padding: 0px;
+  overflow: hidden;
+}
+.pindiv img {
+  margin: 3px;
+}
+.pindiv h3 {
+  margin-top: 5px;
+}
+
+#pageupdate {
+  width: 100%; 
+  a {
+    font-size: smaller;
+  }
+  textarea {
+    width: 100%;
+    overflow: hidden;
+    border: none;
+    background-color: #EEEEEE;
+  }
+  input[type=submit]:hover {
+    color: red 
+  }  
+  #files {
+    td { border: 2px solid white; padding: 10px; }   
+    span:hover { color: red }  
+    .grab_box { 
+      padding: 0px 10px 0px 10px;
+      color: blue; 
+      &:hover {
+       color: red;
+      }
+    }
+  }  
+}
+
+
+
+ 
+      
+      
+
