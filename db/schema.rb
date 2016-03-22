@@ -13,63 +13,63 @@
 
 ActiveRecord::Schema.define(version: 20150916012017) do
 
-  create_table "pages", force: true do |t|
-    t.string   "name"
-    t.text     "content"
-    t.integer  "user_id"
-    t.string   "visibility",  default: "any"
-    t.string   "editability", default: "editor"
-    t.string   "menu",        default: "true"
-    t.string   "lock",        default: "false"
-    t.string   "editor",      default: "wysiwyg"
+  create_table "pages", force: :cascade do |t|
+    t.string   "name",        limit: 255
+    t.text     "content",     limit: 65535
+    t.integer  "user_id",     limit: 4
+    t.string   "visibility",  limit: 255,   default: "any"
+    t.string   "editability", limit: 255,   default: "editor"
+    t.string   "menu",        limit: 255,   default: "true"
+    t.string   "lock",        limit: 255,   default: "false"
+    t.string   "editor",      limit: 255,   default: "wysiwyg"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "site",        default: "localhost"
-    t.string   "meta_desc"
+    t.string   "site",        limit: 255,   default: "localhost"
+    t.string   "meta_desc",   limit: 255
   end
 
-  create_table "site_maps", force: true do |t|
-    t.string   "external"
-    t.string   "internal"
-    t.string   "aux"
+  create_table "site_maps", force: :cascade do |t|
+    t.string   "external",   limit: 255
+    t.string   "internal",   limit: 255
+    t.string   "aux",        limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "user_actions", force: true do |t|
-    t.integer  "user_session_id"
-    t.string   "controller"
-    t.string   "action"
-    t.string   "params"
+  create_table "user_actions", force: :cascade do |t|
+    t.integer  "user_session_id", limit: 4
+    t.string   "controller",      limit: 255
+    t.string   "action",          limit: 255
+    t.string   "params",          limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "site",            default: "localhost"
+    t.string   "site",            limit: 255, default: "localhost"
   end
 
   add_index "user_actions", ["user_session_id"], name: "index_user_actions_on_user_session_id", using: :btree
 
-  create_table "user_sessions", force: true do |t|
-    t.integer  "user_id"
-    t.string   "client"
-    t.string   "ip"
+  create_table "user_sessions", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.string   "client",     limit: 255
+    t.string   "ip",         limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "site",       default: "localhost"
+    t.string   "site",       limit: 255, default: "localhost"
   end
 
   add_index "user_sessions", ["user_id"], name: "index_user_sessions_on_user_id", using: :btree
 
-  create_table "users", force: true do |t|
-    t.string   "username"
-    t.string   "email"
-    t.string   "alternate_email", default: ""
-    t.string   "password_digest"
-    t.string   "token"
-    t.string   "role",            default: "user"
-    t.string   "active",          default: "unconfirmed"
+  create_table "users", force: :cascade do |t|
+    t.string   "username",        limit: 255
+    t.string   "email",           limit: 255
+    t.string   "alternate_email", limit: 255, default: ""
+    t.string   "password_digest", limit: 255
+    t.string   "token",           limit: 255
+    t.string   "role",            limit: 255, default: "user"
+    t.string   "active",          limit: 255, default: "unconfirmed"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "site",            default: "localhost"
+    t.string   "site",            limit: 255, default: "localhost"
   end
 
 end

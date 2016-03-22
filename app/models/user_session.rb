@@ -35,17 +35,14 @@
     def self.recover( session_id )
       
       return if !session_id
-      
-      begin
-        usession = self.find( session_id )
-        if usession.idle < SESSION_TIMEOUT
-          usession.id_will_change!  # make random attribute dirty
-          usession.save             # to update updated_at
-          return usession         
-        else
-          return nil
-        end
-      rescue ActiveRecord::RecordNotFound   
+
+      u = self.where( id: session_id )
+      usession = u[0] ? u[0] : nil       
+      if usession and usession.idle < SESSION_TIMEOUT
+        usession.id_will_change!  # make random attribute dirty
+        usession.save             # to update updated_at
+        return usession         
+      else
         return nil
       end
             
