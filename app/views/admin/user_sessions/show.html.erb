@@ -18,7 +18,7 @@
 <%= link_to 'Back', user_sessions_path %>
 
 <small>
-	<h2>Actions for Session <%= @user_session %> </h2>
+	<h2>Actions for Session <%= @user_session.id %> </h2>
 	
 	<% @user_session.user_actions.reverse.each do |action| %>
 	  <tiny>
