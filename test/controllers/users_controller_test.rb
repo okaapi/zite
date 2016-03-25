@@ -11,7 +11,7 @@ module Admin
 	    admin_login_4_test
 	    request.host = 'testhost45A67'	    
 	  end
-	
+	  
 	  test "should get index" do
 	    get :index    
 	    assert_response :success
@@ -125,6 +125,14 @@ module Admin
 	    assert_redirected_to users_path    
 	    
 	  end 
+	  
+	  test "change role of user as admin" do
+        @user_arnaud = users(:arnaud)
+        assert_equal @user_arnaud.role, 'user'
+        get :role_change, id: @user_arnaud.id, role: 'admin'
+        @user_arnaud = User.find( @user_arnaud.id )
+        assert_equal @user_arnaud.role, 'admin'        
+      end
 
 	end
 

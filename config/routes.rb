@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-   
+  
   # these are the actions related to authentication
   get "_who_are_u" => "authenticate#who_are_u", as: 'who_are_u'
   post "_prove_it" => "authenticate#prove_it", as: 'prove_it'
@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     
   # these should only be available to administrators...
   scope module: 'admin' do  
+  
+    # for authentication  
     resources :users
     get 'users/:id/role_change/:role' => 'users#role_change', as: 'role_change'    
     resources :user_actions

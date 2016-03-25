@@ -14,7 +14,7 @@
   <meta name="description" content="<%= @meta_desc %>" />
 </head>
 <body>
-  
+
   <div class="container">
   
     <div class="row">
@@ -26,15 +26,14 @@
 		<% end %>  
 		<% if flash[:notice] %>
 		  <div class="alert alert-success" role="alert">
-		    <%= flash[:notice] %>
+		    <%= simple_format( flash[:notice] ) %>
 		  </div>
 		<% end %>
         <div id="spinner">
-			<%= image_tag "spinner.gif", width: 30 %>
-                   <div class="alert alert-warning" role="alert">
-                     <i class="glyphicon glyphicon-repeat"></i>
+		  <div class="alert alert-warning" role="alert">
+               <%= image_tag "spinner.gif", width: 30 %>                   
 		      &nbsp; wait...     
-                   </div>
+          </div>
 		</div>        
       </div>    
     </div>
@@ -81,7 +80,5 @@
     
   </div>
 
-
 </body>
 </html>
-

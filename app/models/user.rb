@@ -42,6 +42,12 @@ require 'securerandom'
     def admin?
       ( role == 'admin')
     end
+    def editor?
+      ( role == 'admin' or role == 'editor' )
+    end
+    def user?
+       ( role == 'admin' or role == 'editor' or role == 'user')
+    end
 
     def change_role( new_role )
       if ['admin','user','editor'].include? new_role
