@@ -6,16 +6,17 @@ class SeiteControllerTest < ActionController::TestCase
     ZiteActiveRecord.site( 'testsite45A67' )
     @page = pages(:one)
     @wido = users(:admin)
-    request.host = 'testhost45A67'	    
+    request.host = 'testhost45A67'	 
+    if Rails.configuration.page_caching            
+      delete_cache_directories_with_content
+    end 
   end
   
   test "should get index" do
     get :index
     assert_response :success
             
-    if Rails.configuration.page_caching            
-      delete_cache_directories_with_content
-    end 
+
   end
  
   test "should get index logged in" do

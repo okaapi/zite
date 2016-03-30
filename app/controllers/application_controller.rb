@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
     unless @current_user and @current_user.role == "admin"
       redirect_to '/', notice: "must be admin"
     end
-  end 
- 
+  end
+  
   private
   
   def set_current_user_session_and_create_action

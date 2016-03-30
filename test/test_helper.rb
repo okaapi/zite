@@ -17,7 +17,6 @@ class ActiveSupport::TestCase
   fixtures :all
   
   (1..10).each {puts "."}
-  puts "[ javascript is " + ( Rails.configuration.use_javascript ? "on ]" : "off ]" ) 
   puts "[ caching is " + ( Rails.configuration.page_caching ? "on ]" : "off ]" )   
 
   def admin_login_4_test

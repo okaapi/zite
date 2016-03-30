@@ -11,7 +11,7 @@ class AuthenticationNotifierTest < ActionMailer::TestCase
     @current_user = users( :john )
     @request = ActionController::TestRequest.new
     @path = @request.protocol + @request.host + ':' + @request.port.to_s +
-              '/_from_mail/' +  @current_user.token    
+              '/_from_mail/' +  @current_user.token               
     mail = AuthenticationNotifier.registration( @current_user, @request )
     assert_equal "Okaapi registration confirmation", mail.subject
     assert_equal [@current_user.email], mail.to
@@ -31,5 +31,11 @@ class AuthenticationNotifierTest < ActionMailer::TestCase
     assert_match @path, mail.body.encoded
     assert_match 'john_token', mail.body.encoded
   end
+  test "test" do
+    @current_user = users( :john )
+    mail = AuthenticationNotifier.test( @current_user.email )
+    assert_equal mail.subject, 'Okaapi test'
+  end
 
 end
+

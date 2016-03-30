@@ -59,6 +59,12 @@ module Admin
 	    patch :update, id: @user_action, user_action: { action: @user_action.action, controller: @user_action.controller, user_session_id: @user_action.user_session_id }
 	    assert_redirected_to user_action_path(assigns(:user_action))
 	  end
+	  
+	  test "should update user_action invalid" do
+	    patch :update, id: @user_action, user_action: { action: @user_action.action, controller: @user_action.controller, user_session_id: 7 }
+	    assert_response :success
+	    assert_equal assigns(:user_action).errors.count, 1
+	  end
 	
 	  test "should destroy user_action" do
 	    assert_no_difference('UserAction.count' ) do

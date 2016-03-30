@@ -13,8 +13,8 @@
       parameters = p.clone
       parameters.delete(:action)
       parameters.delete(:controller)      
-      parameters.delete(:xylophone) if parameters[:xylophone]      
-      parameters.delete(:xylophone_confirmation) if parameters[:xylophone_confirmation]            
+      parameters.delete(:password) if parameters[:password]      
+      parameters.delete(:password_confirmation) if parameters[:password_confirmation]            
       parameters.delete(:authenticity_token)
       parameters.delete(:utf8)
       parameters[:filename] = p[:file].original_filename if p[:file]

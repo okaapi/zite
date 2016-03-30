@@ -118,10 +118,10 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     
     # enters correct password and gets logged in and session is created
     if @not_java
-      post "/_prove_it", claim: "arnaud", xylophone: "secret"
+      post "/_prove_it", claim: "arnaud", password: "secret"
       assert_redirected_to root_path
     else
-      xhr :post, "/_prove_it", claim: "arnaud", xylophone: "secret"
+      xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
       assert_response :success
     end
     assert_equal flash[:notice], 'arnaud logged in'
@@ -153,10 +153,10 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   
     # enters correct password and gets logged in and session is created
     if @not_java
-      post "/_prove_it", claim: "wido_admin", xylophone: "secret"
+      post "/_prove_it", claim: "wido_admin", password: "secret"
       assert_redirected_to root_path
     else
-      xhr :post, "/_prove_it", claim: "wido_admin", xylophone: "secret"
+      xhr :post, "/_prove_it", claim: "wido_admin", password: "secret"
       assert_response :success
     end
     assert_equal flash[:notice], 'wido_admin logged in'

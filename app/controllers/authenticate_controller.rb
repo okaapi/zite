@@ -12,7 +12,7 @@ class AuthenticateController < ApplicationController
     Page.uncache_all( request.host )
     
     @claim = params[:claim]
-    @password = params[:xylophone]
+    @password = params[:password]
     # this is for testing email failure exception code    
     @eft = params[:ab47hk]
         
@@ -114,8 +114,8 @@ class AuthenticateController < ApplicationController
        
     # set the new password
     if @current_user = User.find_by_id( user_id )
-      @current_user.password = params[:xylophone]
-      @current_user.password_confirmation = params[:xylophone_confirmation] 
+      @current_user.password = params[:password]
+      @current_user.password_confirmation = params[:password_confirmation] 
       @current_user.active = 'confirmed'
       @current_user.token = nil
       if @current_user.save # succes!

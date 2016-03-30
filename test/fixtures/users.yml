@@ -55,7 +55,7 @@ arnaud:
     
 francois:
   username: francois
-  email: francoise@gmail.com
+  email: francois@gmail.com
   password_digest: <%= BCrypt::Password.create('secret') %>
   token: francois_token
   site: testsite45A67
