@@ -20,7 +20,7 @@
         begin
           User.find(user_id)
         rescue
-          errors.add( :user_id, "has to be valid")
+          errors.add( :user_id, "has to be valid, #{user_id} is not")
           false
         end
       end
