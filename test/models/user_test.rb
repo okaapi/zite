@@ -24,6 +24,10 @@ class UserTest < ActiveSupport::TestCase
     assert_not u
   end
   
+  test 'admin_emails' do
+    assert_equal ["wido_admin@mmm.com", "wido@mmm.com"], User.admin_emails
+  end
+
 end
 
 end

@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'pp'
 
 class AuthenticationNotifierTest < ActionMailer::TestCase
   
@@ -12,24 +13,31 @@ class AuthenticationNotifierTest < ActionMailer::TestCase
     @request = ActionController::TestRequest.new
     @path = @request.protocol + @request.host + ':' + @request.port.to_s +
               '/_from_mail/' +  @current_user.token               
-    mail = AuthenticationNotifier.registration( @current_user, @request )
-    assert_equal "Okaapi registration confirmation", mail.subject
+    mail = AuthenticationNotifier.registration( @current_user, @request, ['a@a.com', 'b@b.com'] )
+    assert_equal "Registration information for test.host", mail.subject
     assert_equal [@current_user.email], mail.to
     assert_equal ["noreply@okaapi.com"], mail.from
+    assert_equal ['a@a.com', 'b@b.com'], mail.bcc
+    assert_equal "test.host <noreply@okaapi.com>", mail['from'].value
+    assert_equal "Registration information for test.host", mail.subject
     assert_match @path, mail.body.encoded
     assert_match 'john_token', mail.body.encoded
+    assert_match 'test.host', mail.body.encoded      
   end
   test "reset" do
     @current_user = users( :john )
     @request = ActionController::TestRequest.new
     @path = @request.protocol + @request.host + ':' + @request.port.to_s +
               '/_from_mail/' +  @current_user.token    
-    mail = AuthenticationNotifier.reset( @current_user, @request )
-    assert_equal "Okaapi password reset", mail.subject
+    mail = AuthenticationNotifier.reset( @current_user, @request, 'a@a.com' )
+    assert_equal "Password reset information for test.host", mail.subject
     assert_equal [@current_user.email], mail.to
     assert_equal ["noreply@okaapi.com"], mail.from
+    assert_equal ["a@a.com"], mail.bcc    
+    assert_equal "Password reset information for test.host", mail.subject    
     assert_match @path, mail.body.encoded
     assert_match 'john_token', mail.body.encoded
+    assert_match 'test.host', mail.body.encoded    
   end
   test "test" do
     @current_user = users( :john )

@@ -1,5 +1,10 @@
-Dear <%= @current_user.username %>,
 
-Please check <%=@path%>  to reset your password.
+Dear <%= @current_user.username %>, 
 
-Your Team at Okaapi!
+Please check 
+
+<%= link_to 'here', @path %>
+
+to reset your password.
+
+Your Team at <%= @site %> !

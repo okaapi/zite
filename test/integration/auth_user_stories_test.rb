@@ -211,7 +211,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	    
 	    # has email been sent?
 	    assert_equal Rails.configuration.action_mailer.delivery_method, :test
-	    assert_equal ActionMailer::Base.deliveries[0].subject, "Okaapi registration confirmation"
+	    assert_equal ActionMailer::Base.deliveries[0].subject, "Registration information for testhost45A67"
 	    assert_equal ActionMailer::Base.deliveries[0].to[0], "jim@gmail.com"
 	    
 	    # refreshes and confirms that user is shown as logged in

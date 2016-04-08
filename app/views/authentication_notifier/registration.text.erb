@@ -1,6 +1,11 @@
 
-Dear <%= @current_user.username %>,
 
-your account has been created, please check <%=@path%>  to set your password.
+Dear <%= @current_user.username %>, 
 
-Your Team at Okaapi!
+your account has been created, please check 
+
+<%= link_to 'here', @path %>
+
+to set your password.
+
+Your Team at <%= @site %> !

@@ -108,7 +108,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	      xhr :post, :prove_it, claim: "wido", password: "secret1"
 	    end   
 	    assert_root_path_redirect    
-	    assert_equal flash[:alert], 'user suspended, check your email'      
+	    assert_equal flash[:alert], 'user suspended, check your email (including SPAM folder)'      
 	    assert_equal @controller.session[:password_retries], 3
     end	    
   end
@@ -139,7 +139,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	      xhr :post, :prove_it, claim: "john", password: "secret"
 	    end
 	    assert_root_path_redirect    
-	    assert_equal flash[:alert], 'user is not activated, check your email' 
+	    assert_equal flash[:alert], 'user is not activated, check your email (including SPAM folder)' 
     end	        
   end  
   
@@ -430,7 +430,7 @@ class AuthenticateControllerTest < ActionController::TestCase
     @controller.session[:user_session_id] = @session_wido.id
     get :reset_mail, claim: "wido"
     assert_redirected_to root_path
-    assert_equal flash[:notice], "user wido suspended, check your email" 
+    assert_equal flash[:notice], "user wido suspended, check your email (including SPAM folder)" 
     assert_nil @controller.session[:user_session_id]      
   end
   

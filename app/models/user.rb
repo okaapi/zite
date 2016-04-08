@@ -40,7 +40,13 @@ require 'securerandom'
     end
     
     def admin?
-      ( role == 'admin')
+      ( role == 'admin')     
+    end
+    def self.admin_emails
+      admins = User.where( role: 'admin' )
+      emails = []
+      admins.each {|a| emails << a.email }
+      emails
     end
     def editor?
       ( role == 'admin' or role == 'editor' )
