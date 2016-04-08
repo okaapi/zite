@@ -43,6 +43,7 @@ class AuthenticateController < ApplicationController
             begin
               # and send him an email
               AuthenticationNotifier.reset(@current_user, request, User.admin_emails).deliver_now           
+              reset_session
               redirect_to_root_js_or_html alert: "user suspended, check your email (including SPAM folder)"
             rescue Exception => e         
               redirect_to_root_js_or_html alert: "user suspended, but email sending failed 3 #{e}"
@@ -136,6 +137,7 @@ class AuthenticateController < ApplicationController
       begin
         user.suspend_and_save
         AuthenticationNotifier.reset(user, request,User.admin_emails).deliver_now
+        reset_session  
         redirect_to_root_html notice: "user #{user.username} suspended, check your email (including SPAM folder)"
       rescue Exception => e           
         redirect_to_root_html alert: "user suspended, but email sending failed 2 #{e}"
