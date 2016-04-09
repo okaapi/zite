@@ -27,6 +27,9 @@ Rails.application.routes.draw do
   post 'file_upload' => 'seite#file_upload', as: 'file_upload'
   post 'file_delete' => 'seite#file_delete', as: 'file_delete'
   
+  # route for searching
+  get '_search/:term' => 'seite#search', as: 'search'
+  
   # this is the route for viewing
   get '(:seite)' => "seite#index", as: 'seite'
   root "seite#index", as: "root"

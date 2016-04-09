@@ -1,0 +1,9 @@
+
+
+<h1> Search Results </h1>
+
+<% @array_of_names.each do |name| %>
+
+  <h3><%= link_to name, seite_path( seite: name ) %></h3>
+  
+<% end %>

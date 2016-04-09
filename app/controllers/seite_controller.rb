@@ -112,6 +112,22 @@ class SeiteController < ApplicationController
     
   end
   
+  def search
+  
+    if ! @current_user
+      redirect_to root_path, alert: "need to login first..."
+      return
+    end
+      
+    @term = params[:term]    
+    sql = "select id, name, updated_at from pages where (name, updated_at) in (select name, max(updated_at) from pages group by name) " + 
+          "and content like '%#{@term}%' and site = '#{ZiteActiveRecord.site?}'"   
+    res = ActiveRecord::Base.connection.execute(sql)
+    @array_of_names = []
+    res.each {|r| @array_of_names << r[1]}
+    
+  end
+  
   private
 
   
