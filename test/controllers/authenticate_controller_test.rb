@@ -109,7 +109,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    end   
 	    assert_root_path_redirect    
 	    assert_equal flash[:alert], 'user suspended, check your email (including SPAM folder)'      
-	    assert_equal @controller.session[:password_retries], 3
+	    assert_equal @controller.session[:password_retries], nil
     end	    
   end
 
