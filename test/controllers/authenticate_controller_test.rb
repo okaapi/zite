@@ -152,10 +152,26 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    else 
 	      xhr :post, :prove_it, claim: "john1", password: "secret"
 	    end
-	    assert_root_path_redirect    
-	    assert_equal flash[:alert], "username/password is incorrect!" 
+		assert_response :success 
+	    assert_nil flash[:alert]
     end	    
   end    
+  
+  test "prove_it with noexisting user too many retries" do
+    [true,false].each do |java|                 
+        Rails.configuration.use_javascript = java
+        @not_java = ! Rails.configuration.use_javascript   
+        @controller.session[:password_retries] = 3		
+	    if @not_java
+	      post :prove_it, claim: "john1", password: "secret" 
+	    else 
+	      xhr :post, :prove_it, claim: "john1", password: "secret"
+	    end
+        assert_root_path_redirect    
+	    assert_equal flash[:alert], "password for \"john1\" is incorrect!" 
+    end	    
+  end   
+  
 
   test "about_urself" do
     [true,false].each do |java|                 

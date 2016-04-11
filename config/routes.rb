@@ -29,6 +29,8 @@ Rails.application.routes.draw do
   
   # route for searching
   get '_search/:term' => 'seite#search', as: 'search'
+  get '_check/(:code)' => 'seite#check', as: 'check'  
+  get '_clear' => 'seite#clear', as: 'clear'    
   
   # this is the route for viewing
   get '(:seite)' => "seite#index", as: 'seite'

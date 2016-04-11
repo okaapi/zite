@@ -193,5 +193,22 @@ class SeiteControllerTest < ActionController::TestCase
     delete_storage_directories_with_content
       
   end
+    
+  test "reset session" do
+    get :index
+    assert_response :success
+    assert_not_nil @controller.session[:user_session_id]	
+    get :clear
+    assert_redirected_to '/'
+	assert_nil @controller.session[:user_session_id]	
+    assert_equal flash[:alert], 'session reset...'		
+  end
+  
+  test "check" do
+    get :check
+	assert_redirected_to '/'
+	get :check, code: 17706
+    assert_response :success  
+  end
 
 end

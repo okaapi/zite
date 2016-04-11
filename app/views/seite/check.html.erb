@@ -1,0 +1,19 @@
+
+<div id="seite">
+
+Application <%= controller.controller_name %> / <%= controller.action_name %> 
+Ruby <%= RUBY_VERSION%> Rails <%= Rails.version %> <%= Rails.env %> 
+Site <%= ZiteActiveRecord.site? %> 
+User <%= @current_user.username if @current_user %> <br /><br />
+				
+request.host -<%= request.host %>- SiteMap -<%= SiteMap.find_by_external( request.host ) %>-
+ZiteActiveRecord.site? -<%= ZiteActiveRecord.site? %>- <br /><br />
+
+current_user
+<%= debug @current_user %>
+
+current_user_session
+<%= debug @current_user_session %>
+  	
+</div> 
+

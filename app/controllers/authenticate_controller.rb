@@ -19,6 +19,7 @@ class AuthenticateController < ApplicationController
     # this is the first time we come here
     if !@password
       session[:password_retries] = 0
+	  
     # now the user has offered a password
     elsif @current_user = User.find_by_email_or_username( @claim ) 
         # if that's ok
@@ -34,9 +35,8 @@ class AuthenticateController < ApplicationController
           end            
         else
           
-          # ok, let him try again, but only twice
-          @max_retries = MAX_RETRIES
-          if session[:password_retries] >= @max_retries
+          # ok, let him try again, but only twice          
+          if session[:password_retries] >= (@max_retries = MAX_RETRIES)
             # third time... suspend the user
             @current_user.suspend_and_save
             @current_user.token = nil if @eft == 'ab47hk'
@@ -50,12 +50,16 @@ class AuthenticateController < ApplicationController
             end
           else
             # else try again but increment the retries (also in the session object)
-            @retries = session[:password_retries] += 1
+            @retries = (session[:password_retries] += 1)
           end 
         end
   
     else
-      redirect_to_root_js_or_html alert: "username/password is incorrect!"
+	  session[:password_retries]||= 0
+	  @retries = ( session[:password_retries] += 1 )
+	  if session[:password_retries] >= (@max_retries = MAX_RETRIES)
+        redirect_to_root_js_or_html alert: "password for \"#{@claim}\" is incorrect!"
+     end
     end    
     
   end

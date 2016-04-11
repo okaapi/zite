@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20150916012017) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "site",        limit: 255,   default: "localhost"
+    t.string   "desc",        limit: 255,   default: "no description"
     t.string   "meta_desc",   limit: 255
   end
 
