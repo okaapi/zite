@@ -43,6 +43,11 @@ class ApplicationController < ActionController::Base
 	  #  current user (this is just a shorthand for @current_user_session.user throughout)
 	  #
 	  @current_user = @current_user_session.user
+	  if @current_user_session.user 
+	    if @current_user_session.user.site != @current_user_session.site
+	      redirect_to '/', 
+		    alert: "site mismatch #{@current_user_session.user.site} #{@current_user_session.site}"
+	  end
 	  
 	  #
 	  #  log the action
