@@ -207,7 +207,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	    end
 	    assert_root_path_redirect  
 	    assert_equal flash[:notice], 
-	      "you are logged in, we sent an activation email for the next time!" 
+	        "Please check your email jim@gmail.com (including your SPAM folder) for an email to verify it's you and set your password!"
 	    
 	    # has email been sent?
 	    assert_equal Rails.configuration.action_mailer.delivery_method, :test
@@ -253,12 +253,12 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	    end
 	    
 	    assert_root_path_redirect
-	    assert_equal flash[:notice], "password set!"         
+	    assert_equal flash[:notice], "password set, please login!"         
 	
 	    # user refreshes and username is displayed
 	    get "/"
 	    assert_response :success
-	    assert_select '#authentication_launchpad', /francois/
+	    assert_select '#authentication_launchpad', /login/ #/francois/
 	    
 	end
   end

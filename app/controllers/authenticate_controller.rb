@@ -80,7 +80,7 @@ class AuthenticateController < ApplicationController
         begin  
           AuthenticationNotifier.registration(@current_user,request,User.admin_emails).deliver_now  
           create_new_user_session( @current_user )
-          redirect_to_root_js_or_html notice: "you are logged in, we sent an activation email for the next time!"
+          redirect_to_root_js_or_html notice: "Please check your email #{@email} (including your SPAM folder) for an email to verify it's you and set your password!"
         rescue Exception => e
           @current_user.destroy if @current_user
           redirect_to_root_js_or_html alert: "we sent an activation email, but it failed 1 (#{e})."
@@ -124,8 +124,8 @@ class AuthenticateController < ApplicationController
       @current_user.active = 'confirmed'
       @current_user.token = nil
       if @current_user.save # succes!
-        create_new_user_session( @current_user )   
-        redirect_to_root_js_or_html notice: "password set!"
+        #create_new_user_session( @current_user )   
+        redirect_to_root_js_or_html notice: "password set, please login!"
       end
     else
       redirect_to_root_js_or_html alert: "leopards in the bushes!"  # something is reaaalllyyy wrong
@@ -140,8 +140,7 @@ class AuthenticateController < ApplicationController
     if user = User.find_by_email_or_username( params[:claim] ) 
       begin
         user.suspend_and_save
-        AuthenticationNotifier.reset(user, request,User.admin_emails).deliver_now
-        reset_session  
+        AuthenticationNotifier.reset(user, request,User.admin_emails).deliver_now        
         redirect_to_root_html notice: "user #{user.username} suspended, check your email (including SPAM folder)"
       rescue Exception => e           
         redirect_to_root_html alert: "user suspended, but email sending failed 2 #{e}"

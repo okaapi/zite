@@ -212,7 +212,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    assert_root_path_redirect  
 	    assert_equal flash[:alert], nil
 	    assert_equal flash[:notice], 
-	        "you are logged in, we sent an activation email for the next time!"
+	        "Please check your email jim@gmail.com (including your SPAM folder) for an email to verify it's you and set your password!"
 	    assert_equal @controller.session[:user_session_id], UserSession.last.id   
     end	        
   end
@@ -437,7 +437,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	                        password: 'secret', password_confirmation: 'secret'   
 	    end
 	    assert_root_path_redirect
-	    assert_equal flash[:notice], "password set!"         
+	    assert_equal flash[:notice], "password set, please login!"         
 	    assert_equal @controller.session[:user_session_id], UserSession.last.id 
     end	    
   end 

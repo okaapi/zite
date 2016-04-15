@@ -38,7 +38,7 @@
 	  
 	  <tiny>
 	    <% session.user_actions.reverse.each do |action| %>
-	      <%= action.created_at%> &nbsp; &nbsp; <%= action.controller %>#<%= action.action %> &nbsp; <%= action.params %><br />
+	      <%= action.created_at.to_time.strftime("%m/%d %H:%M:%S") %> &nbsp; &nbsp; <%= action.controller %>#<%= action.action %> &nbsp; <%= action.params %><br />
 	    <% end %>    
 	  </tiny>
 	       
