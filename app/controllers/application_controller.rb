@@ -45,8 +45,9 @@ class ApplicationController < ActionController::Base
 	  @current_user = @current_user_session.user
 	  if @current_user_session.user 
 	    if @current_user_session.user.site != @current_user_session.site
-	      redirect_to '/', 
-		    alert: "site mismatch #{@current_user_session.user.site} #{@current_user_session.site}"
+              #reset_session
+	      #redirect_to '/', 
+	#	    alert: "site mismatch #{@current_user_session.user.site} #{@current_user_session.site}"
         end
       end
 	  
