@@ -28,7 +28,7 @@ module Admin
 	  end
 	
 	  def role_change
-	    @user = User.find( params[:id] )
+	    @user = User.by_id( params[:id] )
 	    @user.change_role( params[:role] )
 	    redirect_to action: :index
 	  end
@@ -77,7 +77,7 @@ module Admin
 	    # Use callbacks to share common setup or constraints between actions.
 	    def set_user
 		  begin
-	        @user = User.find(params[:id])
+	        @user = User.by_id(params[:id])
 		  rescue Exception => e 	
 		    notice = "error #{e} -#{params[:id]}- -#{ZiteActiveRecord.site?}-"
             sql = "select * from users where id = #{params[:id]}"

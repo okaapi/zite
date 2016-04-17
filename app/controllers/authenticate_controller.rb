@@ -21,7 +21,7 @@ class AuthenticateController < ApplicationController
       session[:password_retries] = 0
 	  
     # now the user has offered a password
-    elsif @current_user = User.find_by_email_or_username( @claim ) 
+    elsif @current_user = User.by_email_or_username( @claim ) 
         # if that's ok
         if @current_user.authenticate( @password )
 
@@ -79,7 +79,8 @@ class AuthenticateController < ApplicationController
       if @current_user.save  
         begin  
           AuthenticationNotifier.registration(@current_user,request,User.admin_emails).deliver_now  
-          create_new_user_session( @current_user )
+		  
+		  #create_new_user_session( @current_user )
           redirect_to_root_js_or_html notice: "Please check your email #{@email} (including your SPAM folder) for an email to verify it's you and set your password!"
         rescue Exception => e
           @current_user.destroy if @current_user
@@ -96,7 +97,7 @@ class AuthenticateController < ApplicationController
     # redirection will show the ur_secrets dialogue with form to ur_secrets
     Page.uncache_all( request.host )
     @user_token = params[:user_token]
-    if @current_user = User.find_by_token( @user_token )
+    if @current_user = User.by_token( @user_token )
       # REMEMBER this user _id for ur_secrets!
       session[:reset_user_id] = @current_user.id
       redirect_to_root_html  alert: "please set your password"
@@ -118,14 +119,14 @@ class AuthenticateController < ApplicationController
     end
        
     # set the new password
-    if @current_user = User.find_by_id( user_id )
+    if @current_user = User.by_id( user_id )
       @current_user.password = params[:password]
       @current_user.password_confirmation = params[:password_confirmation] 
       @current_user.active = 'confirmed'
       @current_user.token = nil
       if @current_user.save # succes!
-        #create_new_user_session( @current_user )   
-        redirect_to_root_js_or_html notice: "password set, please login!"
+        create_new_user_session( @current_user )   
+        redirect_to_root_js_or_html notice: "password set, you are logged in!"
       end
     else
       redirect_to_root_js_or_html alert: "leopards in the bushes!"  # something is reaaalllyyy wrong
@@ -137,7 +138,7 @@ class AuthenticateController < ApplicationController
     
     # reset the session object and suspend the user, with email
     reset_session  
-    if user = User.find_by_email_or_username( params[:claim] ) 
+    if user = User.by_email_or_username( params[:claim] ) 
       begin
         user.suspend_and_save
         AuthenticationNotifier.reset(user, request,User.admin_emails).deliver_now        

@@ -261,7 +261,7 @@ class Page < ZiteActiveRecord
   
   def id_valid
     begin
-      User.find(user_id)
+      User.by_id(user_id)
     rescue
       errors.add( :user_id, "has to be valid")
       false

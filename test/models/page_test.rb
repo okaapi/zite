@@ -4,7 +4,7 @@ class PageTest < ActiveSupport::TestCase
   
   setup do
     ZiteActiveRecord.site( 'testsite45A67' )
-    @wido = User.find_by_username('wido_admin')
+    @wido = User.by_email_or_username('wido_admin')
     # need to change <#= #> to <%= %> in fixtures
     pages = Page.all
     pages.each do |page|

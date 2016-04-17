@@ -4,7 +4,7 @@
     SESSION_TIMEOUT = 60 * 60 * 4 # 4 hours
     attr_accessor :idle
     belongs_to :user
-    #validate :id_valid
+    validate :id_valid
     
     has_many :user_actions, dependent: :destroy  
   
@@ -12,17 +12,17 @@
       t = ( Time.now - ( updated_at or Time.now ) )
       return t
     end 
+	
+	def _user	
+	  # overriding this in because it fails with scope
+	  User.by_id( user_id )
+	end
     
     private
   
-    def id_valid
-      if user_id
-        begin
-          User.find(user_id)
-        rescue
-          errors.add( :user_id, "has to be valid, #{user_id} is not")
-          false
-        end
+    def id_valid	  
+      if user_id and ! User.by_id(user_id) 
+        errors.add( :user_id, "has to be valid, #{user_id} is not")
       end
     end
     

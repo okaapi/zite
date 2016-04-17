@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
       # set the site name - this is like a global variable, it will be used
       # in each model (via ZiteActiveRecord)
       #  
-      if ( host = SiteMap.find_by_external( request.host ) )
+      if ( host = SiteMap.where( external: request.host ).take )
         ZiteActiveRecord.site( host.internal )
       else 
         ZiteActiveRecord.site( request.host )
@@ -27,7 +27,10 @@ class ApplicationController < ActionController::Base
       #
       #  set the current user session
       #
-	  if !( @current_user_session = UserSession.recover( session[:user_session_id] ) )
+	  @current_user_session = UserSession.recover( session[:user_session_id] )
+	  if @current_user_session
+	    #nothing !
+	  elsif !@current_user_session
 	    @current_user_session = UserSession.new_ip_and_client( nil, request.remote_ip(),
 	                                                               request.env['HTTP_USER_AGENT'])
 	    session[:user_session_id] = @current_user_session.id 
@@ -35,20 +38,19 @@ class ApplicationController < ActionController::Base
   	  
   	  #
 	  if @current_user_session.site != ZiteActiveRecord.site? 
+	    reset_session
 	    redirect_to '/', alert: "name mismatch #{@current_user_session.site} #{request.host}"
-		return
 	  end
 
 	  #
-	  #  current user (this is just a shorthand for @current_user_session.user throughout)
+	  #  current user (this is just a shorthand for @current_user_session._user throughout)
 	  #
-	  @current_user = @current_user_session.user
-	  if @current_user_session.user 
-	    if @current_user_session.user.site != @current_user_session.site
-              #reset_session
-	      #redirect_to '/', 
-	#	    alert: "site mismatch #{@current_user_session.user.site} #{@current_user_session.site}"
-        end
+	  @current_user = User.by_id( @current_user_session.user_id )
+	  if @current_user  and
+	       @current_user.site != @current_user_session.site
+        reset_session
+	    redirect_to '/', 
+		    alert: "site mismatch #{@current_user_session.user.site} #{@current_user_session.site}"
       end
 	  
 	  #

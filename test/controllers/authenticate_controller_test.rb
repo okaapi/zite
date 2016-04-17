@@ -201,7 +201,7 @@ class AuthenticateControllerTest < ActionController::TestCase
         @not_java = ! Rails.configuration.use_javascript
         
         #because we run this twice...
-        jim = User.find_by_username('jim')
+        jim = User.by_email_or_username('jim')
         jim.destroy if jim
               
 	    if @not_java
@@ -285,17 +285,19 @@ class AuthenticateControllerTest < ActionController::TestCase
     [true,false].each do |java|                 
         Rails.configuration.use_javascript = java
         @not_java = ! Rails.configuration.use_javascript
-        
+
+		ZiteActiveRecord.site( 'othersite45A67' )
+	    request.host = 'othersite45A67'		
         #because we run this twice...
-        john = User.find_by_username('john')
+        john = User.by_email_or_username('john')
         john.destroy if john
            
-	    request.host = 'othersite45A67'
 	    if @not_java
 	      post :about_urself, username: "john", email: "john@mmm.com"
 	    else      
 	      xhr :post, :about_urself, username: "john", email: "john@mmm.com"       
 	    end
+
 	    assert_equal assigns(:current_user).errors.count, 0
     end	    
   end  
@@ -437,7 +439,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	                        password: 'secret', password_confirmation: 'secret'   
 	    end
 	    assert_root_path_redirect
-	    assert_equal flash[:notice], "password set, please login!"         
+	    assert_equal flash[:notice], "password set, you are logged in!"         
 	    assert_equal @controller.session[:user_session_id], UserSession.last.id 
     end	    
   end 

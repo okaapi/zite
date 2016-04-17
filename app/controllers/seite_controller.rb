@@ -46,7 +46,7 @@ class SeiteController < ApplicationController
       @page = Page.new( name: @seiten_name, content: "" )
     # editing a previous version
     elsif params[:updated_at]  
-      @page = @pages.find_by_updated_at( params[:updated_at] )
+      @page = @pages.where( updated_at: params[:updated_at] ).take
     # editing the most recent one
     else
       @page = @pages.first
