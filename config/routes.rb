@@ -28,7 +28,7 @@ Rails.application.routes.draw do
   post 'file_delete' => 'seite#file_delete', as: 'file_delete'
   
   # route for searching
-  get '_search/:term' => 'seite#search', as: 'search'
+  match '_search/(:term)' => 'seite#search', as: 'search', via: [:get, :post]
   get '_check/(:code)' => 'seite#check', as: 'check'  
   get '_clear' => 'seite#clear', as: 'clear'    
   

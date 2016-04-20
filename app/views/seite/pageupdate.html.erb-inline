@@ -1,43 +1,56 @@
+<!-- this only applies to ckeditor -->
 <% if ( @page and @page.editor == "wysiwyg" ) %>
   <% ckeditorclass = 'ckeditor' %>
-  <!-- load ckeditor only for this page! -->
   <script src="../ckeditor/ckeditor.js"></script>
- 
 <% end %>
 
 <div id="pageupdate" >
   
   <% if @page.updated_at %>
-    <small> Last edited <%= prettytime( @page.updated_at ) %>: </small>
+    <small> Last edited <%= prettytime( @page.updated_at ) %> 
+    <%= ( 'by ' + ( @lastuser ? @lastuser.username : 'a stranger' ) ) %>: 
+       page.user_id <%= @page.user_id %>
+    </small>
   <% else %>
     Enter HTML here:
   <% end %>
-    
-  <div class="center" contenteditable="true" >
-    <%= @page.content.html_safe %>
+  
+  <div class="row" >
+    <div class="center" contenteditable="true" >
+      <%= @page.content.html_safe %>
+    </div>
   </div>
   
-  <%= form_tag page_update_save_path( name: @page.name ) do %>  
-        
-    <%= submit_tag 'Save!'%> 
-    <%= link_to "cancel", seite_path( seite: @page.name ) if @page.updated_at %>
-    
-    <%= render partial: "permissions" %>
-        
-  <% end %>
-  
-  <%= render partial: "versions" %>
-  
-  <div id="files_partial">
-    <%= render partial: "files", locals: { pagename: @page.name } %>  
-  </div>
+  <%= form_tag page_update_save_path( name: @page.name ), class: 'form-vertical' do %>
+     
+    <%= hidden_field_tag :user_id, @page.user_id %>
+    <p></p>
+    <div class="row" >
+      <div class="col-sm-2" >                   
+        <%= submit_tag 'Save!', class: 'btn btn-default' %> 
+        <%= link_to "cancel", seite_path( seite: @page.name ) if @page.updated_at %>
+      </div>
+      <div class="col-sm-10" >
+        <%= render partial: "permissions" %>
+      </div>
+    </div>  
+    <div class="row" >     
+      <div class="col-sm-12" >         
+        <%= render partial: "meta_description" %>
+      </div>      
+    </div>     
 
+  <% end %>  
+  
+  <div class="row" >
+    <div class="col-sm-12" >
+      <%= render partial: "pageupdate_options" %>
+    </div>
+  </div>
 
 </div>
 
-
-
-<!-- this only applies to non-ckeditor -->
+<%# this only applies to non-ckeditor %>
 <script>
 $("#pageupdate_textarea").keyup(function(e) {
     while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) 
@@ -45,6 +58,11 @@ $("#pageupdate_textarea").keyup(function(e) {
         $(this).height($(this).height()+1);
     };   
 });
+</script>
+
+<%# a bit of a hack %>
+<script>
+$('.panel-group').css('margin-bottom', '5px');
 </script>
 
 

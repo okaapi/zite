@@ -17,7 +17,7 @@
     <% @pages.each do |page| %>
       <tr>
         <td><%= link_to page.name, root_path + page.name %></td>
-        <td><%= User.by_id( page.user_id ) ? page.user_id  : User.by_id( page.user_id ).username  %></td>
+        <td><%= User.by_id( page.user_id ) ? User.by_id( page.user_id ).username : page.user_id %></td>
         <td><%= page.visibility %></td>
         <td><%= page.editability %></td>
         <td><%= page.menu %></td>
