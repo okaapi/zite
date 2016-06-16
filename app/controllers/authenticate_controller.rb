@@ -5,10 +5,12 @@ class AuthenticateController < ApplicationController
   
   def who_are_u  
     # ask the user for their username
+	a = request.headers['HTTP_REFERER']
+	session[:login_from] = a[a.rindex('/')+1..a.length] if a
   end
   
   def prove_it
-    
+    	
     Page.uncache_all( request.host )
     
     @claim = params[:claim]
@@ -26,10 +28,10 @@ class AuthenticateController < ApplicationController
         if @current_user.authenticate( @password )
 
           # and this user is confirmed, log him in, with a new session
-          if @current_user.confirmed?                	  
-            create_new_user_session( @current_user, session[:last_page] )	
-            redirect_to_page_js_or_html( {notice: "#{@current_user.username} logged in" },
-		                             session[:last_page] )				
+          if @current_user.confirmed?          
+            login_from = session[:login_from]      	  
+            create_new_user_session( @current_user,  )	
+            redirect_to_page_js_or_html( {notice: "#{@current_user.username} logged in" }, login_from )		
           else
             # else let him now he needs to activate
             redirect_to_page_js_or_html alert: "user is not activated, check your email (including SPAM folder)"
@@ -124,7 +126,7 @@ class AuthenticateController < ApplicationController
       @current_user.active = 'confirmed'
       @current_user.token = nil
       if @current_user.save # succes!
-        create_new_user_session( @current_user, session[:last_page] )   
+        create_new_user_session( @current_user )   
         redirect_to_page_js_or_html notice: "password set, you are logged in!"
       end
     else
@@ -181,9 +183,8 @@ class AuthenticateController < ApplicationController
       redirect_to '/'
     end
     
-    def create_new_user_session( user, last_page )   
+    def create_new_user_session( user )   
       reset_session
-	  session[:last_page] = last_page
       Page.uncache_all( request.host )
       user_session = UserSession.new_ip_and_client( user, request.remote_ip(),
                                                    request.env['HTTP_USER_AGENT'])
@@ -191,4 +192,6 @@ class AuthenticateController < ApplicationController
       UserAction.add_action( user_session.id, controller_name, action_name, params )            
     end
   
+    private
+
 end

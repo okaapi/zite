@@ -177,8 +177,9 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   
   test "redirect to original page after login" do
   
-	get "/talks"
-	assert_equal @controller.session[:last_page], 'talks'
+	get "/_who_are_u", {}, {'HTTP_REFERER' => 'http://testhost45A67/talks'}
+	assert_response :success	
+	assert_equal @controller.session[:login_from], 'talks'	
 	
     # enters correct password and gets logged in and session is created
     if @not_java
@@ -189,7 +190,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
       assert_response :success
     end
     assert_equal flash[:notice], 'arnaud logged in'
-	assert_equal @controller.session[:last_page], 'talks'
+	assert_equal @controller.session[:login_from], nil
   
   end
 

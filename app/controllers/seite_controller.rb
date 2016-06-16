@@ -4,7 +4,6 @@ class SeiteController < ApplicationController
   def index
         
     @seiten_name = params[:seite] || 'index'
-    session[:last_page] = @seiten_name
 	
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
