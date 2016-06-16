@@ -174,5 +174,23 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_response :success
 	assert_select '.center', 'Talks'
   end
+  
+  test "redirect to original page after login" do
+  
+	get "/talks"
+	assert_equal @controller.session[:last_page], 'talks'
+	
+    # enters correct password and gets logged in and session is created
+    if @not_java
+      post "/_prove_it", claim: "arnaud", password: "secret"
+      assert_redirected_to root_path + 'talks'
+    else
+      xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
+      assert_response :success
+    end
+    assert_equal flash[:notice], 'arnaud logged in'
+	assert_equal @controller.session[:last_page], 'talks'
+  
+  end
 
 end
