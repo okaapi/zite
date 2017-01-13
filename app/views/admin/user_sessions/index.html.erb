@@ -17,7 +17,7 @@
   <tbody>
     <% @user_sessions.each do |user_session| %>
       <tr>
-        <td><%= user_session.user.username if user_session.user %></td>
+        <td><%= user_session._user ? user_session._user.username : user_session.user_id  %></td>
         <td><%= link_to user_session.id, user_session %></td>
         <td><%= truncate( user_session.client ) %></td>
         <td><%= user_session.ip %></td>

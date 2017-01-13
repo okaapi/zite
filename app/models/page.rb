@@ -253,7 +253,7 @@ class Page < ZiteActiveRecord
   
 #-----------------------------------------------------------------------------------------
 #
-# valiudators
+# validators
 #
   def name_downcase
    @name = @name.downcase if @name
@@ -261,7 +261,7 @@ class Page < ZiteActiveRecord
   
   def id_valid
     begin
-      User.find(user_id)
+      User.by_id(user_id)
     rescue
       errors.add( :user_id, "has to be valid")
       false
@@ -302,25 +302,15 @@ class Page < ZiteActiveRecord
         when 'admin', 'editor'
           case role
           when 'admin'
-            (func == 'admin' or func == 'editor') ? operands : ''
+            (func == 'admin' or func == 'editor' ) ? operands : ''		  
           when 'editor'
-            (func == 'editor') ? operands : ''
+            (func == 'editor' ) ? operands : ''
           else
             sub = ''
           end
         when 'pin'
           "<div class=\"pindiv panel panel-default\"><div class=\"pinmargin panel-body \">  #{operands}  </div></div>"
-        # look for these in the lib folder...
-=begin
-        when 'ginit'
-          eval 'ginit ' + operands        
-        when 'gmap'
-          eval 'gmap ' + operands
-        when 'gmarker'
-          eval 'gmarker ' + operands
-        when 'gline'
-          eval 'gline ' + operands
-=end                 
+        # look for these in the lib folder          
         when 'questions'
           eval 'Questions::questions ' + operands
         else
@@ -332,6 +322,41 @@ class Page < ZiteActiveRecord
     end  
   
     return parsed
-  end  
+  end
+  
+  def self.search( user, term )
+    if term and term.length > 0
+      sql = "select name from pages where site = '#{ZiteActiveRecord.site?}' group by name"   
+      res = ActiveRecord::Base.connection.execute(sql)
+      names = []
+      res.each do |r|
+	    name = r[0]
+	    bp = self.basepage( r[0] )
+	    if bp == name and user
+	      pg = Page.get_latest( name )
+		  if pg.visible_by_user( user.role, user.id ) and
+		    ( pg.display( user.role ).downcase.index( term.downcase ) or
+			  name.index( term.downcase ) )
+	        names << name
+		  end
+	    end
+	  end
+	  names
+	else
+	  []
+	end
+  end
    
 end
+
+
+
+
+
+
+
+
+
+
+
+

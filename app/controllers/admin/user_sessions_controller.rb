@@ -74,7 +74,7 @@ module Admin
 	  private
 	    # Use callbacks to share common setup or constraints between actions.
 	    def set_user_session
-	      @user_session = UserSession.find(params[:id])
+	      @user_session = UserSession.where(id: params[:id]).take
 	    end
 	
 	    # Never trust parameters from the scary internet, only allow the white list through.

@@ -8,17 +8,29 @@ require 'securerandom'
     has_secure_password
     has_many :user_sessions, dependent: :destroy
     
-    def self.find_by_email_or_alternate( email )
-      user = User.find_by_email( email )
+    def self.by_email_or_alternate( email )
+      user = User.where( email: email ).take
       if !user 
-        user = User.find_by_alternate_email( email )
+        user = User.where( alternate_email: email ).take
       end  
       return user
     end
     
-    def self.find_by_email_or_username( claim )
-      User.find_by_email( claim ) || User.find_by_username( claim )
+    def self.by_email_or_username( claim )
+      user = User.where( email: claim ).take
+      if !user 
+        user = User.where( username: claim ).take
+      end  
+      return user
     end
+	
+	def self.by_token( token )
+	  User.where( token: token).take
+	end
+	
+	def self.by_id( an_id )
+	  User.where( id: an_id ).take
+	end
   
     def self.new_unconfirmed( email, username )
       user = User.new( email: email, username: username )

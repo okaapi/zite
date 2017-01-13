@@ -229,3 +229,17 @@ questions:
   content: "QUESTIONS <#= questions ['green is=', 'blue is=']"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %> 
   site: testsite45A67
+
+search_admin:
+  name: search admin
+  content: xylophone
+  site: testsite45A67
+  visibility: admin
+  
+search_user:
+  name: search user varus
+  content: xylophone
+  site: testsite45A67
+  visibility: user  
+  
+  

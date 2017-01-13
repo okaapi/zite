@@ -15,7 +15,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
       delete_cache_directories_with_content
     end 
   end
-  
+
   #
   #   these tests are all set up to NOT examine internals of the app (session 
   #   object, models etc...  only testing flash, notice, and HTML)
@@ -28,7 +28,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
   #  user logs in and out with correct credentials
   #  (error handling is tested in the controller)
   #
-  test "logging in and out java" do
+  test "logging in and out" do
     
     [true,false].each do |java|
           
@@ -41,7 +41,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	    assert_select '#authentication_launchpad a', 'login'
 	
 	    # clicks the login link and gets username entry field
-	    if @not_java
+	    if ! Rails.configuration.use_javascript
 	      get "/_who_are_u"
 	      assert_response :success
 	      assert_select '.control-label', /username\/email/ 
@@ -54,7 +54,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	    end
 	
 	    # enters username and gets password entry field with username legend
-	    if @not_java
+	    if ! Rails.configuration.use_javascript
 	      post "/_prove_it", claim: "arnaud"
 	      assert_response :success
 	      assert_select '.alert-info', /arnaud/
@@ -69,7 +69,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	    end
 	      
 	    # enters correct password and gets logged in and session is created
-	    if @not_java  
+	    if ! Rails.configuration.use_javascript  
 	      post "/_prove_it", claim: "arnaud", password: "secret"
 	    else
 	      xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
@@ -97,78 +97,6 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
   end
   
   #
-  #  user logs in and out with correct credentials
-  #  (error handling is tested in the controller)
-  #
-  test "logging in and out" do
-  
-    [true,false].each do |java|
-          
-        Rails.configuration.use_javascript = java
-        @not_java = ! Rails.configuration.use_javascript
-  
-	    # user comes to the website and sees the "login" link
-	    get_via_redirect "/"
-	    assert_response :success
-	    assert_select '#authentication_launchpad a', 'login'
-	
-	    # clicks the login link and gets username entry field
-	    if @not_java
-	      get "/_who_are_u"
-	      assert_response :success
-	      assert_select '.control-label', /username\/email/ 
-	    else
-	      xhr :get, "/_who_are_u"
-	      assert_response :success
-	      assert_select_jquery :html, '#authentication_dialogue_js' do
-	        assert_select '.control-label', /username\/email/ 
-	      end
-	    end
-	
-	    # enters username and gets password entry field with username legend
-	    if @not_java
-	      post "/_prove_it", claim: "arnaud"
-	      assert_response :success
-	      assert_select '.alert-info', /arnaud/
-	      assert_select '.control-label', /password/            
-	    else
-	      xhr :post, "/_prove_it", claim: "arnaud"
-	      assert_response :success       
-	      assert_select_jquery :html, '#authentication_dialogue_js' do    
-	        assert_select '.alert-info', /arnaud/
-	        assert_select '.control-label', /password/
-	      end      
-	    end
-	      
-	    # enters correct password and gets logged in and session is created
-	    if @not_java  
-	      post "/_prove_it", claim: "arnaud", password: "secret"
-	    else
-	      xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
-	    end
-	    assert_root_path_redirect    
-	    assert_equal flash[:notice], 'arnaud logged in'
-	          
-	    
-	    # user refreshes and username is displayed
-	    get "/"
-	    assert_response :success
-	    assert_select '#authentication_launchpad', /arnaud/
-	    
-	    # logs out
-	    get "/_see_u"
-	    assert_redirected_to root_path
-	      
-	    # refreshes and confirms that user is not shown as logged in
-	    get_via_redirect "/"
-	    assert_response :success
-	    assert_select '#authentication_launchpad', /login/
-	     
-    end 
-                
-  end
-
-  #
   #  user registers, gets an email, and is also logged in
   #  (error handling is tested in the controller)
   #  
@@ -185,7 +113,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
         @not_java = ! Rails.configuration.use_javascript
           
 	    # user clicks "registration" link
-	    if @not_java
+	    if ! Rails.configuration.use_javascript
 	      post "/_about_urself"
 	      assert_response :success
 	      assert_select '.control-label', /username/
@@ -200,14 +128,14 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	    end
 	
 	    # user enters proper username / email combo
-	    if @not_java
+	    if ! Rails.configuration.use_javascript
 	      post "/_about_urself", username: "jim", email: "jim@gmail.com"
 	    else  
 	      xhr :post, "/_about_urself", username: "jim", email: "jim@gmail.com"       
 	    end
-	    assert_root_path_redirect  
 	    assert_equal flash[:notice], 
-	      "you are logged in, we sent an activation email for the next time!" 
+	        "Please check your email jim@gmail.com (including your SPAM folder) for an email to verify it's you and set your password!"
+	    assert_root_path_redirect  
 	    
 	    # has email been sent?
 	    assert_equal Rails.configuration.action_mailer.delivery_method, :test
@@ -217,7 +145,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	    # refreshes and confirms that user is shown as logged in
 	    get "/"
 	    assert_response :success
-	    assert_select '#authentication_launchpad', /jim/    
+	    assert_select '#authentication_launchpad', /login/    
     end
   end
 
@@ -245,7 +173,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	    assert_select '.alert-info', /francois/
 	    
 	    # sets the password and gets logged in
-	    if @not_java
+	    if ! Rails.configuration.use_javascript
 	      post "/_ur_secrets", user_id: @user_francois.id, password: 'secret', password_confirmation: 'secret' 
 	    else
 	      xhr :post, "/_ur_secrets", user_id: @user_francois.id, 
@@ -253,7 +181,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	    end
 	    
 	    assert_root_path_redirect
-	    assert_equal flash[:notice], "password set!"         
+	    assert_equal flash[:notice], "password set, you are logged in!"         
 	
 	    # user refreshes and username is displayed
 	    get "/"
@@ -263,6 +191,50 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	end
   end
   
+  #
+  #  user logs in and out from one site, then another
+  #
+  test "logging in and out from two sites" do
+    
+    Rails.configuration.use_javascript = false
+	ZiteActiveRecord.site( 'otherhost' )
+	u = User.create( username: 'benoit', email: 'benoit@gmail.com', active: 'confirmed',
+	                 password: 'secret', password_confirmation: 'secret' )
+    u.save!   	
+	
+	ZiteActiveRecord.site( 'testsite45A67' )
+    request
+    open_session.host! "testhost45A67"
+	
+    get "/_who_are_u"
+    post "/_prove_it", claim: "arnaud"
+    post "/_prove_it", claim: "arnaud", password: "secret"
+	assert_equal flash[:notice], 'arnaud logged in'  
+    get "/"
+    assert_response :success
+    assert_select '#authentication_launchpad', /arnaud/
+	
+	ZiteActiveRecord.site( 'otherhost' )
+    request
+    open_session.host! "otherhost"
+	
+    get "/_who_are_u"
+    post "/_prove_it", claim: "benoit"
+    post "/_prove_it", claim: "benoit", password: "secret"
+	assert_not_nil assigns(:current_user)
+	assert_equal flash[:notice], 'benoit logged in'  
+    get "/"
+    assert_response :success
+    assert_select '#authentication_launchpad', /benoit/	
+          
+	ZiteActiveRecord.site( 'testsite45A67' )
+    request
+    open_session.host! "testhost45A67"
+    get "/"
+    assert_response :success
+    assert_select '#authentication_launchpad', /arnaud/	
+	
+  end
 
   private
      
@@ -270,7 +242,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
       '/'
     end
     def assert_root_path_redirect
-      if @not_java
+      if ! Rails.configuration.use_javascript
         assert_redirected_to root_path
         assert @response.body =~ /redirected/  
       else

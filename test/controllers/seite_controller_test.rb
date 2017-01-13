@@ -193,5 +193,74 @@ class SeiteControllerTest < ActionController::TestCase
     delete_storage_directories_with_content
       
   end
+    
+  test "reset session" do
+    get :index
+    assert_response :success
+    assert_not_nil @controller.session[:user_session_id]	
+    get :clear
+    assert_redirected_to '/'
+	assert_nil @controller.session[:user_session_id]	
+    assert_equal flash[:alert], 'session reset...'		
+  end
+  
+  test "check" do
+    get :check
+	assert_redirected_to '/'
+	get :check, code: 17706
+    assert_response :success  
+  end
+  
+  test "search not logged in" do
+    post :search, term: 'xylo'
+    assert_redirected_to '/'
+  end
+  
+  test "search as regular user" do
+    login_4_test
+    post :search, term: 'xylo'
+    assert_response :success 
+	assert_equal assigns(:array_of_names).count, 1
+	assert_equal assigns(:array_of_names)[0], 'search user varus'
+  end
 
+  test "search as admin user" do
+    admin_login_4_test
+    post :search, term: 'xylo'
+    assert_response :success 
+	assert_equal assigns(:array_of_names).count, 2
+	assert_equal assigns(:array_of_names)[0], 'search admin'
+	assert_equal assigns(:array_of_names)[1], 'search user varus'	
+  end
+
+  test "search as regular user no results" do
+    login_4_test
+    post :search, term: 'bylo'
+    assert_response :success 
+	assert_equal assigns(:array_of_names).count, 0
+  end
+  
+  test "search as regular user no term" do
+    login_4_test
+    post :search
+    assert_response :success 
+	assert_equal assigns(:array_of_names).count, 0
+  end 
+
+  test "search as regular user term 'e'" do
+    login_4_test
+    post :search, term: 'e'
+    assert_response :success 
+	assert_equal assigns(:array_of_names).count, 19
+  end  
+  
+  test "search as regular in page name" do
+    login_4_test
+    post :search, term: 'varus'
+    assert_response :success 
+	assert_equal assigns(:array_of_names).count, 1
+	assert_equal assigns(:array_of_names)[0], 'search user varus'
+  end   
+  
+  
 end

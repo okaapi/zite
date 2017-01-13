@@ -25,10 +25,8 @@
     private
     
     def user_session_id_valid
-      begin
-        UserSession.find(user_session_id)
-      rescue
-        errors.add( :user_session_id, "has to be valid")
+      if ! UserSession.where( id: user_session_id ).take
+        errors.add( :user_session_id, "has to be valid" )
       end
     end
     

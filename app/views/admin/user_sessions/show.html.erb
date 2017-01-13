@@ -1,7 +1,12 @@
 
 <p>
   <strong>User:</strong>
-  <%= @user_session.user.username if @user_session.user %>
+  <%= @user_session._user.username if @user_session._user %>
+</p>
+
+<p>
+  <strong>User ID:</strong>
+  <%= @user_session.user_id %>
 </p>
 
 <p>

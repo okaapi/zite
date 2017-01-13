@@ -28,7 +28,7 @@ module Admin
 	  end
 	
 	  def role_change
-	    @user = User.find( params[:id] )
+	    @user = User.by_id( params[:id] )
 	    @user.change_role( params[:role] )
 	    redirect_to action: :index
 	  end
@@ -76,7 +76,18 @@ module Admin
 	  private
 	    # Use callbacks to share common setup or constraints between actions.
 	    def set_user
-	      @user = User.find(params[:id])
+		  begin
+	        @user = User.by_id(params[:id])
+		  rescue Exception => e 	
+		    notice = "error #{e} -#{params[:id]}- -#{ZiteActiveRecord.site?}-"
+            sql = "select * from users where id = #{params[:id]}"
+			res = ActiveRecord::Base.connection.execute(sql)
+			res.each do |r|
+			  notice += '/n' + r.to_yaml
+			end
+		    redirect_to users_url, 
+			   notice: notice
+		  end
 	    end
 	
 	    # Never trust parameters from the scary internet, only allow the white list through.

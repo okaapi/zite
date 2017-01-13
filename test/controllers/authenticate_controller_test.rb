@@ -152,10 +152,26 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    else 
 	      xhr :post, :prove_it, claim: "john1", password: "secret"
 	    end
-	    assert_root_path_redirect    
-	    assert_equal flash[:alert], "username/password is incorrect!" 
+		assert_response :success 
+	    assert_nil flash[:alert]
     end	    
   end    
+  
+  test "prove_it with noexisting user too many retries" do
+    [true,false].each do |java|                 
+        Rails.configuration.use_javascript = java
+        @not_java = ! Rails.configuration.use_javascript   
+        @controller.session[:password_retries] = 3		
+	    if @not_java
+	      post :prove_it, claim: "john1", password: "secret" 
+	    else 
+	      xhr :post, :prove_it, claim: "john1", password: "secret"
+	    end
+        assert_root_path_redirect    
+	    assert_equal flash[:alert], "password for \"john1\" is incorrect!" 
+    end	    
+  end   
+  
 
   test "about_urself" do
     [true,false].each do |java|                 
@@ -185,7 +201,7 @@ class AuthenticateControllerTest < ActionController::TestCase
         @not_java = ! Rails.configuration.use_javascript
         
         #because we run this twice...
-        jim = User.find_by_username('jim')
+        jim = User.by_email_or_username('jim')
         jim.destroy if jim
               
 	    if @not_java
@@ -196,7 +212,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    assert_root_path_redirect  
 	    assert_equal flash[:alert], nil
 	    assert_equal flash[:notice], 
-	        "you are logged in, we sent an activation email for the next time!"
+	        "Please check your email jim@gmail.com (including your SPAM folder) for an email to verify it's you and set your password!"
 	    assert_equal @controller.session[:user_session_id], UserSession.last.id   
     end	        
   end
@@ -269,17 +285,19 @@ class AuthenticateControllerTest < ActionController::TestCase
     [true,false].each do |java|                 
         Rails.configuration.use_javascript = java
         @not_java = ! Rails.configuration.use_javascript
-        
+
+		ZiteActiveRecord.site( 'othersite45A67' )
+	    request.host = 'othersite45A67'		
         #because we run this twice...
-        john = User.find_by_username('john')
+        john = User.by_email_or_username('john')
         john.destroy if john
            
-	    request.host = 'othersite45A67'
 	    if @not_java
 	      post :about_urself, username: "john", email: "john@mmm.com"
 	    else      
 	      xhr :post, :about_urself, username: "john", email: "john@mmm.com"       
 	    end
+
 	    assert_equal assigns(:current_user).errors.count, 0
     end	    
   end  
@@ -421,7 +439,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	                        password: 'secret', password_confirmation: 'secret'   
 	    end
 	    assert_root_path_redirect
-	    assert_equal flash[:notice], "password set!"         
+	    assert_equal flash[:notice], "password set, you are logged in!"         
 	    assert_equal @controller.session[:user_session_id], UserSession.last.id 
     end	    
   end 

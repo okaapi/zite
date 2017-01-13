@@ -1,9 +1,27 @@
 
 
-<h1> Search Results </h1>
+<h1> Search</h1>
 
-<% @array_of_names.each do |name| %>
+<%= form_tag search_path, class: 'form-horizontal' do %>  
+  <div class="field form-group">
+	<%= label_tag :claim, "", class: 'col-sm-2 control-label' %>
+	<div class="col-sm-2">
+	  <%= text_field_tag :term, @term, autofocus: true, class: 'form-control' %>
+	</div>
+  </div>
+<% end %>
+<%= link_to 'Back', '/' %></br>	
 
-  <h3><%= link_to name, seite_path( seite: name ) %></h3>
+<% if @array_of_names and @array_of_names.count > 0 %>
+
+  <h3>Results <%= ('for ' + @term) if @term %>: </h3>
+
+  <% @array_of_names.each do |name| %>
+    <%= link_to name, seite_path( seite: name ) %></br> 
+  <% end %>
+  
+<% else %>
+
+  <h3>No results...</h3>
   
 <% end %>

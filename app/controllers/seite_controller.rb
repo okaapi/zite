@@ -4,7 +4,7 @@ class SeiteController < ApplicationController
   def index
         
     @seiten_name = params[:seite] || 'index'
-            
+	
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
     @meta_desc = @center.get_meta_desc if @center
@@ -46,7 +46,7 @@ class SeiteController < ApplicationController
       @page = Page.new( name: @seiten_name, content: "" )
     # editing a previous version
     elsif params[:updated_at]  
-      @page = @pages.find_by_updated_at( params[:updated_at] )
+      @page = @pages.where( updated_at: params[:updated_at] ).take
     # editing the most recent one
     else
       @page = @pages.first
@@ -116,16 +116,24 @@ class SeiteController < ApplicationController
   
     if ! @current_user
       redirect_to root_path, alert: "need to login first..."
-      return
-    end
-      
-    @term = params[:term]    
-    sql = "select id, name, updated_at from pages where (name, updated_at) in (select name, max(updated_at) from pages group by name) " + 
-          "and content like '%#{@term}%' and site = '#{ZiteActiveRecord.site?}'"   
-    res = ActiveRecord::Base.connection.execute(sql)
-    @array_of_names = []
-    res.each {|r| @array_of_names << r[1]}
+    else
+	  @term = params[:term]   
+      @array_of_names = Page.search( @current_user, @term )	
+	end
     
+  end
+  
+  def check
+    if params[:code].to_i == 17706
+      @session = session
+	else
+	  redirect_to root_path
+	end
+  end
+  
+  def clear
+    reset_session
+	redirect_to root_path, alert: "session reset..."
   end
   
   private

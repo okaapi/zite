@@ -68,7 +68,7 @@ module Admin
 	  private
 	    # Use callbacks to share common setup or constraints between actions.
 	    def set_user_action
-	      @user_action = UserAction.find(params[:id])
+	      @user_action = UserAction.where(id: params[:id]).take
 	    end
 	
 	    # Never trust parameters from the scary internet, only allow the white list through.

@@ -31,7 +31,7 @@ module Admin
 	    assert_redirected_to user_action_path(assigns(:user_action))
 	  end
 	  
-	  test "should not create user_action withinvalid session " do
+	  test "should not create user_action with invalid session " do
 	    assert_difference('UserAction.count') do
 	      post :create, user_action: { user_session_id: 7 }
 	    end
