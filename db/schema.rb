@@ -22,10 +22,9 @@ ActiveRecord::Schema.define(version: 20150916012017) do
     t.string   "menu",        limit: 255,   default: "true"
     t.string   "lock",        limit: 255,   default: "false"
     t.string   "editor",      limit: 255,   default: "wysiwyg"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
     t.string   "site",        limit: 255,   default: "localhost"
-    t.string   "desc",        limit: 255,   default: "no description"
     t.string   "meta_desc",   limit: 255
   end
 
@@ -33,8 +32,8 @@ ActiveRecord::Schema.define(version: 20150916012017) do
     t.string   "external",   limit: 255
     t.string   "internal",   limit: 255
     t.string   "aux",        limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "user_actions", force: :cascade do |t|
@@ -42,8 +41,8 @@ ActiveRecord::Schema.define(version: 20150916012017) do
     t.string   "controller",      limit: 255
     t.string   "action",          limit: 255
     t.string   "params",          limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
     t.string   "site",            limit: 255, default: "localhost"
   end
 
@@ -53,8 +52,8 @@ ActiveRecord::Schema.define(version: 20150916012017) do
     t.integer  "user_id",    limit: 4
     t.string   "client",     limit: 255
     t.string   "ip",         limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                   null: false
+    t.datetime "updated_at",                                   null: false
     t.string   "site",       limit: 255, default: "localhost"
   end
 
@@ -68,8 +67,8 @@ ActiveRecord::Schema.define(version: 20150916012017) do
     t.string   "token",           limit: 255
     t.string   "role",            limit: 255, default: "user"
     t.string   "active",          limit: 255, default: "unconfirmed"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
     t.string   "site",            limit: 255, default: "localhost"
   end
 

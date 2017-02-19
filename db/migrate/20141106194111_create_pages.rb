@@ -10,7 +10,7 @@ class CreatePages < ActiveRecord::Migration
       t.string :lock, default: 'false'
       t.string :editor, default: 'wysiwyg'
 
-      t.timestamps
+      t.timestamps null:false
     end
   end
 end

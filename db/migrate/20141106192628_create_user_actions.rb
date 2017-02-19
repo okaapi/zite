@@ -6,7 +6,7 @@ class CreateUserActions < ActiveRecord::Migration
       t.string :controller
       t.string :action
       t.string :params
-      t.timestamps
+      t.timestamps null:false
     end
   end
 end

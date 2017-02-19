@@ -18,7 +18,10 @@
       parameters.delete(:authenticity_token)
       parameters.delete(:utf8)
       parameters[:filename] = p[:file].original_filename if p[:file]
-      user_action.params = parameters.to_s[0..PARAMS_CLIP]   
+	  user_action.params = ""
+	  parameters.each do |k,v|
+	    user_action.params += "#{k}: #{v[0..PARAMS_CLIP]}; "
+	  end 
       user_action.save
     end    
       
