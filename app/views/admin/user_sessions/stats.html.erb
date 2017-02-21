@@ -1,0 +1,17 @@
+<h1>Stats</h1>
+
+
+<br>
+
+<table>
+  <% @stats.each do |action,frequency| %>
+    <tr>
+	<td><%= action %>&nbsp;</td>
+	<td><%= frequency %></td>
+    </tr>
+  <% end %>
+</table>
+
+<br>
+
+<%= link_to 'Back', '/' %>
