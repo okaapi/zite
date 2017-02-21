@@ -18,6 +18,16 @@ module Admin
 	    	    
 	  end
 	
+	  def stats
+	    user_actions = UserAction.all
+		actions = {}
+        user_actions.each do |u_action|
+		  h = u_action.action # + ' ' + u_action.params
+		  actions[h] = ( actions[h] ||= 0 ) + 1
+		end
+		@stats = actions.sort_by { |action, f| -f }
+	  end
+	  	
 	  # GET /user_sessions/1
 	  # GET /user_sessions/1.json
 	  def show

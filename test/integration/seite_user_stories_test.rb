@@ -190,7 +190,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
       assert_response :success
     end
     assert_equal flash[:notice], 'arnaud logged in'
-	assert_nil @controller.session[:login_from], nil
+	assert_nil @controller.session[:login_from]
   
   end
 

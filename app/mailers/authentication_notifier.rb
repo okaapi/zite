@@ -36,4 +36,3 @@ require "singleton"
       end
 
   end
-

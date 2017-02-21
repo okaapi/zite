@@ -11,7 +11,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     # not sure why request has to be called first, but it won't work without
     request
     open_session.host! "testhost45A67"
-    if Rails.configuration.page_caching            
+    if (Rails.configuration.respond_to? 'page_caching') and Rails.configuration.page_caching            
       delete_cache_directories_with_content
     end 
   end

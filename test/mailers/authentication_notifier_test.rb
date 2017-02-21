@@ -18,7 +18,7 @@ class AuthenticationNotifierTest < ActionMailer::TestCase
     assert_equal [@current_user.email], mail.to
     assert_equal ["noreply@okaapi.com"], mail.from
     assert_equal ['a@a.com', 'b@b.com'], mail.bcc
-    assert_equal "test.host <noreply@okaapi.com>", mail['from'].value
+    assert_equal "test.host Authentication <noreply@okaapi.com>", mail['from'].value
     assert_equal "Registration information for test.host", mail.subject
     assert_match @path, mail.body.encoded
     assert_match 'john_token', mail.body.encoded

@@ -7,6 +7,12 @@ module Admin
 	  # GET /site_maps.json
 	  def index
 	    @site_maps = SiteMap.all
+		users = User.all
+		@sites = []
+		users.each do |u|
+		  @sites << u.site
+		end
+		@sites.uniq! 
 	  end
 	
 	  # GET /site_maps/1

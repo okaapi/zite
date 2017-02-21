@@ -8,8 +8,8 @@ require 'rails/test_help'
 ActiveRecord::Migration.maintain_test_schema!
 
 require 'simplecov'
-#SimpleCov.start do
-#end
+SimpleCov.start do
+end
 puts "simple cov started"
 
 class ActiveSupport::TestCase
@@ -17,8 +17,10 @@ class ActiveSupport::TestCase
   fixtures :all
   
   (1..10).each {puts "."}
-  puts "[ caching is " + ( Rails.configuration.page_caching ? "on ]" : "off ]" )   
-
+  if Rails.configuration.respond_to? 'page_caching'
+    puts "[ caching is " + ( Rails.configuration.page_caching ? "on ]" : "off ]" )   
+  end
+  
   def admin_login_4_test
 	@admin = users(:admin)
 	user_session = UserSession.create( user_id: @admin.id )

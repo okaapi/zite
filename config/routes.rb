@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     get 'users/:id/role_change/:role' => 'users#role_change', as: 'role_change'    
     resources :user_actions
     resources :user_sessions  
+    get 'stats' => 'user_sessions#stats', as: 'stats'    
     resources :pages 
     resources :site_maps   
   end
