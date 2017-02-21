@@ -5,6 +5,7 @@ action_one:
   controller: MyString
   action: MyString
   updated_at: <%= Time.now - 100000 %>
+  params: these are the parameters!
   site: testsite45A67
 
 action_two:

@@ -17,13 +17,13 @@ module Admin
     end
     
     test "should get index ip order" do
-      get :index, by_ip: 'true'
+      get :index, params: { by_ip: 'true' }
       assert_response :success
       assert_not_nil assigns(:user_sessions)
     end
     
     test "should get index name order" do
-      get :index, by_name: 'true'
+      get :index, params: { by_name: 'true' }
       assert_response :success
       assert_not_nil assigns(:user_sessions)
     end
@@ -36,7 +36,7 @@ module Admin
     test "should create user_session" do
       @controller.session[:user_session_id] = @user_session.id
       assert_difference('UserSession.count', 1) do
-        post :create, user_session: { user_id: users(:wido).id }    
+        post :create, params: { user_session: { user_id: users(:wido).id } }
       end
       assert_redirected_to user_session_path(assigns(:user_session))    
       assert_equal assigns(:user_session).user, users(:wido)
@@ -46,7 +46,7 @@ module Admin
     test "should create user_session without user" do
       @controller.session[:user_session_id] = @user_session.id
       assert_difference('UserSession.count') do
-        post :create, user_session: { ip: "dummy"  }
+        post :create, params: { user_session: { ip: "dummy"  } }
       end
       assert_redirected_to user_session_path(assigns(:user_session))
       assert_not assigns(:user_session).user
@@ -55,24 +55,24 @@ module Admin
     test "should not create user_session with invalid user" do
       @controller.session[:user_session_id] = @user_session.id
       assert_no_difference('UserSession.count') do
-        post :create, user_session: { user_id: 7 }
+        post :create, params: { user_session: { user_id: 7 } }
       end    
       assert_response :success
       assert_select "li", /User has to be valid/
     end
     
     test "should show user_session" do
-      get :show, id: @user_session
+      get :show, params: { id: @user_session }
       assert_response :success
     end
   
     test "should get edit" do
-      get :edit, id: @user_session
+      get :edit, params: { id: @user_session }
       assert_response :success
     end
   
     test "should update user_session" do
-      patch :update, id: @user_session, user_session: { user_id: @user_session.user_id }
+      patch :update, params: { id: @user_session, user_session: { user_id: @user_session.user_id } }
       assert_redirected_to user_session_path(assigns(:user_session))
     end
   
@@ -80,7 +80,7 @@ module Admin
       @controller.session[:user_session_id] = @user_session.id
       assert_difference('UserSession.count', -1) do
         assert_difference('UserAction.count', -2) do
-          delete :destroy, id: @user_session
+          delete :destroy, params: { id: @user_session }
         end
       end
   

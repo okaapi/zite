@@ -10,11 +10,10 @@ module Admin
 	  # GET /pages.json
 	  def index
 	    if params[:by_name]
-        @pages = Page.all.order( name: :asc ).group( :name )
+          @pages = Page.all.order( name: :asc, updated_at: :desc ).order( name: :asc )       
 	    else
-        @pages = Page.all.order( updated_at: :desc )
-	    end
-	    
+          @pages = Page.all.order( updated_at: :desc )
+	    end	    
 	  end
 	
 	  # GET /pages/1

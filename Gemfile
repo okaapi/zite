@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.2.6'
+gem 'rails', '5.0.0'
 gem 'mysql2', '~> 0.3.18'
 
+gem 'rails-controller-testing'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'turbolinks'
@@ -16,4 +17,6 @@ gem 'bcrypt'
 gem 'tzinfo-data'
 gem 'simplecov'
 
-#gem 'unicorn'
+gem 'unicorn'
+
+

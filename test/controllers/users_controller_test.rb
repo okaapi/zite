@@ -25,48 +25,48 @@ module Admin
 	
 	  test "should create user" do
 	    assert_difference('User.count') do
-	      post :create, user: { email: "a@mmm.com", username: "peter",
-	        password: 'secret', password_confirmation: 'secret' }
+	      post :create, params: { user: { email: "a@mmm.com", username: "peter",
+	        password: 'secret', password_confirmation: 'secret' } }
 	    end
 	    assert_redirected_to user_path(assigns(:user))
 	  end
 	  
 	  test "should not create user with unmatching password confirmation" do
 	    assert_no_difference('User.count') do
-	      post :create, user: { email: "a@mmm.com", username: "peter",
-	        password: 'secret', password_confirmation: 'secret_different' }
+	      post :create, params: { user: { email: "a@mmm.com", username: "peter",
+	        password: 'secret', password_confirmation: 'secret_different' } }
 	    end
 	    assert_response :success
 	  end
 	  
 	  test "should not create user if password too short" do
 	    assert_no_difference('User.count') do
-	      post :create, user: { email: "a@mmm.com", username: "peter",
-	        password: 'aa', password_confirmation: 'aa' }
+	      post :create, params: { user: { email: "a@mmm.com", username: "peter",
+	        password: 'aa', password_confirmation: 'aa' } }
 	    end
 	    assert_response :success
 	  end  
 	  
 	  test "should not create user with same name" do
 	    assert_no_difference('User.count') do
-	      post :create, user: { email: "a@mmm.com", username: "wido",
-	        password: 'secret', password_confirmation: 'secret' }
+	      post :create, params: { user: { email: "a@mmm.com", username: "wido",
+	        password: 'secret', password_confirmation: 'secret' } }
 	    end
 	    assert_response :success
 	  end  
 	
 	  test "should not create user without name" do
 	    assert_no_difference('User.count') do
-	      post :create, user: { email: "a@mmm.com", username: "",
-	        password: 'secret', password_confirmation: 'secret' }
+	      post :create, params: { user: { email: "a@mmm.com", username: "",
+	        password: 'secret', password_confirmation: 'secret' } }
 	    end
 	    assert_response :success
 	  end
 	 
 	  test "should not create user with incorrect name" do
 	    assert_no_difference('User.count') do
-	      post :create, user: { email: "a@mmm.com", username: "wido",
-	        password: 'secret', password_confirmation: 'secret' }
+	      post :create, params: { user: { email: "a@mmm.com", username: "wido",
+	        password: 'secret', password_confirmation: 'secret' } }
 	    end
 	    assert_response :success
 	  end
@@ -74,42 +74,42 @@ module Admin
 	
 	  test "should not create user with  same email" do
 	    assert_no_difference('User.count') do
-	      post :create, user: { email: "wido@mmm.com", username: "peter",
-	        password: 'secret', password_confirmation: 'secret' }
+	      post :create, params: { user: { email: "wido@mmm.com", username: "peter",
+	        password: 'secret', password_confirmation: 'secret' } }
 	    end
 	    assert_response :success
 	  end
 	       
 	  test "should not create user without email" do
 	    assert_no_difference('User.count') do
-	      post :create, user: { email: "", username: "peter",
-	        password: 'secret', password_confirmation: 'secret' }
+	      post :create, params: { user: { email: "", username: "peter",
+	        password: 'secret', password_confirmation: 'secret' } }
 	    end
 	    assert_response :success
 	  end
 	
 	  test "should not create user with  incorrect email" do
 	    assert_no_difference('User.count') do
-	      post :create, user: { email: "something", username: "peter",
-	        password: 'secret', password_confirmation: 'secret' }
+	      post :create, params: { user: { email: "something", username: "peter",
+	        password: 'secret', password_confirmation: 'secret' } }
 	    end
 	    assert_response :success
 	  end
 	  
 	  test "should show user" do
-	    get :show, id: @user
+	    get :show, params: { id: @user }
 	    assert_response :success
 	  end
 	  
 	  test "should get edit" do
-	    get :edit, id: @user
+	    get :edit, params: { id: @user }
 	    assert_response :success
 	  end
 	
 	  test "should update user" do
-	    patch :update, id: @user, user: { active: @user.active, 
+	    patch :update, params: { id: @user, user: { active: @user.active, 
 	       email: "b@mmm.com", password: 'secret', 
-	       password_confirmation: 'secret', role: @user.role, username: "felix" }
+	       password_confirmation: 'secret', role: @user.role, username: "felix" } }
 	    assert_redirected_to user_path(assigns(:user))
 	  end
 	
@@ -117,7 +117,7 @@ module Admin
 	    assert_difference('User.count', -1) do
 	      assert_difference('UserSession.count', -2) do
 	        assert_difference('UserAction.count', -1) do
-	          delete :destroy, id: @user               
+	          delete :destroy, params: { id: @user }        
 	        end
 	      end
 	    end
@@ -129,7 +129,7 @@ module Admin
 	  test "change role of user as admin" do
         @user_arnaud = users(:arnaud)
         assert_equal @user_arnaud.role, 'user'
-        get :role_change, id: @user_arnaud.id, role: 'admin'
+        get :role_change, params: { id: @user_arnaud.id, role: 'admin' }
         @user_arnaud = User.find( @user_arnaud.id )
         assert_equal @user_arnaud.role, 'admin'        
       end
