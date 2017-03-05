@@ -17,7 +17,12 @@ class AuthenticateControllerTest < ActionController::TestCase
         @not_java = ! Rails.configuration.use_javascript
         
 	    if @not_java
-	      get :who_are_u
+		  begin	
+	        get :who_are_u
+		  rescue Exception => e
+		    puts "strange message in authenticate_controller_test:"
+		    puts e		    
+		  end
 	      assert_response :success
 	      assert_select '.form-horizontal'
 	      assert_select '.control-label', /username\/email/ 

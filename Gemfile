@@ -17,6 +17,6 @@ gem 'bcrypt'
 gem 'tzinfo-data'
 gem 'simplecov'
 
-gem 'unicorn'
+#gem 'unicorn'
 
 
