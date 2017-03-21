@@ -5,7 +5,7 @@ class CreateSiteMaps < ActiveRecord::Migration
       t.string :internal
       t.string :aux
 
-      t.timestamps
+      t.timestamps null:false
     end
   end
 end

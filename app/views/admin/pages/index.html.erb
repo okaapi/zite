@@ -21,7 +21,7 @@
         <td><%= page.visibility %></td>
         <td><%= page.editability %></td>
         <td><%= page.menu %></td>
-        <td><small><%= prettytime( page.updated_at ) %></small></td>        
+        <td><%= page.updated_at%></td>
         <td>&nbsp;<%= link_to 'Show', page %></td>
         <td><%= link_to 'Edit', edit_page_path(page) %></td>
         <td><%= link_to 'Destroy', page, method: :delete, data: { confirm: 'Are you sure?' } %></td>

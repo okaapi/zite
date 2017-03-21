@@ -10,7 +10,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :role, default: 'user'
       t.string :active, default: 'unconfirmed'
 
-      t.timestamps
+      t.timestamps null:false
     end
   end
 end

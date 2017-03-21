@@ -21,32 +21,32 @@ class SeiteControllerTest < ActionController::TestCase
  
   test "should get index logged in" do
     admin_login_4_test
-    get :index, seite: 'some_page_that_does_not_exist'
+    get :index, params: { seite: 'some_page_that_does_not_exist' }
     assert_redirected_to '/_pageupdate/some_page_that_does_not_exist'
   end 
   
   test "should get pageupdate not logged in new page" do
-    get :pageupdate, seite: 'some_page'
+    get :pageupdate, params: { seite: 'some_page' }
     assert_redirected_to '/'
     assert_equal flash[:alert], 'need to login first...'
   end
   
   test "should get pageupdate not authorized in existing page" do
     login_4_test
-    get :pageupdate, seite: 'talks'
+    get :pageupdate, params: { seite: 'talks' }
     assert_redirected_to '/'
     assert_equal flash[:alert], 'not authorized...'
   end  
-  
+
   test "should get pageupdate logged in" do
     admin_login_4_test
-    get :pageupdate, seite: 'some_page7'
+    get :pageupdate, params: { seite: 'some_page7' }
     assert_response :success
   end  
   
   test "should get pageupdate for index logged in" do
     admin_login_4_test
-    get :pageupdate, seite: 'index'
+    get :pageupdate, params: { seite: 'index' }
     assert_response :success
   end
 
@@ -71,7 +71,7 @@ class SeiteControllerTest < ActionController::TestCase
     assert File.exists? path + '/testfile'  
         
     admin_login_4_test
-    get :pageupdate, seite: 'filetest'
+    get :pageupdate, params: { seite: 'filetest' }
     assert_response :success
     assert_select '.filetable'
     assert_select "tr", 2
@@ -88,19 +88,19 @@ class SeiteControllerTest < ActionController::TestCase
     assert_equal pages.count, 3
     stamp = pages[1].updated_at
     admin_login_4_test
-    get :pageupdate, seite: 'index', updated_at: stamp 
+    get :pageupdate, params: { seite: 'index', updated_at: stamp  }
     assert_response :success
   end
     
   test "bad page name" do
     admin_login_4_test
-    get :pageupdate, seite: 'Some_page' 
+    get :pageupdate, params: { seite: 'Some_page' }
     assert_redirected_to '/'
     assert_equal flash[:alert][0..12], 'bad page name'
-    get :pageupdate, seite: 'Some page'
+    get :pageupdate, params: { seite: 'Some page' }
     assert_redirected_to '/'
     assert_equal flash[:alert][0..12], 'bad page name'  
-    get :pageupdate, seite: '7some_page'
+    get :pageupdate, params: { seite: '7some_page'}
     assert_redirected_to '/'
     assert_equal flash[:alert][0..12], 'bad page name'             
   end    
@@ -108,9 +108,9 @@ class SeiteControllerTest < ActionController::TestCase
   test "save update" do
     assert_equal @page.name, 'index'
     assert_difference('Page.count', 1) do
-      post :pageupdate_save, name: @page.name, content: "newly added content", 
+      post :pageupdate_save, params: { name: @page.name, content: "newly added content", 
         editability: @page.editability, user_id: @wido.id,
-        menu: @page.menu, visibility: @page.visibility 
+        menu: @page.menu, visibility: @page.visibility }
       assert_redirected_to '/index'
       assert_nil flash[:alert]
       assert_equal flash[:notice], 'page index saved...'             
@@ -124,20 +124,20 @@ class SeiteControllerTest < ActionController::TestCase
 
     @page = pages(:two_films)
     assert_equal @page.name, 'talks_films'
-    post :pageupdate_save, name: @page.name, content: @page.content, 
+    post :pageupdate_save, params: { name: @page.name, content: @page.content, 
       editability: @page.editability, user_id: @wido.id,
-      menu: @page.menu, visibility: @page.visibility
+      menu: @page.menu, visibility: @page.visibility }
     assert_redirected_to '/talks_films'
     
     @page = pages(:two_films_left)
     assert_equal @page.name, 'talks_films_left'    
-    post :pageupdate_save, name: @page.name, content: @page.content, 
+    post :pageupdate_save, params: { name: @page.name, content: @page.content, 
       editability: @page.editability, user_id: @wido.id,
-      menu: @page.menu, visibility: @page.visibility 
+      menu: @page.menu, visibility: @page.visibility  }
     assert_redirected_to '/talks_films'
         
   end  
-  
+ 
   test "upload and delete" do
           
     # first create test file to make sure it works (permissions etc) 
@@ -174,21 +174,21 @@ class SeiteControllerTest < ActionController::TestCase
     assert_not Dir.exists? site_path
          
     # upload the file
-    post :file_upload, seite: 'test',
-      file: fixture_file_upload('files/test.txt','text/txt') 
+    post :file_upload, params: { seite: 'test',
+      file: fixture_file_upload('files/test.txt','text/txt')  }
     assert File.exists? path + '/test.txt'  
       
     # upload the file again
-    post :file_upload, seite: 'test',
-      file: fixture_file_upload('files/test.txt','text/txt') 
+    post :file_upload, params: { seite: 'test',
+      file: fixture_file_upload('files/test.txt','text/txt') }
     directory = Dir.glob( path + '/test.*.txt')
     assert_equal directory.count, 1
     assert File.exists?( directory[0] )      
     File.delete( directory[0] )
       
     # delete the file
-    post :file_delete, seite: 'test', filename: 'test.txt' 
-    assert_not File.exists? path + '/test.txt'  
+    post :file_delete, params: { seite: 'test', filename: 'test.txt'  }
+    assert_not File.exists? path + '/test.txt' 
     
     delete_storage_directories_with_content
       
@@ -207,18 +207,18 @@ class SeiteControllerTest < ActionController::TestCase
   test "check" do
     get :check
 	assert_redirected_to '/'
-	get :check, code: 17706
+	get :check, params: { code: 17706 }
     assert_response :success  
   end
   
   test "search not logged in" do
-    post :search, term: 'xylo'
+    post :search, params: { term: 'xylo' }
     assert_redirected_to '/'
   end
-  
+   
   test "search as regular user" do
     login_4_test
-    post :search, term: 'xylo'
+    post :search, params: { term: 'xylo' }
     assert_response :success 
 	assert_equal assigns(:array_of_names).count, 1
 	assert_equal assigns(:array_of_names)[0], 'search user varus'
@@ -226,7 +226,7 @@ class SeiteControllerTest < ActionController::TestCase
 
   test "search as admin user" do
     admin_login_4_test
-    post :search, term: 'xylo'
+    post :search, params: { term: 'xylo' }
     assert_response :success 
 	assert_equal assigns(:array_of_names).count, 2
 	assert_equal assigns(:array_of_names)[0], 'search admin'
@@ -235,7 +235,7 @@ class SeiteControllerTest < ActionController::TestCase
 
   test "search as regular user no results" do
     login_4_test
-    post :search, term: 'bylo'
+    post :search, params: { term: 'bylo' }
     assert_response :success 
 	assert_equal assigns(:array_of_names).count, 0
   end
@@ -249,18 +249,17 @@ class SeiteControllerTest < ActionController::TestCase
 
   test "search as regular user term 'e'" do
     login_4_test
-    post :search, term: 'e'
+    post :search, params: { term: 'e' }
     assert_response :success 
 	assert_equal assigns(:array_of_names).count, 19
   end  
   
   test "search as regular in page name" do
     login_4_test
-    post :search, term: 'varus'
+    post :search, params: { term: 'varus' }
     assert_response :success 
 	assert_equal assigns(:array_of_names).count, 1
 	assert_equal assigns(:array_of_names)[0], 'search user varus'
   end   
-  
   
 end

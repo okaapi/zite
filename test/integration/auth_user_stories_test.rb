@@ -11,7 +11,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     # not sure why request has to be called first, but it won't work without
     request
     open_session.host! "testhost45A67"
-    if Rails.configuration.page_caching            
+    if (Rails.configuration.respond_to? 'page_caching') and Rails.configuration.page_caching            
       delete_cache_directories_with_content
     end 
   end
@@ -36,7 +36,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
         @not_java = ! Rails.configuration.use_javascript
                 
 	    # user comes to the website and sees the "login" link
-	    get_via_redirect "/"
+	    get "/"
 	    assert_response :success
 	    assert_select '#authentication_launchpad a', 'login'
 	
@@ -46,7 +46,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	      assert_response :success
 	      assert_select '.control-label', /username\/email/ 
 	    else
-	      xhr :get, "/_who_are_u"
+	      get "/_who_are_u", xhr:true
 	      assert_response :success
 	      assert_select_jquery :html, '#authentication_dialogue_js' do
 	        assert_select '.control-label', /username\/email/ 
@@ -55,12 +55,12 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	
 	    # enters username and gets password entry field with username legend
 	    if ! Rails.configuration.use_javascript
-	      post "/_prove_it", claim: "arnaud"
+	      post "/_prove_it", params: { claim: "arnaud" }
 	      assert_response :success
 	      assert_select '.alert-info', /arnaud/
 	      assert_select '.control-label', /password/            
 	    else
-	      xhr :post, "/_prove_it", claim: "arnaud"
+	      post "/_prove_it", xhr: true, params: { claim: "arnaud" }
 	      assert_response :success       
 	      assert_select_jquery :html, '#authentication_dialogue_js' do    
 	        assert_select '.alert-info', /arnaud/
@@ -70,9 +70,9 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	      
 	    # enters correct password and gets logged in and session is created
 	    if ! Rails.configuration.use_javascript  
-	      post "/_prove_it", claim: "arnaud", password: "secret"
+	      post "/_prove_it", params: { claim: "arnaud", kennwort: "secret" }
 	    else
-	      xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
+	      post "/_prove_it", xhr: true, params: { claim: "arnaud", kennwort: "secret" }
 	    end
 	    assert_root_path_redirect    
 	    assert_equal flash[:notice], 'arnaud logged in'
@@ -88,7 +88,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	    assert_redirected_to root_path
 	      
 	    # refreshes and confirms that user is not shown as logged in
-	    get_via_redirect "/"
+	    get "/"
 	    assert_response :success
 	    assert_select '#authentication_launchpad', /login/ 
            
@@ -119,7 +119,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	      assert_select '.control-label', /username/
 	      assert_select '.control-label', /email/        
 	    else  
-	      xhr :post, "/_about_urself"
+	      post "/_about_urself", xhr: true
 	      assert_response :success
 	      assert_select_jquery :html, '#authentication_dialogue_js' do
 	        assert_select '.control-label', /username/
@@ -129,9 +129,9 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	
 	    # user enters proper username / email combo
 	    if ! Rails.configuration.use_javascript
-	      post "/_about_urself", username: "jim", email: "jim@gmail.com"
+	      post "/_about_urself", params: { username: "jim", email: "jim@gmail.com" }
 	    else  
-	      xhr :post, "/_about_urself", username: "jim", email: "jim@gmail.com"       
+	      post "/_about_urself", xhr: true, params: { username: "jim", email: "jim@gmail.com" }
 	    end
 	    assert_equal flash[:notice], 
 	        "Please check your email jim@gmail.com (including your SPAM folder) for an email to verify it's you and set your password!"
@@ -163,21 +163,22 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
         @not_java = ! Rails.configuration.use_javascript
         
 	    # user clicks on the link
-	    get "/_from_mail", user_token: 'francois_token'       
+	    get "/_from_mail", params: { user_token: 'francois_token' }
 	    assert_redirected_to root_path
 	    	
 	    # refreshes and still gets the correct user displayed
-	    get_via_redirect "/"
+	    get "/"
 	    assert_response :success
 	    assert_select '.control-label', /password/    	    
 	    assert_select '.alert-info', /francois/
 	    
 	    # sets the password and gets logged in
 	    if ! Rails.configuration.use_javascript
-	      post "/_ur_secrets", user_id: @user_francois.id, password: 'secret', password_confirmation: 'secret' 
+	      post "/_ur_secrets", params: { user_id: @user_francois.id, 
+	                               kennwort: 'secret', password_confirmation: 'secret' } 
 	    else
-	      xhr :post, "/_ur_secrets", user_id: @user_francois.id, 
-	                        password: 'secret', password_confirmation: 'secret'   
+          post "/_ur_secrets", xhr: true, params: { user_id: @user_francois.id, 
+	                               kennwort: 'secret', confirmation: 'secret' }  
 	    end
 	    
 	    assert_root_path_redirect
@@ -207,8 +208,8 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     open_session.host! "testhost45A67"
 	
     get "/_who_are_u"
-    post "/_prove_it", claim: "arnaud"
-    post "/_prove_it", claim: "arnaud", password: "secret"
+    post "/_prove_it", params: { claim: "arnaud" }
+    post "/_prove_it", params: { claim: "arnaud", kennwort: "secret" }
 	assert_equal flash[:notice], 'arnaud logged in'  
     get "/"
     assert_response :success
@@ -219,8 +220,8 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     open_session.host! "otherhost"
 	
     get "/_who_are_u"
-    post "/_prove_it", claim: "benoit"
-    post "/_prove_it", claim: "benoit", password: "secret"
+    post "/_prove_it", params: { claim: "benoit" }
+    post "/_prove_it", params: { claim: "benoit", kennwort: "secret" }
 	assert_not_nil assigns(:current_user)
 	assert_equal flash[:notice], 'benoit logged in'  
     get "/"

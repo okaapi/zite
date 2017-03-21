@@ -10,7 +10,7 @@ class AuthenticationNotifierTest < ActionMailer::TestCase
 	  
   test "registration" do
     @current_user = users( :john )
-    @request = ActionController::TestRequest.new
+    @request = ActionController::TestRequest.create
     @path = @request.protocol + @request.host + ':' + @request.port.to_s +
               '/_from_mail/' +  @current_user.token               
     mail = AuthenticationNotifier.registration( @current_user, @request, ['a@a.com', 'b@b.com'] )
@@ -18,7 +18,7 @@ class AuthenticationNotifierTest < ActionMailer::TestCase
     assert_equal [@current_user.email], mail.to
     assert_equal ["noreply@okaapi.com"], mail.from
     assert_equal ['a@a.com', 'b@b.com'], mail.bcc
-    assert_equal "test.host <noreply@okaapi.com>", mail['from'].value
+    assert_equal "test.host Authentication <noreply@okaapi.com>", mail['from'].value
     assert_equal "Registration information for test.host", mail.subject
     assert_match @path, mail.body.encoded
     assert_match 'john_token', mail.body.encoded
@@ -26,7 +26,7 @@ class AuthenticationNotifierTest < ActionMailer::TestCase
   end
   test "reset" do
     @current_user = users( :john )
-    @request = ActionController::TestRequest.new
+    @request = ActionController::TestRequest.create
     @path = @request.protocol + @request.host + ':' + @request.port.to_s +
               '/_from_mail/' +  @current_user.token    
     mail = AuthenticationNotifier.reset( @current_user, @request, 'a@a.com' )

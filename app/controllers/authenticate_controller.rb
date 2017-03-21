@@ -11,10 +11,10 @@ class AuthenticateController < ApplicationController
   
   def prove_it
     	
-    Page.uncache_all( request.host )
+    uncache_all
     
     @claim = params[:claim]
-    @password = params[:password]
+    @password = params[:kennwort]
     # this is for testing email failure exception code    
     @eft = params[:ab47hk]
         
@@ -30,11 +30,12 @@ class AuthenticateController < ApplicationController
           # and this user is confirmed, log him in, with a new session
           if @current_user.confirmed?          
             login_from = session[:login_from]      	  
-            create_new_user_session( @current_user,  )	
-            redirect_to_page_js_or_html( {notice: "#{@current_user.username} logged in" }, login_from )		
+            create_new_user_session( @current_user )	
+            redirect_to_action_js_or_html( { notice: "#{@current_user.username} logged in" }, login_from )		
           else
-            # else let him now he needs to activate
-            redirect_to_page_js_or_html alert: "user is not activated, check your email (including SPAM folder)"
+            # else let him know he needs to activate
+            redirect_to_action_js_or_html( { alert: "user is not activated, check your email (including SPAM folder)" }, 
+                                           login_from )
           end            
         else
           
@@ -47,9 +48,9 @@ class AuthenticateController < ApplicationController
               # and send him an email
               AuthenticationNotifier.reset(@current_user, request, User.admin_emails).deliver_now           
               reset_session
-              redirect_to_page_js_or_html alert: "user suspended, check your email (including SPAM folder)"
+              redirect_to_action_js_or_html alert: "user suspended, check your email (including SPAM folder)"
             rescue Exception => e         
-              redirect_to_page_js_or_html alert: "user suspended, but email sending failed 3 #{e}"
+              redirect_to_action_js_or_html alert: "user suspended, but email sending failed 3 #{e}"
             end
           else
             # else try again but increment the retries (also in the session object)
@@ -58,10 +59,10 @@ class AuthenticateController < ApplicationController
         end
   
     else
-	  session[:password_retries]||= 0
+	  session[:password_retries] ||= 0
 	  @retries = ( session[:password_retries] += 1 )
 	  if session[:password_retries] >= (@max_retries = MAX_RETRIES)
-        redirect_to_page_js_or_html alert: "password for \"#{@claim}\" is incorrect!"
+        redirect_to_action_js_or_html alert: "password for \"#{@claim}\" is incorrect!"
      end
     end    
     
@@ -82,10 +83,10 @@ class AuthenticateController < ApplicationController
       if @current_user.save  
         begin  
           AuthenticationNotifier.registration(@current_user,request,User.admin_emails).deliver_now  
-          redirect_to_page_js_or_html notice: "Please check your email #{@email} (including your SPAM folder) for an email to verify it's you and set your password!"
+          redirect_to_action_js_or_html notice: "Please check your email #{@email} (including your SPAM folder) for an email to verify it's you and set your password!"
         rescue Exception => e
           @current_user.destroy if @current_user
-          redirect_to_page_js_or_html alert: "we sent an activation email, but it failed 1 (#{e})."
+          redirect_to_action_js_or_html alert: "we sent an activation email, but it failed 1 (#{e})."
         end
       end
     end
@@ -96,12 +97,14 @@ class AuthenticateController < ApplicationController
     
     # this is the link from the email... set the reset_user_id, and immediately redirect
     # redirection will show the ur_secrets dialogue with form to ur_secrets
-    Page.uncache_all( request.host )
+    
+    uncache_all
+    
     @user_token = params[:user_token]
     if @current_user = User.by_token( @user_token )
       # REMEMBER this user _id for ur_secrets!
       session[:reset_user_id] = @current_user.id
-      redirect_to_root_html  alert: "please set your password"
+      redirect_to_root_html alert: "please set your password"
     else
       redirect_to_root_html alert: "the activation link is incorrect, please reset..."
     end      
@@ -121,16 +124,16 @@ class AuthenticateController < ApplicationController
        
     # set the new password
     if @current_user = User.by_id( user_id )
-      @current_user.password = params[:password]
-      @current_user.password_confirmation = params[:password_confirmation] 
+      @current_user.password = params[:kennwort]
+      @current_user.password_confirmation = params[:confirmation] 
       @current_user.active = 'confirmed'
       @current_user.token = nil
       if @current_user.save # succes!
         create_new_user_session( @current_user )   
-        redirect_to_page_js_or_html notice: "password set, you are logged in!"
+        redirect_to_action_js_or_html notice: "password set, you are logged in!"
       end
     else
-      redirect_to_page_js_or_html alert: "leopards in the bushes!"  # something is reaaalllyyy wrong
+      redirect_to_action_js_or_html alert: "leopards in the bushes!"  # something is reaaalllyyy wrong
     end
 
   end
@@ -142,7 +145,7 @@ class AuthenticateController < ApplicationController
     if user = User.by_email_or_username( params[:claim] ) 
       begin
         user.suspend_and_save
-        AuthenticationNotifier.reset(user, request,User.admin_emails).deliver_now        
+        AuthenticationNotifier.reset(user, request, User.admin_emails).deliver_now        
         redirect_to_root_html notice: "user #{user.username} suspended, check your email (including SPAM folder)"
       rescue Exception => e           
         redirect_to_root_html alert: "user suspended, but email sending failed 2 #{e}"
@@ -164,7 +167,7 @@ class AuthenticateController < ApplicationController
       
   private
     
-    def redirect_to_page_js_or_html( flash_content = nil, page = nil )
+    def redirect_to_action_js_or_html( flash_content = nil, page = nil )
       if flash_content
         flash[ flash_content.keys[0] ] = flash_content[ flash_content.keys[0] ]
         flash.keep[ flash_content.keys[0] ]
@@ -175,7 +178,8 @@ class AuthenticateController < ApplicationController
         redirect_to '/' + ( page || '' )
       end
     end
-    def redirect_to_root_html flash_content = nil
+    
+    def redirect_to_root_html( flash_content = nil )
       if flash_content
         flash[ flash_content.keys[0] ] = flash_content[ flash_content.keys[0] ]
         flash.keep[ flash_content.keys[0] ]
@@ -185,13 +189,15 @@ class AuthenticateController < ApplicationController
     
     def create_new_user_session( user )   
       reset_session
-      Page.uncache_all( request.host )
+      uncache_all
       user_session = UserSession.new_ip_and_client( user, request.remote_ip(),
                                                    request.env['HTTP_USER_AGENT'])
       session[:user_session_id] = user_session.id     
       UserAction.add_action( user_session.id, controller_name, action_name, params )            
     end
   
-    private
+    def uncache_all
+      Page.uncache_all( request.host ) if defined?( Page )
+    end
 
 end

@@ -1,7 +1,7 @@
 
 class ApplicationController < ActionController::Base
 
-  ####protect_from_forgery with: :exception
+  protect_from_forgery with: :exception
   before_action :set_current_user_session_and_create_action
    	
   def only_if_admin

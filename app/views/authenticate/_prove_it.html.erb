@@ -15,9 +15,9 @@
   <% end %>  
   <div class="field form-group">
     <%= hidden_field_tag :claim, @claim %>
-    <%= label_tag :password, "password:", class: 'col-sm-2 control-label' %>
+    <%= label_tag :kennwort, "password:", class: 'col-sm-2 control-label' %>
     <div class="col-sm-2">
-      <%= password_field_tag :password, '', autofocus: true, class: 'form-control' %>
+      <%= password_field_tag :kennwort, '', autofocus: true, class: 'form-control' %>
     </div>
 	<div class="col-sm-2">		  
 	  <%= link_to 'cancel', see_u_path, class: 'col-sm-2 control-label' %>

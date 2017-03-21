@@ -26,17 +26,17 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
 
 
     open_session.host! "othersite45A67"
-    get_via_redirect "/"    
+    get "/"    
     assert_response :success
     assert_select '.center', ''      
 
     # should get the right "talks" page (exists in both othersite and testsite)
-    get_via_redirect "/talks"
+    get "/talks"
     assert_response :success
     assert_select '.center', 'Talks On Othersite'  
 
     # should NOT get "talks_books" page (exists only in testsite)
-    get_via_redirect "/talks_books"
+    get "/talks_books"
     assert_response :success
     assert_select '.center', ''  
    
@@ -54,7 +54,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
       File.delete( path ) if File.exists? path
     end
 
-    get_via_redirect "/"
+    get "/"
     assert_response :success
     assert_select '.header', 'INDEX HEADER'
     assert_select '.menu', 'INDEX MENU'      
@@ -68,7 +68,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
       File.delete( path )
     end
     
-    get_via_redirect "/talks"
+    get "/talks"
     assert_response :success
     assert_select '.center', 'protected content...'
     
@@ -91,7 +91,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
       File.delete( path ) if File.exists? path
     end
 
-    get_via_redirect "/talks"
+    get "/talks"
     assert_response :success
         
     if Rails.configuration.page_caching
@@ -118,10 +118,10 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     
     # enters correct password and gets logged in and session is created
     if @not_java
-      post "/_prove_it", claim: "arnaud", password: "secret"
+      post "/_prove_it", params: { claim: "arnaud", kennwort: "secret" }
       assert_redirected_to root_path
     else
-      xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
+      post "/_prove_it", xhr: true, params: { claim: "arnaud", kennwort: "secret" }
       assert_response :success
     end
     assert_equal flash[:notice], 'arnaud logged in'
@@ -153,10 +153,10 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   
     # enters correct password and gets logged in and session is created
     if @not_java
-      post "/_prove_it", claim: "wido_admin", password: "secret"
+      post "/_prove_it", params: { claim: "wido_admin", kennwort: "secret" }
       assert_redirected_to root_path
     else
-      xhr :post, "/_prove_it", claim: "wido_admin", password: "secret"
+      post "/_prove_it", xhr: true, params: { claim: "wido_admin", kennwort: "secret" }
       assert_response :success
     end
     assert_equal flash[:notice], 'wido_admin logged in'
@@ -174,23 +174,23 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     assert_response :success
 	assert_select '.center', 'Talks'
   end
-  
+
   test "redirect to original page after login" do
   
-	get "/_who_are_u", {}, {'HTTP_REFERER' => 'http://testhost45A67/talks'}
+	get "/_who_are_u", headers: { 'HTTP_REFERER' => 'http://testhost45A67/talks'  }
 	assert_response :success	
 	assert_equal @controller.session[:login_from], 'talks'	
 	
     # enters correct password and gets logged in and session is created
     if @not_java
-      post "/_prove_it", claim: "arnaud", password: "secret"
+      post "/_prove_it", params: { claim: "arnaud", kennwort: "secret" }
       assert_redirected_to root_path + 'talks'
     else
-      xhr :post, "/_prove_it", claim: "arnaud", password: "secret"
+      post "/_prove_it", xhr: true, params: { claim: "arnaud", kennwort: "secret" }
       assert_response :success
     end
     assert_equal flash[:notice], 'arnaud logged in'
-	assert_equal @controller.session[:login_from], nil
+	assert_nil @controller.session[:login_from]
   
   end
 

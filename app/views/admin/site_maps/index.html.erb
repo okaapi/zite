@@ -21,6 +21,12 @@
         <td><%= link_to 'Destroy', site_map, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
+    <% @sites.each do |site| %>
+      <tr>
+        <td><%= site %></td>
+		<td><%= site %></td>
+      </tr>
+    <% end %>	    
   </tbody>
 </table>
 
