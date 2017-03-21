@@ -298,8 +298,9 @@ class PageTest < ActiveSupport::TestCase
       page.cache( 'this is a cached test page', 'testhost45A67' )
       assert File.exists?(path)
       contents = ""
-      File.open(path,'r').each {|line| contents << line }
+      f = File.open(path,'r').each {|line| contents << line }
       assert_equal contents, 'this is a cached test page cached'
+	  f.close
       
       # now delete cached files
       Page.uncache_all( 'testhost45A67' )
