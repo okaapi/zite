@@ -285,6 +285,7 @@ class PageTest < ActiveSupport::TestCase
   test 'cache a page and delete it' do
     
     if Rails.configuration.page_caching
+      delete_cache_directories_with_content
       make_cache_directories( 'testhost45A67' )
     
       strange = 'asdjk_lwqfij_orieg'
@@ -296,6 +297,9 @@ class PageTest < ActiveSupport::TestCase
       assert_not File.exists?(path), "cached file is present in /public/cache/testhost45A67"
       page.cache( 'this is a cached test page', 'testhost45A67' )
       assert File.exists?(path)
+      contents = ""
+      File.open(path,'r').each {|line| contents << line }
+      assert_equal contents, 'this is a cached test page cached'
       
       # now delete cached files
       Page.uncache_all( 'testhost45A67' )

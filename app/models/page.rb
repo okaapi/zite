@@ -233,7 +233,7 @@ class Page < ZiteActiveRecord
 	  Dir.mkdir cache_directory
 	end     
     path = File.join( Rails.root , 'public/cache', cache_dir, self.name ) + '.html'    
-    to_write = content[0] + ' cached'
+    to_write = content + ' cached'
     File.open(path, "w") { |f| f.write( to_write.force_encoding('ISO-8859-1') ) }
   end
   
