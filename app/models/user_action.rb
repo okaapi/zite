@@ -19,9 +19,8 @@
       parameters.delete(:utf8)
       parameters[:filename] = p[:file].original_filename if p[:file]
 	  user_action.params = ""
-	  parameters.each do |k,v|
-	    user_action.params += "#{k}: #{v.to_s[0..PARAMS_CLIP]}; "
-	  end 
+	  parameters.each { |k,v| user_action.params += "#{k}: #{v.to_s}; " }
+	  user_action.params = user_action.params[0..PARAMS_CLIP]
       user_action.save
     end    
       
@@ -34,4 +33,5 @@
     end
     
   end
+
 
