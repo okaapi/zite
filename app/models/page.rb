@@ -311,8 +311,10 @@ class Page < ZiteActiveRecord
         when 'pin'
           "<div class=\"pindiv panel panel-default\"><div class=\"pinmargin panel-body \">  #{operands}  </div></div>"
         # look for these in the lib folder          
+        when 'camera'
+          Camera.launch operands
         when 'questions'
-          eval 'Questions::questions ' + operands
+          eval 'Questions::questions ' + operands          
         else
           '<B>Bad Call to #{func}</B>'
         end

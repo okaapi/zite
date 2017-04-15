@@ -1,3 +1,11 @@
+#
+# <%= questions "aaa bbb" %>
+#
+# -->>  aaa?
+# -->>  bbb?
+#
+#need to add to page.rb and config/initializers
+
 module Questions
   def questions( str )
     out = ''
