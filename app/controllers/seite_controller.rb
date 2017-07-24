@@ -112,6 +112,14 @@ class SeiteController < ApplicationController
     
   end
   
+  def camera_directory_delete
+    @camera = params[:filter]
+    @date = params[:date]
+    Camera.delete( @camera, @date)
+    redirect_to root_path( seite: 'camera'),  notice: "#{@camera} #{@date} #{Camera.degarble(@date)} deleted"
+    
+  end
+    
   def search
   
     if ! @current_user
