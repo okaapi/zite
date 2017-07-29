@@ -126,7 +126,7 @@ class AuthenticateController < ApplicationController
     if @current_user = User.by_id( user_id )
       @current_user.password = params[:kennwort]
       @current_user.password_confirmation = params[:confirmation] 
-      @current_user.active = 'confirmed'
+      @current_user.confirm
       @current_user.token = nil
       if @current_user.save # succes!
         create_new_user_session( @current_user )   

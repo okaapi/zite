@@ -28,6 +28,27 @@ class UserTest < ActiveSupport::TestCase
     assert_equal ["wido_admin@mmm.com", "wido@mmm.com"], User.admin_emails
   end
   
+  test 'user?' do
+    u = users(:user)
+	assert !u.admin?
+	assert u.user?
+	assert !u.editor?
+  end
+    
+  test 'admin?' do
+    u = users(:admin)
+	assert u.admin?
+	assert u.user?
+	assert u.editor?
+  end
+
+  test 'editor?' do
+    u = users(:editor)
+	assert !u.admin?
+	assert u.user?
+	assert u.editor?
+  end  
+  
   test 'test site allocation' do
   	
     ZiteActiveRecord.site( 'a' ) 	

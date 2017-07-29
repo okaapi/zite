@@ -74,7 +74,7 @@ require 'securerandom'
     end
     
     def confirm
-      self.update_attribute( :active, confirmed )
+      self.active = 'confirmed'
     end    
     
   end
