@@ -46,6 +46,10 @@ body {
   display: table;
 }
 
+.fb_button:hover {
+  cursor: pointer;
+}
+
 #error_explanation {
   width: 450px;
   border: 2px solid red;

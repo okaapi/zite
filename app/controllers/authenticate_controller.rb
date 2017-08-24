@@ -1,11 +1,61 @@
+require 'net/http'
+
 class AuthenticateController < ApplicationController
 
   # max retries for password
   MAX_RETRIES = 3
   
+  def fb_login
+    
+    #
+    #  begin
+    # 
+    begin
+      url = URI.parse('https://graph.facebook.com/me?fields=name,email&access_token=' + params[:fb_token] )
+      http = Net::HTTP.new(url.host, url.port)
+      http.use_ssl = true if url.scheme == 'https'
+      http.read_timeout = 1  # set this to zero to check time out... or 'http://httpstat.us/200?sleep=3000'
+      resp = http.start() {|http| http.get(url) }
+      parsed_resp = JSON.parse(resp.body)
+
+      if ! parsed_resp['error']
+        @current_user = User.by_email_or_username( parsed_resp['email'] ) 
+
+        # 
+        #  if @current_user exists, i.e. there is a user with the facebook email
+        #
+        if @current_user
+
+          # 
+          #   and this user is confirmed, log him in, with a new session
+          #
+          if @current_user.confirmed?           	  
+            create_new_user_session( @current_user )	
+            redirect_to_action_js_or_html( { notice: "#{@current_user.username} logged in from Facebook" }, session[:login_from] )		        
+          else
+            # else let him know he needs to activate
+            redirect_to_action_js_or_html( { alert: "user is not activated, check your email (including SPAM folder)" }, 
+                                           login_from )
+          end
+        #
+        #  if there is no user with this email
+        #     
+        else
+          redirect_to_action_js_or_html( { alert: "no user with Facebook email #{fb_email_confirmed}" }, session[:login_from] )
+        end    
+        
+      else
+        redirect_to_action_js_or_html( { alert: "login from Facebook failed #{parsed_resp['error']['message']}" }, session[:login_from] )
+      end
+    rescue => e  # could also use Net::ReadTimeout => e    
+      redirect_to_action_js_or_html( { alert: "login from Facebook failed #{e.message}" }, session[:login_from])  
+    end    
+    
+  end
+  
   def who_are_u  
     # ask the user for their username
-	a = request.headers['HTTP_REFERER']
+	a = request.headers['HTTP_REFERER']	
 	session[:login_from] = a[a.rindex('/')+1..a.length] if a
   end
   

@@ -18,4 +18,8 @@ module ApplicationHelper
   def is_admin?
     @current_user and @current_user.admin?   
   end  
+  def fb_app_id?
+    Rails.configuration.fb_app_id
+  end
+  
 end

@@ -6,7 +6,7 @@
 	  </div>
 	  <%= render "user_errors" %>    
 	  <div class="field form-group">
-	    <%= label_tag :claim, "username/email:", class: 'col-sm-2 control-label' %>
+	    <%= label_tag :claim, "username or email:", class: 'col-sm-2 control-label' %>
 	    <div class="col-sm-2">
 	      <%= text_field_tag :claim, '', autofocus: true, class: 'form-control' %>
 	    </div>
@@ -14,5 +14,8 @@
 		  <%= link_to 'cancel', see_u_path, class: 'col-sm-3 control-label' %>
 	    </div>
 	  </div>
+
+      <%= render "fb_login" %>	  
+      
 	<% end %>
 

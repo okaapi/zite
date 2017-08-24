@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   post "_ur_secrets" => "authenticate#ur_secrets", as: "ur_secrets"
   get "_reset_mail" => "authenticate#reset_mail", as: 'reset_mail'
   get "_see_u" => "authenticate#see_u", as: 'see_u'
+  get 'testfb' => "authenticate#testfb", as: 'testfb'  
+  get '_fb_login/:fb_token' => "authenticate#fb_login", as: 'fb_login'
     
   # these should only be available to administrators...
   scope module: 'admin' do  
@@ -36,6 +38,7 @@ Rails.application.routes.draw do
   
   # this is the route for viewing
   get '(:seite)' => "seite#index", as: 'seite'
+
   root "seite#index", as: "root"
   
 end
