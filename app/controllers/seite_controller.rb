@@ -131,19 +131,6 @@ class SeiteController < ApplicationController
     
   end
   
-  def check
-    if params[:code].to_i == 17706
-      @session = session
-	else
-	  redirect_to root_path
-	end
-  end
-  
-  def clear
-    reset_session
-	redirect_to root_path, alert: "session reset..."
-  end
-  
   private
 
   

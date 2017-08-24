@@ -20,7 +20,6 @@ module Geni
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    config.use_javascript = false
     config.page_caching = true
     mail_config = (YAML::load( File.open(config.root + 'config/auth_mail.yml') ))
     config.action_mailer.smtp_settings = 

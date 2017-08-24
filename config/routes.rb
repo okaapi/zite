@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   get "_see_u" => "authenticate#see_u", as: 'see_u'
   get 'testfb' => "authenticate#testfb", as: 'testfb'  
   get '_fb_login/:fb_token' => "authenticate#fb_login", as: 'fb_login'
+  get '_check/(:code)' => 'authenticate#check', as: 'check'  
+  get '_clear' => 'authenticate#clear', as: 'clear'     
     
   # these should only be available to administrators...
   scope module: 'admin' do  
@@ -32,9 +34,7 @@ Rails.application.routes.draw do
   get 'camera_directory_delete/(:filter)/(:date)' => 'seite#camera_directory_delete', as: 'camera_directory_delete'
   
   # route for searching
-  match '_search/(:term)' => 'seite#search', as: 'search', via: [:get, :post]
-  get '_check/(:code)' => 'seite#check', as: 'check'  
-  get '_clear' => 'seite#clear', as: 'clear'    
+  match '_search/(:term)' => 'seite#search', as: 'search', via: [:get, :post] 
   
   # this is the route for viewing
   get '(:seite)' => "seite#index", as: 'seite'

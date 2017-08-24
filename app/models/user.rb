@@ -39,6 +39,14 @@ require 'securerandom'
       user.active = 'unconfirmed'    
       user
     end
+    
+    def self.new_confirmed( email, username )
+      user = User.new( email: email, username: username )
+      user.password = user.password_confirmation = SecureRandom.urlsafe_base64(8)
+      user.token = SecureRandom.urlsafe_base64(16)
+      user.active = 'confirmed'    
+      user
+    end    
   
     def suspend_and_save
       self.password = self.password_confirmation = SecureRandom.urlsafe_base64(8)

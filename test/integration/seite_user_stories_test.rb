@@ -15,7 +15,6 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
         page.save!
       end  
     end
-    @not_java = ! Rails.configuration.use_javascript
     # not sure why request has to be called first, but it won't work without
     request
     open_session.host! "testhost45A67"
@@ -122,13 +121,8 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     end
     
     # enters correct password and gets logged in and session is created
-    if @not_java
       post "/_prove_it", params: { claim: "arnaud", kennwort: "secret" }
       assert_redirected_to root_path
-    else
-      post "/_prove_it", xhr: true, params: { claim: "arnaud", kennwort: "secret" }
-      assert_response :success
-    end
     assert_equal flash[:notice], 'arnaud logged in'
 
     get "/"
@@ -157,13 +151,10 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
   test "viewing a page logged in as admin" do
   
     # enters correct password and gets logged in and session is created
-    if @not_java
+
       post "/_prove_it", params: { claim: "wido_admin", kennwort: "secret" }
       assert_redirected_to root_path
-    else
-      post "/_prove_it", xhr: true, params: { claim: "wido_admin", kennwort: "secret" }
-      assert_response :success
-    end
+
     assert_equal flash[:notice], 'wido_admin logged in'
     
     get "/"
@@ -187,13 +178,10 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
 	assert_equal @controller.session[:login_from], 'talks'	
 	
     # enters correct password and gets logged in and session is created
-    if @not_java
+
       post "/_prove_it", params: { claim: "arnaud", kennwort: "secret" }
       assert_redirected_to root_path + 'talks'
-    else
-      post "/_prove_it", xhr: true, params: { claim: "arnaud", kennwort: "secret" }
-      assert_response :success
-    end
+
     assert_equal flash[:notice], 'arnaud logged in'
 	assert_nil @controller.session[:login_from]
   

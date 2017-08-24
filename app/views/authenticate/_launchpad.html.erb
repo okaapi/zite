@@ -1,55 +1,9 @@
-<script>
-
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-   
-  window.fbAsyncInit = function() {
-    console.log('running FB.init');
-    FB.init({
-      appId      : <%= fb_app_id? %>,
-      cookie     : true,
-      xfbml      : true,
-      version    : 'v2.8'
-    });
-    console.log('calling FB.getLoginStatus');
-    FB.getLoginStatus( function(response) {
-      console.log('Getting login status...');
-      if (response.status === 'connected') {
-        console.log('Already logged in');
-      }
-      else {
-        console.log('Not logged in');
-      }   
-    });     
-  };
-  
-  function fb_logout() {
-    console.log('Logging out');    
-    FB.getLoginStatus(function(response) {
-      if (response.status === 'connected') {
-        FB.logout(function(response) {  
-          console.log('FB.logout');        
-        });
-        console.log('Logged out');
-      }
-      else {
-        console.log('Not logged in.');
-      }
-    });   
-    top.location.href = '/_see_u'; 
-  };  
-  
-</script>
+<%= render "authenticate/fb_script" %>	
 
 <% if !@current_user  %>
 
-  <%= link_to 'login', who_are_u_path, remote: js? %> 
-  <%= link_to 'register', about_urself_path, method: :post, remote: js? %>
+  <%= link_to 'login', who_are_u_path %> 
+  <%= link_to 'register', about_urself_path, method: :post %>
 
 <% else %>
 

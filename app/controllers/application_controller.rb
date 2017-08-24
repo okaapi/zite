@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   private
   
   def set_current_user_session_and_create_action
-       
+
       #
       # set the site name - this is like a global variable, it will be used
       # in each model (via ZiteActiveRecord)
@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
 	                                                               request.env['HTTP_USER_AGENT'])
 	    session[:user_session_id] = @current_user_session.id 
 	  end 
-  	  
+
   	  #
   	  # this can really not happen
   	  # 
@@ -57,7 +57,6 @@ class ApplicationController < ActionController::Base
 	  #  log the action
 	  #  
       UserAction.add_action( @current_user_session.id, controller_name, action_name, params )            
-
 
   end
      
