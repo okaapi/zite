@@ -47,10 +47,10 @@
   
   function fb_logout() {    
     FB.getLoginStatus(function(response) {
-      console.log( response.authResponse );
+      //console.log( response.authResponse );
       if (response.status === 'connected') {
         FB.logout(function(response) {  
-          console.log( response.authResponse );        
+          //console.log( response.authResponse );        
         });
       }
     });   
