@@ -63,6 +63,9 @@ class AuthenticateController < ApplicationController
     	
     uncache_all
     
+    session[:text] = "reset at the start of prove_it <br>" if !session[:text]
+    session[:text] += "start of prove_it <br>"
+
     @claim = params[:claim]
     @password = params[:kennwort]
     # this is for testing email failure exception code    
@@ -72,23 +75,40 @@ class AuthenticateController < ApplicationController
     if !@password
       session[:password_retries] = 0
 	  
+      session[:text] += "no password <br>"
+    
     # now the user has offered a password
     elsif @current_user = User.by_email_or_username( @claim ) 
+
+        session[:text] += "user exists <br>"
+
         # if that's ok
         if @current_user.authenticate( @password )
 
+          session[:text] += "user authenticated <br>"
+
           # and this user is confirmed, log him in, with a new session
           if @current_user.confirmed?          
+
+            session[:text] += 'user confirmed <br>'
+
             login_from = session[:login_from]      	  
+            session_text = session[:text]
             create_new_user_session( @current_user )	
+            session[:text] = session_text
             redirect_to_action_js_or_html( { notice: "#{@current_user.username} logged in" }, login_from )		
           else
             # else let him know he needs to activate
+
+            session[:text] += 'user NOT confirmed <br>'
+
             redirect_to_action_js_or_html( { alert: "user is not activated, check your email (including SPAM folder)" }, 
                                            login_from )
           end            
         else
           
+          session[:text] += 'authentication problem \n'
+
           # ok, let him try again, but only twice          
           if session[:password_retries] >= (@max_retries = MAX_RETRIES)
             # third time... suspend the user
@@ -109,17 +129,26 @@ class AuthenticateController < ApplicationController
         end
   
     else
+
+       session[:text] += 'user not found <br>'
+
 	  session[:password_retries] ||= 0
 	  @retries = ( session[:password_retries] += 1 )
 	  if session[:password_retries] >= (@max_retries = MAX_RETRIES)
         redirect_to_action_js_or_html alert: "password for \"#{@claim}\" is incorrect!"
      end
     end    
+
+    session[:text] = "reset at the end of prove_it <br>" if !session[:text]
+    session[:text] += "end of prove it <br><br>"
     
   end
 
   def about_urself
     
+    uncache_all
+
+    session[:text] = "reset at the beginning of about_urself  <br>" if !session[:text]
     @username = params[:username]
     @email = params[:email] 
     # this is for testing email failure exception code
@@ -218,15 +247,21 @@ class AuthenticateController < ApplicationController
   private
     
     def redirect_to_action_js_or_html( flash_content = nil, page = nil )
+      session[:text] = "reset at start of redirect_to_action_js_or_html <br>" if !session[:text]
+      session[:text] += "redirect_to_action_js_or_html <br>"
       if flash_content
         flash[ flash_content.keys[0] ] = flash_content[ flash_content.keys[0] ]
         flash.keep[ flash_content.keys[0] ]
       end
+      session[:text] += 'flash = ' + flash.keep[ flash_content.keys[0] ] + ' <br>'
       if Rails.configuration.use_javascript
+        session[:text] += "render window.location <br>"
         render js: "window.location = #{page}"
       else 
+        session[:text] += "redirect_to <br>"
         redirect_to '/' + ( page || '' )
       end
+      session[:text] += "redirect_to_action_js_or_html end <br>"
     end
     
     def redirect_to_root_html( flash_content = nil )
