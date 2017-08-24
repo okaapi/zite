@@ -14,6 +14,9 @@ class ApplicationController < ActionController::Base
   
   def set_current_user_session_and_create_action
        
+      session[:text] = "reset at beginning of set user_session <br>" if !session[:text]
+      session[:text] += "<br>start of set user_session_and_create action<br>"
+
       #
       # set the site name - this is like a global variable, it will be used
       # in each model (via ZiteActiveRecord)
@@ -23,6 +26,7 @@ class ApplicationController < ActionController::Base
       else 
         ZiteActiveRecord.site( request.host )
       end
+      session[:text] += "site= #{ZiteActiveRecord.site?}<br>"
          	  
       #
       #  set the current user session
@@ -36,6 +40,8 @@ class ApplicationController < ActionController::Base
 	    session[:user_session_id] = @current_user_session.id 
 	  end 
   	  
+          session[:text] += "current user session #{@current_user_session.site} <br>"
+
   	  #
   	  # this can really not happen
   	  # 
@@ -47,18 +53,23 @@ class ApplicationController < ActionController::Base
 	  #  current user (this is just a shorthand for @current_user_session._user throughout)
 	  #
 	  @current_user = User.by_id( @current_user_session.user_id )
+          session[:text] += "current user session #{@current_user} <br>"
 	  if @current_user  and
 	       @current_user.site != @current_user_session.site
-        reset_session
+            session[:text] += "site mis_match <br>"
+            session_text = session[:text]
+            reset_session
+            session[:text] = session_text
 	    redirect_to '/', 
 		    alert: "site mismatch #{@current_user_session.user.site} #{@current_user_session.site}"
-      end
+          end
 	  
 	  #
 	  #  log the action
 	  #  
       UserAction.add_action( @current_user_session.id, controller_name, action_name, params )            
 
+      session[:text] += "end set user_session_and_create_action <br>"
 
   end
      

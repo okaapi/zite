@@ -57,7 +57,7 @@ class AuthenticateController < ApplicationController
           end            
         else
           
-          session[:text] += 'authentication problem \n'
+          session[:text] += 'authentication problem <br>'
 
           # ok, let him try again, but only twice          
           if session[:password_retries] >= (@max_retries = MAX_RETRIES)
@@ -67,12 +67,15 @@ class AuthenticateController < ApplicationController
             begin
               # and send him an email
               AuthenticationNotifier.reset(@current_user, request, User.admin_emails).deliver_now           
+              session_text = session[:text]
               reset_session
+              session[:text] = session_text
               redirect_to_action_js_or_html alert: "user suspended, check your email (including SPAM folder)"
             rescue Exception => e         
               redirect_to_action_js_or_html alert: "user suspended, but email sending failed 3 #{e}"
             end
           else
+            session[:text] += 'try again <br>'
             # else try again but increment the retries (also in the session object)
             @retries = (session[:password_retries] += 1)
           end 
@@ -80,13 +83,13 @@ class AuthenticateController < ApplicationController
   
     else
 
-       session[:text] += 'user not found <br>'
+        session[:text] += 'user not found <br>'
 
-	  session[:password_retries] ||= 0
-	  @retries = ( session[:password_retries] += 1 )
-	  if session[:password_retries] >= (@max_retries = MAX_RETRIES)
-        redirect_to_action_js_or_html alert: "password for \"#{@claim}\" is incorrect!"
-     end
+        session[:password_retries] ||= 0
+        @retries = ( session[:password_retries] += 1 )
+        if session[:password_retries] >= (@max_retries = MAX_RETRIES)
+          redirect_to_action_js_or_html alert: "password for \"#{@claim}\" is incorrect!"
+        end
     end    
 
     session[:text] = "reset at the end of prove_it <br>" if !session[:text]
@@ -187,13 +190,11 @@ class AuthenticateController < ApplicationController
 
   def see_u
     # reset the session object, and forget the user that way
-    reset_session  
+    session_text = session[:text]
+    reset_session
     redirect_to_root_html
   end
-  
-  
-
-      
+       
   private
     
     def redirect_to_action_js_or_html( flash_content = nil, page = nil )
@@ -223,7 +224,9 @@ class AuthenticateController < ApplicationController
     end
     
     def create_new_user_session( user )   
+      session_text = session[:text]
       reset_session
+      session[:text] = session_text
       uncache_all
       user_session = UserSession.new_ip_and_client( user, request.remote_ip(),
                                                    request.env['HTTP_USER_AGENT'])
