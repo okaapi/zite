@@ -311,7 +311,7 @@ class AuthenticateController < ApplicationController
     authentication_logger('see_u from #{session[:login_from]}')	
         
     reset_session
-    redirect_to_root_html notice: "logged out"
+    redirect_to_root_html #  notice: "logged out"  if we keep this, then it shows up on the cached pages!
   end
        
   def check
@@ -373,7 +373,7 @@ class AuthenticateController < ApplicationController
     def authentication_logger( str )
       #
       #  uncomment to turn on logging
-      #  logger.info( 'AUTHENTICATE_CONTROLLER ' + str ) if str
+      logger.info( 'AUTHENTICATE_CONTROLLER ' + str ) if str
       #
     end
 

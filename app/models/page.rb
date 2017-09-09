@@ -233,8 +233,11 @@ class Page < ZiteActiveRecord
 	  Dir.mkdir cache_directory
 	end     
     path = File.join( Rails.root , 'public/cache', cache_dir, self.name ) + '.html'    
-    to_write = content + ' cached'
-    File.open(path, "w") { |f| f.write( to_write.force_encoding('ISO-8859-1') ) }
+    page_logger( 'caching')
+    page_logger path
+    to_write = content + ' cached ' 
+    e = File.open(path, "w") { |f| f.write( to_write.force_encoding('ISO-8859-1') ) }
+    page_logger( e.to_s )
   end
   
   def uncache( cache_dir )
@@ -347,6 +350,15 @@ class Page < ZiteActiveRecord
 	else
 	  []
 	end
+  end
+
+  private
+
+  def page_logger( str )
+    #
+    #  uncomment to turn on logging
+    logger.info( 'PAGE_MODEL ' + str ) if str
+    #
   end
    
 end

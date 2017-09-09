@@ -8,7 +8,8 @@
       <th>Visibility</th>
       <th>Editability</th>
       <th>Menu</th>
-      <th><u><%= link_to 'Last', pages_path %></u></th>
+      <th><u><%= link_to 'Most recent', pages_path %></u> &nbsp; / &nbsp;
+             <u><%= link_to 'most recent only', pages_path( most_recent_only: 'true' )  %></u>  </th>
       <th colspan="3"></th>
     </tr>
   </thead>

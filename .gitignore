@@ -31,4 +31,5 @@ Gemfile.lock
 /public/cache
 /public/assets
 /public/camera
+/public/fb.html
 

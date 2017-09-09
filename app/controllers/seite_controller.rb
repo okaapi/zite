@@ -14,7 +14,9 @@ class SeiteController < ApplicationController
     elsif @center and !@current_user
       cached_content = render
       if Rails.configuration.page_caching    
-        @center.cache( cached_content, SiteMap.by_internal( @center.site ) )
+        seite_logger( "caching #{cached_content[0..200]}" )
+        #@center.cache( cached_content, SiteMap.by_internal( @center.site ) )
+        @center.cache( cached_content, @center.site )
       end
     else
       render
@@ -133,5 +135,11 @@ class SeiteController < ApplicationController
   
   private
 
+  def seite_logger( str )
+    #
+    #  uncomment to turn on logging
+    logger.info( 'SEITE_CONTROLLER ' + str ) if str
+    #
+  end
   
 end

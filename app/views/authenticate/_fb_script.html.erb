@@ -15,9 +15,13 @@
       cookie     : true,
       xfbml      : true,
       version    : 'v2.8'
-    });  
+    }); 
     FB.getLoginStatus( function(response) {
       //console.log( response );
+      var fdiv = document.getElementById("fb_div");
+      if (fdiv) {
+        fdiv.style.display = 'block';
+      }
       if (response.status === 'connected') {
         //console.log( 'logged into Facebook' );
         FB.api('/me', { locale: 'en_US', fields: 'name, email' }, (function(response) {

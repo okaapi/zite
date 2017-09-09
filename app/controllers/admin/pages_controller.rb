@@ -10,9 +10,18 @@ module Admin
 	  # GET /pages.json
 	  def index
 	    if params[:by_name]
-          @pages = Page.all.order( name: :asc, updated_at: :desc ).order( name: :asc )       
+              @pages = Page.all.order( name: :asc, updated_at: :desc ).order( name: :asc )       
+	    elsif params[:most_recent_only]
+              sql = "select id from pages where (name, updated_at) in " +
+                "(select name, max(updated_at) from pages where site = '#{ZiteActiveRecord.site?}'" +
+                " group by name) " + "order by name asc;"
+              @pages = []
+              results = ActiveRecord::Base.connection.execute(sql)   
+              results.each do |r|
+                @pages << Page.find( r[0] )
+              end
 	    else
-          @pages = Page.all.order( updated_at: :desc )
+              @pages = Page.all.order( updated_at: :desc )
 	    end	    
 	  end
 	
