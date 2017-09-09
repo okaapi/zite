@@ -120,9 +120,10 @@ class SeiteController < ApplicationController
   
   def camera_directory_delete
     @camera = params[:filter]
+    @page = params[:page]
     @date = params[:date]
     Camera.delete( @camera, @date)
-    redirect_to root_path( seite: 'camera'),  notice: "#{@camera} #{@date} #{Camera.degarble(@date)} deleted"
+    redirect_to root_path( seite: @page),  notice: "#{@camera} #{@date} #{Camera.degarble(@date)} deleted"
     
   end
     

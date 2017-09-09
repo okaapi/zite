@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   post '_pageupdate/(:seite)' => 'seite#pageupdate_save', as: 'page_update_save'
   post 'file_upload' => 'seite#file_upload', as: 'file_upload'
   post 'file_delete' => 'seite#file_delete', as: 'file_delete'
-  get 'camera_directory_delete/(:filter)/(:date)' => 'seite#camera_directory_delete', as: 'camera_directory_delete'
+  get 'camera_directory_delete/(:filter)/(:date)/(:page)' => 'seite#camera_directory_delete', as: 'camera_directory_delete'
   
   # route for searching
   match '_search/(:term)' => 'seite#search', as: 'search', via: [:get, :post] 

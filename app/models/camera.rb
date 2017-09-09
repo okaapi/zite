@@ -1,7 +1,12 @@
 
 
 class Camera
-  def self.launch( filter )
+  def self.launch( operands )
+
+    operand_list = operands.split
+    filter = operand_list[0]
+    page = operand_list[1] ? operand_list[1] : 'camera'
+    
     out = ""
     out << "<h2> #{filter} Camera </h2>"
 
@@ -11,7 +16,7 @@ class Camera
       datelist = Dir.entries(directory).reject{|entry| entry =~ /^\.{1,2}$/}.sort_by { |a| File.stat(File.join(directory,a)).mtime }.reverse
       
       datelist.each do |date|
-        out << "<h3> #{Camera.degarble(date)} <small><a href='/camera_directory_delete/#{filter}/#{date}' " 
+        out << "<h3> #{Camera.degarble(date)} <small><a href='/camera_directory_delete/#{filter}/#{date}/#{page}' " 
         out <<     " onclick='return confirm(\"Are you sure?\")'> delete </a></small> </h3>"                 
         datedirectory = File.join( directory, date )  
               
