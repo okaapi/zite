@@ -102,17 +102,26 @@ class AuthenticateController < ApplicationController
   end
   
   def who_are_u  
-    # ask the user for their username
-	a = request.headers['HTTP_REFERER']	
-	login_from = a[a.rindex('/')+1..a.length] if a
 	
+	# figure out from which page user is logging into
+	a = request.headers['HTTP_REFERER']	
+	login_from = a[a.rindex('/')+1..a.length] if a	
 	if defined?( Page )
 	  session[:login_from] = login_from if Page.get_latest( login_from )
 	else 
 	  session[:login_from] = login_from
 	end
 	 
-    authentication_logger("who_are_u from page #{session[:login_from]}")	
+    # check whether user is already logged in 
+    if @current_user
+      redirect_to_action_html( { alert: "#{@current_user.username} already logged in" }, 
+                                       login_from)  
+      authentication_logger("who_are_u from page #{session[:login_from]} but #{@current_user.username} already logged in")	                                              
+    else
+      # ask the user for their username
+      authentication_logger("who_are_u from page #{session[:login_from]}")	
+    end
+    
   end
 
   def prove_it
@@ -130,8 +139,15 @@ class AuthenticateController < ApplicationController
     # this is for testing email failure exception code    
     @eft = params[:ab47hk]
         
+    
+    # if we're already logged in
+    if @current_user
+      redirect_to_action_html( { alert: "#{@current_user.username} already logged in" }, 
+                                       login_from)  
+      authentication_logger("prove_it but #{@current_user.username} already logged in")   
+      
     # this is the first time we come here
-    if !@password
+    elsif !@password
       session[:password_retries] = 0
 	  
       authentication_logger('no password')   
@@ -222,8 +238,13 @@ class AuthenticateController < ApplicationController
     # this is for testing email failure exception code
     @eft = params[:ab47hk]
     
+    # if we're already logged in
+    if @current_user
+      redirect_to_action_html( { alert: "#{@current_user.username} already logged in" } )
+     authentication_logger("about_urself but #{@current_user.username} already logged in")   
+          
     # if email and username are given... otherwise this is the empty dialogue (first time)
-    if @email and @username
+    elsif @email and @username
       # create this new user, but in unconfirmed status
       @current_user = User.new_unconfirmed( @email, @username )
       @current_user.token = nil if @eft == 'ab47hk'
@@ -269,8 +290,13 @@ class AuthenticateController < ApplicationController
       user_id = params[:user_id]
     end
        
+    # if we're already logged in
+    if @current_user
+      redirect_to_action_html( { alert: "#{@current_user.username} already logged in" } )
+      authentication_logger("ur_secrets but #{@current_user.username} already logged in")
+                
     # set the new password
-    if @current_user = User.by_id( user_id )
+    elsif @current_user = User.by_id( user_id )
       @current_user.password = params[:kennwort]
       @current_user.password_confirmation = params[:confirmation] 
       @current_user.confirm

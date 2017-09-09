@@ -54,7 +54,8 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
      
     # this for caching
     if Rails.configuration.page_caching
-      path = File.join( Rails.root , 'public/cache/testhost45A67', 'index' ) + '.html'    
+      cachedir = SiteMap.by_external( 'testhost45A67' ) 
+      path = File.join( Rails.root , 'public/cache', cachedir, 'index' ) + '.html'    
       File.delete( path ) if File.exists? path
     end
 

@@ -15,7 +15,11 @@ class SeiteController < ApplicationController
       cached_content = render
       if Rails.configuration.page_caching    
         seite_logger( "caching #{cached_content[0..200]}" )
-        #@center.cache( cached_content, SiteMap.by_internal( @center.site ) )
+        #
+        # pages are cached in the same directory for all 'external' sites pointing
+        # to the same internal site
+        # @center.cache( cached_content, SiteMap.by_internal( @center.site ) )
+        #
         @center.cache( cached_content, @center.site )
       end
     else
