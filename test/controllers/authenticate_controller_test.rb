@@ -326,7 +326,7 @@ class AuthenticateControllerTest < ActionController::TestCase
     end
     
     def assert_root_path_redirect
-      assert_redirected_to root_path
+      assert_redirected_to %r(#{root_path})
       assert @response.body =~ /redirected/  
     end
     

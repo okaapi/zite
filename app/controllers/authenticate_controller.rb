@@ -50,7 +50,8 @@ class AuthenticateController < ApplicationController
           #
           if @current_user.confirmed?           	  
             create_new_user_session( @current_user )	
-            redirect_to_action_html( { notice: "#{@current_user.username} logged in from Facebook" }, login_from )		        
+            redirect_to_action_html( { notice: "#{@current_user.username} logged in from Facebook" }, 
+                                     login_from, (1+rand(10000)) )		        
           else
             # else let him know he needs to activate
             redirect_to_action_html( { alert: "user is not activated, check your email (including SPAM folder)" }, 
@@ -168,8 +169,8 @@ class AuthenticateController < ApplicationController
             authentication_logger("user is confirmed")   
   	       
             create_new_user_session( @current_user )	
-            redirect_to_action_html( { notice: "#{@current_user.username} logged in" }, login_from )		
-            
+            redirect_to_action_html( { notice: "#{@current_user.username} logged in" }, 
+                                     login_from, (1+rand(10000)) )		                    
           else
             # else let him know he needs to activate
 
@@ -355,7 +356,7 @@ class AuthenticateController < ApplicationController
          
   private
     
-    def redirect_to_action_html( flash_content = nil, page = nil )
+    def redirect_to_action_html( flash_content = nil, page = nil, upd = nil )
     
       authentication_logger('redirect_to_action_html')  
 
@@ -365,8 +366,15 @@ class AuthenticateController < ApplicationController
         authentication_logger( flash[ flash_content.keys[0] ] )  
       end                 
 
-      redirect_to '/' + ( page || '' )
-      
+      #
+      # 
+      # 
+      if !upd
+        redirect_to '/' + ( page || '' )
+      else
+        redirect_to '/' + ( page || '' ) + '?upd=' + upd.to_s
+      end
+
     end
     
     def redirect_to_root_html( flash_content = nil )

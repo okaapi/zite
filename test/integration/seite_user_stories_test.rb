@@ -123,7 +123,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     
     # enters correct password and gets logged in and session is created
       post "/_prove_it", params: { claim: "arnaud", kennwort: "secret" }
-      assert_redirected_to root_path
+      assert_redirected_to %r(#{root_path})
     assert_equal flash[:notice], 'arnaud logged in'
 
     get "/"
@@ -154,7 +154,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     # enters correct password and gets logged in and session is created
 
       post "/_prove_it", params: { claim: "wido_admin", kennwort: "secret" }
-      assert_redirected_to root_path
+      assert_redirected_to %r(#{root_path})
 
     assert_equal flash[:notice], 'wido_admin logged in'
     
@@ -181,7 +181,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     # enters correct password and gets logged in and session is created
 
       post "/_prove_it", params: { claim: "arnaud", kennwort: "secret" }
-      assert_redirected_to root_path + 'talks'
+      assert_redirected_to %r(#{root_path + 'talks'})
 
     assert_equal flash[:notice], 'arnaud logged in'
 	assert_nil @controller.session[:login_from]
