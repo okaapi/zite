@@ -8,13 +8,12 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 #gem 'turbolinks'  interferes with FB login
 gem 'uglifier'
-gem 'sass-rails'
-gem 'bootstrap-sass'   
-gem 'autoprefixer-rails' 
+gem 'bootstrap', '~> 4.0.0.alpha3'
+#gem 'autoprefixer-rails' 
 gem 'jbuilder'
 
 gem 'bcrypt'
 gem 'tzinfo-data'
 gem 'simplecov'
 
-gem 'unicorn'
+#gem 'unicorn'
