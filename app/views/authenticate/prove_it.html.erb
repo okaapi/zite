@@ -1,5 +1,39 @@
-<div class="row">  
-  <div id="authentication_dialogue" class="col-md-12">
-    <%= render "prove_it" %>
+<%= form_tag prove_it_path, class: 'form-horizontal login_decor' do %>
+
+  <! 
+    title box
+  > 
+  <div class="alert alert-info" role="alert">
+    Prove you are <%= @claim %> !
   </div>
-</div>
+  
+  <! 
+    retries
+  > 
+  <% if @retries %>
+    <div class="alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign"></span>
+      The password does not match!
+	  <ul>
+	    <li><%= @retries.ordinalize %> attempt of <%= @max_retries %></li>
+	    <li>or, <%= link_to 'send reset mail', reset_mail_path(:claim => @claim) %></li>
+	  </ul>
+    </div>
+  <% end %>
+  
+  <! 
+    labels & entry fields
+  >     
+  <div class="card">
+    <div class="card-header" >  
+	  <div class="form-group">
+	    <%= hidden_field_tag :claim, @claim %>
+	    <%= label_tag :kennwort, "password:", class: 'control-label' %>
+	    <%= password_field_tag :kennwort, '', autofocus: true, class: 'col-sm-3 form-control' %>
+	    <small class="text-muted"><%= link_to 'cancel', see_u_path %> </small>
+	    <br>
+		<small class="text-muted"><%= link_to 'forgot password', reset_mail_path(:claim => @claim)  %></small>
+	  </div>
+	</div>
+  </div>	  
+<% end %>

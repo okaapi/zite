@@ -1,3 +1,38 @@
-<div id="authentication_dialogue" class="col-md-12">
-  <%= render "about_urself" %>
-</div>
+<%= form_tag about_urself_path, class: 'form-horizontal login_decor' do %>
+  
+  <! 
+    title box
+  >  
+  <div class="alert alert-info" role="alert">
+    About yourself...
+  </div>  
+  <%= render "user_errors" %>
+  
+  <! 
+    labels & entry fields
+  >   
+  <div class="card">
+    <div class="card-header" >    
+	  <div class="form-group">
+	    <%= label_tag :username, "username:", class: 'control-label'%>
+	    <%= text_field_tag :username, @username, autofocus: true, class: 'col-sm-3 form-control'  %>
+	  </div>	
+	
+	  <div class="form-group">
+	    <%= label_tag :email, "email:", class: 'control-label' %>
+	    <%= text_field_tag :email, @email, class: 'col-sm-3 form-control'  %>
+	  </div>	
+	  
+	  <! 
+	    submit
+	  >   
+	  <div class="form-group">
+	    <%= hidden_field_tag :user_id, @current_user.id if @current_user %>  
+	    <%= submit_tag 'Send registration email', class: "btn btn-default", 
+	                        :onclick => "$('#spinner').show(); ".html_safe %>
+	    <small class="text-muted"><%= link_to 'cancel', see_u_path %> </small>
+	  </div>  
+    </div>  
+  </div>  
+	  	  
+<% end %>

@@ -13,3 +13,8 @@ config.active_support.test_order = :sorted
 5) for users - last login
 
 6) Facebook user generation - email to wido, trixi
+
+7) directory list in camera is still wrongly ordered (should not be date of file)
+
+8) there should not be a heading for camera if there are no files in it!
+

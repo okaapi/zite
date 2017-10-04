@@ -1,5 +1,6 @@
 <%= render "authenticate/fb_script" %>	
 
+<span id="login-logout">
 <% if !@current_user  %>
 
   <%= link_to 'login', who_are_u_path %> 
@@ -11,3 +12,4 @@
   <%= @current_user.username  %>
 
 <% end %>
+</span>

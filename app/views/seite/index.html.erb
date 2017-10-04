@@ -2,11 +2,11 @@
 <div id="seite">   
 
   <div class="row">
-	<div class="header col-sm-12" style="border: 1px solid red">
+	<div class="header col-sm-12" >
 	  <%= render partial: "seite", locals: { seite: @header } %>
 	</div>	
 	
-	<div class="menu col-sm-12" style="border: 1px solid blue">
+	<div class="menu col-sm-12" >
 	  <%= render partial: "seite", locals: { seite: @menu } %>	
 	</div>
   </div>
@@ -15,11 +15,11 @@
   
     <!--  -center-  -->
     <% if !@left and !@right %>
-	  <div class="center col-sm-12" style="border: 1px solid green">
+	  <div class="center col-sm-12" >
 	    <%= render partial: "seite", locals: { seite: @center } %>
 	  </div>
 	  
-	<!--  left-center-right  -->
+	<!--  left-center-right  -->style="border: 0px solid cyan"
 	<% elsif @left and @right %>
 	  <div class="left col-sm-2">
 	    <%= render partial: "seite", locals: { seite: @left } %>	
@@ -33,10 +33,10 @@
 	  
 	<!--  left-center  -->
     <% elsif @left %>
-	  <div class="left col-sm-2" style="border: 1px solid orange">
+	  <div class="left col-sm-2" >
 	    <%= render partial: "seite", locals: { seite: @left } %>	
 	  </div>	
-	  <div class="center col-sm-10" style="border: 1px solid purple">
+	  <div class="center col-sm-10" >
 	    <%= render partial: "seite", locals: { seite: @center } %>
 	  </div>	
 	 
@@ -55,7 +55,7 @@
   </div>
 
   <div class="row">	
-	<div class="footer col-sm-12" style="border: 1px solid cyan">
+	<div class="footer col-sm-12" >
 	  <%= render partial: "seite", locals: { seite: @footer } %>
 	</div>
   </div>

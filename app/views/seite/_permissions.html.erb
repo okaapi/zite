@@ -1,37 +1,30 @@
-
-<div class="panel-group" role="tablist" aria-multiselectable="true" >
-  <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="headingPermissions">
-      <h4 class="panel-title">
-        <a class="collapsed" data-toggle="collapse" 
-           href="#collapsePermissions" aria-expanded="false" aria-controls="collapsePermissions">
+  <div class="card">
+    <div class="card-header" >
+      <h4 class="card-title">
+        <a data-toggle="collapse" href="#collapsePermissions" >
           Options
         </a>
       </h4>
     </div>
-    <div id="collapsePermissions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingPermissions">
-      <div class="panel-body">   
-    	<div id="permissions" class="field form-group">
-	      <div class = "row">      
-	        <%= label_tag :visibility, "Visibility", class: 'col-sm-2 control-label' %>
-	        <div class="col-sm-3">
-	          <%= select_tag :visibility, options_for_select( Page.visibilities, @page.visibility ), class: 'form-control' %>
+    <div id="collapsePermissions" class="collapse" >
+      <div class="card-body">      
+    	<div id="permissions" class="form-group">
+           <div class="row">
+             <div class="col-sm-3">
+	           <%= label_tag :visibility, "Visibility" %>
+	           <%= select_tag :visibility, options_for_select( Page.visibilities, @page.visibility ), class: 'form-control' %>
+             </div>
+             <div class="col-sm-3">                 
+	           <%= label_tag :editability, "Editability" %>
+	           <%= select_tag :editability, options_for_select( Page.editabilities, @page.editability ), class: 'form-control' %>
+	        </div>	          
+
+	        <div class="col-sm-3">        
+	          <%= label_tag :menu, "Show menu"  %>
+	          <%= select_tag :menu, options_for_select( ['true','false'], @page.menu ), class: 'form-control' %>
 	        </div>
-	     
-	        <%= label_tag :editability, "Editability", class: 'col-sm-2 control-label'  %>
-	        <div class="col-sm-3">
-	          <%= select_tag :editability, 
-	              options_for_select( Page.editabilities, @page.editability ), class: 'form-control' %>
-	        </div>
-	      </div>
-	      <div class = "row">           
-	        <%= label_tag :menu, "Show menu", class: 'col-sm-2 control-label'  %>
-	        <div class="col-sm-3">
-	          <%= select_tag :menu, 
-	              options_for_select( ['true','false'], @page.menu ), class: 'form-control' %> 
-	        </div>
-	        <%= label_tag :editor, "Editor", class: 'col-sm-2 control-label'  %>
-	        <div class="col-sm-3">
+	        <div class="col-sm-3">  
+	          <%= label_tag :editor, "Editor" %>
 	          <%= select_tag :editor, options_for_select( ['wysiwyg','html'], @page.editor ), class: 'form-control' %> 
 	        </div>    
 	      </div>
@@ -40,4 +33,3 @@
     </div>
 
   </div>
-</div>

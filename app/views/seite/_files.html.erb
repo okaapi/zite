@@ -1,42 +1,37 @@
 
 
-    <div id="files">
-      <p>
-      <table class="filetable">
-        <% @files = page.file_list %>
-        <% if @files and @files.count > 0 %>
-          <tr><td></td><td></td><td>copy this address to insert above </td></tr>
-        <% end %>
-     
-        <% @files.each do |f| %>
-          <tr>
-            <td> <%= link_to if_image( page, f), page.file_target( f) %></td>
-            <td> <%= link_to truncate( file_basename(f), length: 30), page.file_target( f) %> </td>
+<div id="files">
 
-            <td class="grab_box"> <%= page.file_target( f) %> </td>
-            <td> <%= link_to 'delete', 
-                      file_delete_path( seite: page.name, filename: file_basename(f) ),
-                      method: :post,
-                      data: { confirm: 'Are you sure?' } %> &nbsp; </td>            
-            <td> <%= file_encoding( f ) %> </td>
-          </tr>
-        <% end %>
-      </table>
-      </p>
-    
+  <table class="filetable" >
+    <% @files = page.file_list %>
+    <% if @files and @files.count > 0 %>
+      <tr><td></td><td></td><td align='right'>copy this address to insert above </td></tr>
+    <% end %>
+    <% @files.each do |f| %>
+      <tr>
+        <td> <%= link_to if_image( page, f), page.file_target( f) %></td>
+        <td> <%= link_to truncate( file_basename(f), length: 30), page.file_target( f) %> </td>
+        <td class="grab_box"> <%= page.file_target( f) %> </td>
+        <td> <%= link_to 'delete', 
+                  file_delete_path( seite: page.name, filename: file_basename(f) ),
+                  method: :post,
+                  data: { confirm: 'Are you sure?' } %> &nbsp; </td>            
+        <td> <%= file_encoding( f ) %> </td>
+      </tr>
+    <% end %>
+  </table>
 
+  <%= form_tag file_upload_path( seite: page.name ), multipart: true do %>
+    <p></p>
+    <%= file_field_tag :file, class: 'form-control col-sm-6' %>
+    <p></p>
+    <%= submit_tag 'Upload!', class: 'btn btn-default',
+          data: { confirm: 'Are you sure? Your current edits will be lost...' } %>   
+    <br>  
+    <small class="text-muted">Note 1: you will lose your edits... save first! </small>
+    <br>
+    <small class="text-muted">Note 2: all uploaded files are visible to anyone regardless of page permissions! </small><br>
+  <% end %>
 
-      <%= form_tag file_upload_path( seite: page.name ), multipart: true do %>
-        <p> 
-          <%= file_field_tag :file, class: 'btn  btn-default' %>
-          <p></p>
-          <%= submit_tag 'Upload!', class: 'btn btn-default',
-              data: { confirm: 'Are you sure? Your current edits will be lost...' } %> 
-        </p>
-        <p id="note"> Note 1: you will lose your edits... save first! <br>
-         Note 2: all uploaded files are visible to anyone regardless of page permissions! </p>
-      <% end %>
-
-    </div>    
-
+</div>    
 

@@ -41,8 +41,12 @@
   input[type=submit]:hover {
     color: red 
   }  
+  upload-button {
+    border: 2px solid red;
+  } 
+
   #files {
-    td { border: 2px solid white; padding: 10px; }   
+    td { border: 2px solid white; padding: 2px; }   
     span:hover { color: red }  
     .grab_box { 
       padding: 0px 10px 0px 10px;
@@ -53,6 +57,7 @@
     }
   }  
 }
+
 
 
 

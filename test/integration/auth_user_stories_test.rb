@@ -103,22 +103,42 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
   #  user clicks on the link in the email sets password, and gets logged in
   #  (error handling is tested in the controller)
   #  
+  test "setting password and travels away" do
+               
+    User.find_by_username( 'francois' ).update_attribute( :token, 'francois_token' )     
+    
+    # user clicks on the link
+    get "/_from_mail", params: { user_token: 'francois_token' }
+    assert_response :success
+    	
+    # refreshes root and gets logged out
+    get "/"
+    assert_response :success
+    assert_select '#authentication_launchpad a', 'login'
+    
+  end
+  
+  #
+  #  user clicks on the link in the email sets password, and gets logged in
+  #  (error handling is tested in the controller)
+  #  
   test "setting password" do
                
     User.find_by_username( 'francois' ).update_attribute( :token, 'francois_token' )     
     
     # user clicks on the link
     get "/_from_mail", params: { user_token: 'francois_token' }
-    assert_redirected_to root_path
+    assert_equal flash[:notice], "Enter new password for user \"francois\""       
+    assert_response :success
     	
     # refreshes and still gets the correct user displayed
-    get "/"
-    assert_response :success
+    get "/_from_mail", params: { user_token: 'francois_token' }
+    assert_equal flash[:notice], "Enter new password for user \"francois\"" 
+    assert_response :success 
     assert_select '.control-label', /password/    	    
-    assert_select '.alert-info', /francois/
     
     # sets the password and gets logged in
-      post "/_ur_secrets", params: { user_id: @user_francois.id, 
+    post "/_ur_secrets", params: { user_id: @user_francois.id, 
                                kennwort: 'secret', password_confirmation: 'secret' } 
     
     assert_root_path_redirect
@@ -127,7 +147,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     # user refreshes and username is displayed
     get "/"
     assert_response :success
-    assert_select '#authentication_launchpad', /francois/
+    assert_select '#authentication_launchpad #login-logout', /francois/
 
   end
 

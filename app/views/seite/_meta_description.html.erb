@@ -1,22 +1,18 @@
-<div class="panel-group" role="tablist" aria-multiselectable="true" >
-  <div class="panel panel-default" >
-    <div class="panel-heading" role="tab" id="metaDescription">
-      <h4 class="panel-title">
-        <a class="collapsed" data-toggle="collapse" 
-           href="#collapseMetaDescription" aria-expanded="false" aria-controls="collapseMetaDescription">
-          Meta Description
-        </a>
-      </h4>
-    </div>
-    <div id="collapseMetaDescription" class="panel-collapse collapse" role="tabpanel" aria-labelledby="metaDescription">
-      <div class="panel-body">
-        <div id="meta_description_partial">
-          <div class="field form-group">
-            <%= label_tag :claim, "Description for search engines:", class: 'col-sm-3 control-label' %>
-	        <div class="col-sm-9">
-	          <%= text_field_tag :meta_desc, @page.meta_desc, class: 'form-control' %>
-	        </div>
-	      </div>        
+
+<div class="card" >
+  <div class="card-header" >
+    <h4 class="card-title">
+      <a class="collapsed" data-toggle="collapse" href="#collapseMetaDescription">
+        Meta Description
+      </a>
+    </h4>
+  </div>
+  <div id="collapseMetaDescription" class="collapse">
+    <div class="card-body">
+      <div id="meta_description_partial">
+        <div class="field form-group">
+          <%= label_tag :claim, "Description for search engines:" %>
+          <%= text_field_tag :meta_desc, @page.meta_desc, class: 'form-control' %>    
         </div>
       </div>
     </div>   

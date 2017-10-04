@@ -24,16 +24,16 @@
     <%= hidden_field_tag :user_id, @page.user_id %>
     <p></p>
     <div class="row" >
-      <div class="col-sm-2" style="border: 1px solid purple">                   
+      <div class="col-sm-2" style="border: 0px solid purple">                   
         <%= submit_tag 'Save!', class: 'btn btn-default' %> 
         <%= link_to "cancel", seite_path( seite: @page.name ) if @page.updated_at %>
       </div>
-      <div class="col-sm-10" style="border: 1px solid green">
+      <div class="col-sm-10" style="border: 0px solid green">
         <%= render partial: "permissions" %>
       </div>
     </div>  
     <div class="row" >     
-      <div class="col-sm-12" style="border: 1px solid red">         
+      <div class="col-sm-12" style="border: 0px solid red">         
         <%= render partial: "meta_description" %>
       </div>      
     </div>     

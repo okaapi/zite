@@ -1,0 +1,39 @@
+
+<%= form_tag ur_secrets_path, class: 'form-horizontal login_decor' do %>
+
+  <% if @error_messages %>
+    <div class="alert alert-danger" >
+      <% @error_messages.each do |k,msg| %>
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <%= k.to_s.capitalize + ' ' + msg[0].to_s %><br>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <! 
+    labels & entry fields
+  >   
+  <div class="card">
+    <div class="card-header" >      
+	  <div class="form-group">  
+	    <%= label_tag :kennwort, "password:", class: 'control-label' %>
+	    <%= password_field_tag :kennwort, '', autofocus: true, class: 'col-sm-3 form-control' %>
+	  </div>
+	
+	  <div class="form-group">
+	    <%= label_tag :confirmation, "confirmation:", class: 'control-label' %>
+	    <%= password_field_tag :confirmation, '', class: 'col-sm-3 form-control'%>        
+	  </div>
+	
+	  <! 
+	    submit
+	  >  
+	  <div class="form-group">
+	    <%= hidden_field_tag :user_token, @user_token %>  
+	    <%= submit_tag 'Update!', class: 'btn btn-default', :onclick => "$('#spinner').show(); ".html_safe %>
+	    <small class="text-muted"><%= link_to 'cancel', see_u_path %> </small>	
+	  </div>
+    </div>  
+  </div>  
+	
+<% end %>

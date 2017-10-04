@@ -12,6 +12,7 @@
   <%= csrf_meta_tags %>
   <%= favicon_link_tag 'favicon.ico' %>
   <meta name="description" content="<%= @meta_desc %>" />
+  <meta http-equiv="content-language" content="en">
 </head>
 <body>
 
@@ -48,22 +49,12 @@
       </div>    
     </div>
     <div class="row">   
-      <div class="col-sm-8">
-		<% if session[:reset_user_id] and @current_user = User.by_id( session[:reset_user_id] )%>  
-		  <div id="authentication_dialogue_js" style="display:block" >
-		    <%= render "authenticate/ur_secrets" %>
-		  </div>
-		<% else %>  
-		  <div id="authentication_dialogue_js"></div>
-		<% end %>     		 
-      </div>
+      <div class="col-sm-8 text-right">
+      </div> 
       <div class="col-sm-4 text-right">
-	    <% if session[:reset_user_id] and @current_user = User.by_id( session[:reset_user_id] )%>  
-	    <% else %>  
-	      <div id="authentication_launchpad">
-	        <%= render "authenticate/launchpad" %>
-	      </div>
-	    <% end %>
+        <div id="authentication_launchpad">
+	      <%= render "authenticate/launchpad" %>
+        </div>
       </div>      
     </div>
     

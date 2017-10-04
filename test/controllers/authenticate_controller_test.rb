@@ -24,7 +24,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 
 
   end
-    
+  
   test "should post prove_it_with_user_name" do
 
 	      post :prove_it, params: { claim: "some weird name" }
@@ -75,8 +75,6 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    assert_nil @controller.session[:password_retries]
 
   end
-
-
 
   test "prove_it with incorrect password too often email failed" do
   
@@ -211,11 +209,11 @@ class AuthenticateControllerTest < ActionController::TestCase
   
   test "from_mail get with correct token" do
     get :from_mail, params: { user_token: 'john_token' }  
-    assert_equal flash[:alert], "please set your password"
-    assert_redirected_to root_path   
+    assert_response :success
+    assert_equal flash[:notice], "Enter new password for user \"john\""
     assert_equal session[:reset_user_id], @user_john.id
   end
- 
+
   test "from_mail get with incorrect token" do
     @user_john.token = 'a1b2'
     @user_john.password = @user_john.password_confirmation = 'bla'
@@ -226,26 +224,20 @@ class AuthenticateControllerTest < ActionController::TestCase
 	assert_redirected_to root_path   	       
   end    
 
+
   test "ur_secrets from mail post without anything" do 
 	    session[:reset_user_id] = @user_john.id         
 	      post :ur_secrets
-	      assert_response :success
-	      assert_select '.form-horizontal'
-	      assert_select '.alert-info', /#{@user_john.username}/
-	      assert_select '.control-label', /password/ 
-	      assert_select '.control-label', /confirmation/     
+	      assert_response :success  
 	    assert_equal assigns(:current_user).errors.count, 2
 	    assert_equal assigns(:current_user).errors.full_messages[0], "Password is too short (minimum is 3 characters)"
 	    assert_equal assigns(:current_user).errors.full_messages[1], "Password can't be blank"
 	    assert_nil session[:reset_user_id]    
   end  
 
+
   test "ur_secrets post with correct user_id" do
-    post :ur_secrets, params: { user_id: @user_john.id }
-    assert_response :success
-    assert_select '.form-horizontal'
-    assert_select '.control-label', /password/ 
-    assert_select '.control-label', /confirmation/      
+    post :ur_secrets, params: { user_id: @user_john.id }    
     assert_equal assigns(:current_user).errors.count, 2
     assert_equal assigns(:current_user).errors.full_messages[0], "Password is too short (minimum is 3 characters)"
     assert_equal assigns(:current_user).errors.full_messages[1], "Password can't be blank"
@@ -262,10 +254,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 
   test "ur_secrets post with correct user_id and not matching passwords" do
 	post :ur_secrets, params: { user_id: @user_john.id, kennwort: 'secret', confirmation: 'secret2' }
-	assert_response :success
-	assert_select '.form-horizontal'    
-	assert_select '.control-label', /password/ 
-	assert_select '.control-label', /confirmation/         
+	assert_response :success      
 	assert_equal assigns(:current_user).errors.count, 1
 	assert_equal assigns(:current_user).errors.full_messages[0], "Password confirmation doesn't match Password"
 	assert_nil session[:reset_user_id]  

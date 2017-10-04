@@ -264,16 +264,19 @@ class AuthenticateController < ApplicationController
   
   def from_mail # get
     
-    # this is the link from the email... set the reset_user_id, and immediately redirect
-    # redirection will show the ur_secrets dialogue with form to ur_secrets
+    # this is the link from the email... 
+    # log out current user
     
     uncache_all
+    session[:user_session_id] = @current_user = @current_user_session = nil
     
     @user_token = params[:user_token]
-    if @current_user = User.by_token( @user_token )
-      # REMEMBER this user _id for ur_secrets!
-      session[:reset_user_id] = @current_user.id
-      redirect_to_root_html alert: "please set your password"
+    @error_messages = params[:error_messages]
+    if current_user = User.by_token( @user_token )
+      if !@error_messages
+        flash[:notice] = "Enter new password for user \"#{current_user.username}\""
+      end 
+      render 
     else
       redirect_to_root_html alert: "the activation link is incorrect, please reset..."
     end      
@@ -281,23 +284,15 @@ class AuthenticateController < ApplicationController
   end
   
   def ur_secrets # post
-    
-    # this is to set the password, must be coming from from_mail
-    # immeditately set reset_user_id to nil
-    if user_id = session[:reset_user_id] 
-      session[:reset_user_id] = nil
-    else
-      # if there is a problem with the password input, we come back here, with user_id set
-      user_id = params[:user_id]
-    end
-       
+      
+    @user_token = params[:user_token] 
     # if we're already logged in
     if @current_user
       redirect_to_action_html( { alert: "#{@current_user.username} already logged in" } )
       authentication_logger("ur_secrets but #{@current_user.username} already logged in")
                 
     # set the new password
-    elsif @current_user = User.by_id( user_id )
+    elsif @current_user = User.by_token( @user_token )
       @current_user.password = params[:kennwort]
       @current_user.password_confirmation = params[:confirmation] 
       @current_user.confirm
@@ -305,6 +300,8 @@ class AuthenticateController < ApplicationController
       if @current_user.save # succes!
         create_new_user_session( @current_user )   
         redirect_to_action_html notice: "password set, you are logged in!"
+      else
+        redirect_to action: :from_mail, user_token: @user_token, error_messages: @current_user.errors.messages
       end
     else
       redirect_to_action_html alert: "leopards in the bushes!"  # something is reaaalllyyy wrong

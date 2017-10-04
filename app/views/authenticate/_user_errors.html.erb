@@ -1,8 +1,8 @@
-  <% if @current_user && @current_user.errors.any? %>
-      <div class="alert alert-danger" role="alert">
-        <% @current_user.errors.full_messages.each do |msg| %>
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-          <%= msg %><br>
-        <% end %>
-      </div>
-  <% end %>
+<% if @current_user && @current_user.errors.any? %>
+  <div class="alert alert-danger" >
+    <% @current_user.errors.full_messages.each do |msg| %>
+      <span class="glyphicon glyphicon-exclamation-sign"></span>
+      <%= msg %><br>
+    <% end %>
+  </div>
+<% end %>
