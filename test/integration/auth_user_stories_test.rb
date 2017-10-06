@@ -138,7 +138,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '.control-label', /password/    	    
     
     # sets the password and gets logged in
-    post "/_ur_secrets", params: { user_id: @user_francois.id, 
+    post "/_ur_secrets", params: { user_token: 'francois_token', 
                                kennwort: 'secret', password_confirmation: 'secret' } 
     
     assert_root_path_redirect

@@ -272,7 +272,7 @@ class AuthenticateController < ApplicationController
     
     @user_token = params[:user_token]
     @error_messages = params[:error_messages]
-    if current_user = User.by_token( @user_token )
+    if @user_token and @user_token != '' and current_user = User.by_token( @user_token )
       if !@error_messages
         flash[:notice] = "Enter new password for user \"#{current_user.username}\""
       end 
@@ -292,8 +292,8 @@ class AuthenticateController < ApplicationController
       authentication_logger("ur_secrets but #{@current_user.username} already logged in")
                 
     # set the new password
-    elsif @current_user = User.by_token( @user_token )
-      @current_user.password = params[:kennwort]
+    elsif @user_token and @user_token != '' and @current_user = User.by_token( @user_token )
+	  @current_user.password = params[:kennwort]
       @current_user.password_confirmation = params[:confirmation] 
       @current_user.confirm
       @current_user.token = nil
@@ -301,10 +301,13 @@ class AuthenticateController < ApplicationController
         create_new_user_session( @current_user )   
         redirect_to_action_html notice: "password set, you are logged in!"
       else
-        redirect_to action: :from_mail, user_token: @user_token, error_messages: @current_user.errors.messages
+        redirect_to action: :from_mail, user_token: @user_token, 
+		             error_messages: @current_user.errors.full_messages
       end
-    else
-      redirect_to_action_html alert: "leopards in the bushes!"  # something is reaaalllyyy wrong
+    elsif !@user_token or @user_token == ''
+      redirect_to_action_html alert: "no token"  
+	else
+      redirect_to_action_html alert: "wrong token"  
     end
 
   end

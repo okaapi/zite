@@ -7,9 +7,10 @@ class AuthenticateControllerTest < ActionController::TestCase
     @user_wido = users(:wido)
     @user_john = users(:john)    
     @session_wido = user_sessions(:session_one)   
-    request.host = 'testhost45A67'	    
+    request.host = 'testhost45A67'	
+    get :see_u    
   end
-  
+
   test "should get who_are_u" do
     
 		  begin	
@@ -95,7 +96,7 @@ class AuthenticateControllerTest < ActionController::TestCase
       
   end  
  
-  
+
   test "prove_it with noexisting user" do
 
 	      post :prove_it, params: { claim: "john1", kennwort: "secret" }
@@ -184,34 +185,17 @@ class AuthenticateControllerTest < ActionController::TestCase
   end  
    
   test "about_urself duplicate credentials other site" do
-
-
-        ZiteActiveRecord.site( 'othersite45A67' )
-        request.host = 'othersite45A67'		
-        
-        #because we run this twice...
-        john = User.by_email_or_username('john')
-        john.destroy if john
-           
-
-	      post :about_urself, params: { username: "john", email: "john@mmm.com" }
-
-
-	    assert_equal assigns(:current_user).errors.count, 0
-  
+    ZiteActiveRecord.site( 'othersite45A67' )
+    request.host = 'othersite45A67'		         
+	post :about_urself, params: { username: "john", email: "john@mmm.com" }
+	assert_equal assigns(:current_user).errors.count, 0 
   end
-    
-  test "from_mail get without token" do    
-    get :from_mail, params: { user_token: 'bla' }    
-    assert_redirected_to root_path   
-    assert_equal flash[:alert], "the activation link is incorrect, please reset..."  
-  end
-  
+       
   test "from_mail get with correct token" do
     get :from_mail, params: { user_token: 'john_token' }  
     assert_response :success
     assert_equal flash[:notice], "Enter new password for user \"john\""
-    assert_equal session[:reset_user_id], @user_john.id
+    assert_equal assigns(:user_token), 'john_token'
   end
 
   test "from_mail get with incorrect token" do
@@ -220,52 +204,91 @@ class AuthenticateControllerTest < ActionController::TestCase
     @user_john.save!
     get :from_mail, params: { user_token: 'john_token' }
     assert_equal flash[:alert], "the activation link is incorrect, please reset..."		
-	assert_nil session[:reset_user_id]			
+	assert_equal assigns(:user_token), 'john_token'	
 	assert_redirected_to root_path   	       
   end    
 
-
-  test "ur_secrets from mail post without anything" do 
-	    session[:reset_user_id] = @user_john.id         
-	      post :ur_secrets
-	      assert_response :success  
-	    assert_equal assigns(:current_user).errors.count, 2
-	    assert_equal assigns(:current_user).errors.full_messages[0], "Password is too short (minimum is 3 characters)"
-	    assert_equal assigns(:current_user).errors.full_messages[1], "Password can't be blank"
-	    assert_nil session[:reset_user_id]    
+  test "from_mail when logged in" do
+    # log in first
+	post :prove_it, params: { claim: "wido", kennwort: "secret" }
+    assert_root_path_redirect    
+    assert_equal flash[:notice], 'wido logged in'
+	# now test	
+	get :from_mail, params: { user_token: 'john_token' }
+    assert_response :success
+    assert_equal flash[:notice], "Enter new password for user \"john\""
+    assert_equal assigns(:user_token), 'john_token'
+	assert_nil assigns(:current_user)
+  end
+   
+  test "from_mail when logged in but no token" do
+    # log in first
+	post :prove_it, params: { claim: "wido", kennwort: "secret" }
+    assert_root_path_redirect    
+    assert_equal flash[:notice], 'wido logged in'
+	# now test	
+	get :from_mail
+    assert_redirected_to %r(\Ahttp://testhost45A67)	
+	assert_equal flash[:alert], "the activation link is incorrect, please reset..."
+	assert_nil assigns(:current_user)
   end  
 
+  test "ur_secrets when logged in" do
+    # log in first
+	post :prove_it, params: { claim: "wido", kennwort: "secret" }
+    assert_root_path_redirect    
+    assert_equal flash[:notice], 'wido logged in'
+	# now test	
+	get :ur_secrets, params: { user_token: 'john_token' }
+	assert_equal flash[:alert], "wido already logged in"
+	assert_equal assigns(:current_user).username, 'wido'
+  end
+     
+  test "ur_secrets when logged in but no token" do
+    # log in first
+	post :prove_it, params: { claim: "wido", kennwort: "secret" }
+    assert_root_path_redirect    
+    assert_equal flash[:notice], 'wido logged in'
+	# now test	
+	get :ur_secrets
+	assert_equal flash[:alert], "wido already logged in"
+	assert_equal assigns(:current_user).username, 'wido'
+  end    
 
-  test "ur_secrets post with correct user_id" do
-    post :ur_secrets, params: { user_id: @user_john.id }    
+  test "ur_secrets from mail post without anything" do   
+	post :ur_secrets
+	assert_root_path_redirect 
+	assert_equal flash[:alert], 'no token'
+  end 
+
+  test "ur_secrets from mail post without passwords" do     
+	post :ur_secrets, params: { user_token: 'john_token' }
+    assert_redirected_to %r(\Ahttp://testhost45A67/_from_mail)
     assert_equal assigns(:current_user).errors.count, 2
     assert_equal assigns(:current_user).errors.full_messages[0], "Password is too short (minimum is 3 characters)"
     assert_equal assigns(:current_user).errors.full_messages[1], "Password can't be blank"
-    assert_nil session[:reset_user_id] 
-  end 
+  end  
   
-  test "ur_secrets post with incorrect user_id" do
-    post :ur_secrets, params: { user_id: 27 }
+  test "ur_secrets post with incorrect token" do
+    post :ur_secrets, params: { user_token: 'john_token1' }
     assert_root_path_redirect    
-    assert_equal flash[:alert], "leopards in the bushes!"
-    assert_nil session[:reset_user_id]
-	    
+    assert_equal flash[:alert], "wrong token" 
   end    
 
   test "ur_secrets post with correct user_id and not matching passwords" do
-	post :ur_secrets, params: { user_id: @user_john.id, kennwort: 'secret', confirmation: 'secret2' }
-	assert_response :success      
+	post :ur_secrets, params: { user_token: 'john_token' , kennwort: 'secret', confirmation: 'secret2' }
+	assert_redirected_to %r(\Ahttp://testhost45A67/_from_mail)  
 	assert_equal assigns(:current_user).errors.count, 1
 	assert_equal assigns(:current_user).errors.full_messages[0], "Password confirmation doesn't match Password"
-	assert_nil session[:reset_user_id]  
   end 
 
   test "ur_secrets post with correct user_id and correct passwords" do
-    post :ur_secrets, params: { user_id: @user_john.id, kennwort: 'secret', confirmation: 'secret' }
+    post :ur_secrets, params: { user_token: 'john_token', kennwort: 'secret', confirmation: 'secret' }
 	assert_root_path_redirect
 	assert_equal flash[:notice], "password set, you are logged in!"
 	assert_equal @controller.session[:user_session_id], UserSession.last.id 
   end 
+
 
   test "reset_mail" do
     @controller.session[:user_session_id] = @session_wido.id

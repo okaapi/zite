@@ -3,9 +3,9 @@
 
   <% if @error_messages %>
     <div class="alert alert-danger" >
-      <% @error_messages.each do |k,msg| %>
+      <% @error_messages.each do |k| %>
         <span class="glyphicon glyphicon-exclamation-sign"></span>
-        <%= k.to_s.capitalize + ' ' + msg[0].to_s %><br>
+        <%= k %><br>
       <% end %>
     </div>
   <% end %>
