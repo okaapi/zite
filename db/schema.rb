@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 20150916012017) do
 
-  create_table "pages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "pages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "name"
     t.text     "content",     limit: 65535
     t.integer  "user_id"
@@ -21,42 +21,42 @@ ActiveRecord::Schema.define(version: 20150916012017) do
     t.string   "menu",                      default: "true"
     t.string   "lock",                      default: "false"
     t.string   "editor",                    default: "wysiwyg"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "site",                      default: "localhost"
     t.string   "meta_desc"
   end
 
-  create_table "site_maps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "site_maps", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "external"
     t.string   "internal"
     t.string   "aux"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "user_actions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "user_actions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "user_session_id"
     t.string   "controller"
     t.string   "action"
     t.string   "params"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "site",            default: "localhost"
     t.index ["user_session_id"], name: "index_user_actions_on_user_session_id", using: :btree
   end
 
-  create_table "user_sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "user_sessions", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.integer  "user_id"
     t.string   "client"
     t.string   "ip"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "site",       default: "localhost"
     t.index ["user_id"], name: "index_user_sessions_on_user_id", using: :btree
   end
 
-  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+  create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "username"
     t.string   "email"
     t.string   "alternate_email", default: ""
@@ -64,8 +64,8 @@ ActiveRecord::Schema.define(version: 20150916012017) do
     t.string   "token"
     t.string   "role",            default: "user"
     t.string   "active",          default: "unconfirmed"
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "site",            default: "localhost"
   end
 

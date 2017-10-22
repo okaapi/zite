@@ -23,7 +23,8 @@ class ApplicationController < ActionController::Base
       else 
         ZiteActiveRecord.site( request.host )
       end
-         	  
+
+      @title = (ZiteActiveRecord.site?).gsub( /.com/,'' ).gsub( /www./,'').split(/[\s.,_]+/).each{|x| x.capitalize!}.join(' ') 
       #
       #  set the current user session
       #
