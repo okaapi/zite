@@ -5,23 +5,25 @@
     validates :user_session_id, :presence => true  
     validate :user_session_id_valid
 
-    def self.add_action( session_id, controller, action, p )
+    def self.add_action( session_id, controller, action, parameters )
     
       user_action = self.new( user_session_id: session_id )  
       user_action.controller = controller
       user_action.action = action
-      parameters = p.clone
-      parameters.delete(:action)
-      parameters.delete(:controller)      
-      parameters.delete(:kennwort) if parameters[:kennwort]      
-      parameters.delete(:kennwort_confirmation) if parameters[:kennwort_confirmation]            
-      parameters.delete(:authenticity_token)
-      parameters.delete(:utf8)
-      parameters[:filename] = p[:file].original_filename if p[:file]
-	  user_action.params = ""
-	  parameters.each { |k,v| user_action.params += "#{k}: #{v.to_s}; " }
-	  user_action.params = user_action.params[0..PARAMS_CLIP]
+   
+      user_action.params = ""
+      parameters.each do |k,v|           
+        case k
+        when "action", "controller", "kennwort", "confirmation", "authenticity_token", "utf8"
+          ;
+        else
+          user_action.params += "#{k}: #{v.to_s}; "
+        end
+      end
+      user_action.params = user_action.params[0..PARAMS_CLIP]
+      
       user_action.save
+    
     end    
       
     private

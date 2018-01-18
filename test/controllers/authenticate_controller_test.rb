@@ -47,6 +47,8 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    assert_equal flash[:notice], 'wido logged in'
 	    assert_nil @controller.session[:password_retries]
 	    assert_equal @controller.session[:user_session_id], UserSession.last.id   
+	    
+	    p UserAction.last
    
   end
 
