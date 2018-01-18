@@ -104,17 +104,19 @@ class AuthenticateController < ApplicationController
   
   def who_are_u  
 	
-	# figure out from which page user is logging into
-	a = request.headers['HTTP_REFERER']	
-	login_from = a[a.rindex('/')+1..a.length] if a	
-	if defined?( Page )
-	  session[:login_from] = login_from if Page.get_latest( login_from )
-	else 
-	  session[:login_from] = login_from
-	end
+    # figure out from which page user is logging into
+    a = request.headers['HTTP_REFERER']	
+    login_from = a[a.rindex('/')+1..a.length] if a	
+    if defined?( Page )
+      session[:login_from] = login_from if Page.get_latest( login_from )
+    else 
+      session[:login_from] = login_from
+    end
 	 
     # check whether user is already logged in 
     if @current_user
+      # just in case somebody else has cached pages
+      uncache_all
       redirect_to_action_html( { alert: "#{@current_user.username} already logged in" }, 
                                        login_from)  
       authentication_logger("who_are_u from page #{session[:login_from]} but #{@current_user.username} already logged in")	                                              

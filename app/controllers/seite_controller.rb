@@ -3,12 +3,11 @@ class SeiteController < ApplicationController
   
   def index
         
-    @seiten_name = params[:seite] || 'index'
-	
+    @seiten_name = params[:seite] || 'index'	
     @header, @menu, @left, @center, @right, @footer = Page.get_layout( @seiten_name )
     @css = Page.get_css
     @meta_desc = @center.get_meta_desc if @center
-    
+
     if !@center and @current_user and Page.editor_roles.include? @current_user.role
       redirect_to page_update_path( seite: @seiten_name )
     elsif @center and !@current_user
