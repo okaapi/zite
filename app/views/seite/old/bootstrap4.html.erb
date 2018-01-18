@@ -1,0 +1,41 @@
+
+<div class="card">
+  <div class="card-header" >
+    <h4 class="card-title">
+      <a data-toggle="collapse" href="#collapsePermissions" >
+          Options
+      </a>
+    </h4>
+  </div>
+  <div id="collapsePermissions" class="collapse">
+    <div class="card-body">      
+      Some Stuff in here    
+    </div>
+  </div>
+</div>
+  
+
+  
+<%= form_tag prove_it_path, class: 'form-horizontal login_decor' do %>
+  <div class="alert alert-info" role="alert">
+    Prove you are <%= @claim %> !
+  </div> 
+  <div class="form-group"> 
+    <%= hidden_field_tag :claim, @claim %>
+    <%= label_tag :kennwort, "password:" %>
+    <%= password_field_tag :kennwort, '', autofocus: true, class: 'form-control col-sm-3' %>
+    <small class="text-muted"><%= link_to 'cancel', see_u_path %></small><br>  
+    <small class="text-muted"><%= link_to 'forgot password', reset_mail_path(:claim => @claim)  %></small>
+  </div>
+<% end %>
+
+<hr>
+
+
+<div class="card" style="width: 20rem;">
+<div class="card-header" >
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+</div>
+</div>
+
