@@ -13,7 +13,7 @@
       parameters = p.clone
       parameters.delete(:action)
       parameters.delete(:controller)      
-      parameters.delete(:kennwort) if parameters[:kennwort_confirmation]      
+      parameters.delete(:kennwort) if parameters[:kennwort]      
       parameters.delete(:kennwort_confirmation) if parameters[:kennwort_confirmation]            
       parameters.delete(:authenticity_token)
       parameters.delete(:utf8)
