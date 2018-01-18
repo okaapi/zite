@@ -142,7 +142,7 @@ class SeiteController < ApplicationController
   def seite_logger( str )
     #
     #  uncomment to turn on logging
-    logger.info( 'SEITE_CONTROLLER ' + str ) if str
+    # logger.info( 'SEITE_CONTROLLER ' + str ) if str
     #
   end
   
