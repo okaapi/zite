@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
       #
       #  set the current user session
       #
-	  @current_user_session = UserSession.recover( session[:user_session_id] )
+	  @current_user_session, @idle = UserSession.recover( session[:user_session_id] )
 	  if @current_user_session
 	    #nothing !
 	  elsif !@current_user_session

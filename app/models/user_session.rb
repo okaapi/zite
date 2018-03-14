@@ -37,13 +37,14 @@
       return if !session_id
 
       u = self.where( id: session_id )
-      usession = u[0] ? u[0] : nil       
-      if usession and usession.idle < SESSION_TIMEOUT
+      usession = u[0] ? u[0] : nil
+      idle_time = usession.idle
+      if usession and ( idle_time < SESSION_TIMEOUT )
         usession.id_will_change!  # make random attribute dirty
         usession.save             # to update updated_at
-        return usession         
+        return usession, idle_time 
       else
-        return nil
+        return nil, 0
       end
             
     end             
