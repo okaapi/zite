@@ -37,10 +37,10 @@ module Auth
 	  assert_not_nil (usid_b = us.id)	  
 	  
 	  ZiteActiveRecord.site( 'a' ) 
-	  usa = UserSession.recover( usid_a )
+	  usa, idle = UserSession.recover( usid_a )
 	  assert_not_nil usa
 	  assert_equal usa.user_id, uid_a
-	  usb = UserSession.recover( usid_b )
+	  usb, idle = UserSession.recover( usid_b )
 	  assert_nil usb  
 	  # ua = usa.user   <==============
 	  ua = usa._user
@@ -48,9 +48,9 @@ module Auth
 	  assert_equal ua.site, 'a'
 
 	  ZiteActiveRecord.site( 'b' ) 
-	  usa = UserSession.recover( usid_a )
+	  usa, idle = UserSession.recover( usid_a )
 	  assert_nil usa
-	  usb = UserSession.recover( usid_b )
+	  usb, idle = UserSession.recover( usid_b )
 	  assert_not_nil usb  
 	  assert_equal usb.user_id, uid_b
 	  # ub = usb.user	  <==============

@@ -46,20 +46,18 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    assert_root_path_redirect    
 	    assert_equal flash[:notice], 'wido logged in'
 	    assert_nil @controller.session[:password_retries]
-	    assert_equal @controller.session[:user_session_id], UserSession.last.id   
-	    
-	    p UserAction.last
+	    assert_equal @controller.session[:user_session_id], UserSession.last.id   	  
    
   end
-
+  
   test "prove_it with incorrect password" do
 
 	    @controller.session[:password_retries] = 0
-
-	      post :prove_it, params: { claim: "wido", kennwort: "secret1" }
-	      assert_response :success   
-	      assert_select '.form-horizontal' 
-	      assert_select '.control-label', /password/   
+    
+	    post :prove_it, params: { claim: "wido", kennwort: "secret1" }
+	    assert_response :success   
+	    assert_select '.form-horizontal' 
+	    assert_select '.control-label', /password/   
   
 	    assert_equal assigns(:retries), 1
 	    assert_equal assigns(:max_retries), 3
