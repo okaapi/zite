@@ -148,12 +148,10 @@ class AuthenticateControllerTest < ActionController::TestCase
      
   test "about_urself correct credentials email send failure" do
 
-	      post :about_urself, params: { username: "jim", email: "jim@gmail.com", ab47hk: "ab47hk" }
-
-	      post :about_urself, xhr: true, params: { username: "jim", email: "jim@gmail.com", ab47hk: "ab47hk" }   
-
-	    assert_root_path_redirect  
-	    assert flash[:alert] =~ /it failed/
+    post :about_urself, params: { username: "jim", email: "jim@gmail.com", ab47hk: "ab47hk" }
+        
+    assert_root_path_redirect  
+    assert flash[:alert] =~ /it failed/
    
   end          
 
