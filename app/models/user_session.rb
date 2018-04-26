@@ -1,7 +1,7 @@
 
   class UserSession < ZiteActiveRecord
     
-    SESSION_TIMEOUT = 60 * 60 * 240 # 240 hours
+    SESSION_TIMEOUT = 60*60 # seconds
     attr_accessor :idle
     belongs_to :user
     validate :id_valid
@@ -43,11 +43,11 @@
       if usession 
         idle_time = usession.idle
         if idle_time < SESSION_TIMEOUT
-          usession.id_will_change!  # make random attribute dirty
-          usession.save             # to update updated_at
+          #usession.id_will_change!  # make random attribute dirty (id_will_change is not a db column)
+          #usession.save             # to update updated_at
           return usession, idle_time
         else 
-          return nil, idle_time
+          return nil, 0
         end
       else
         return nil, 0

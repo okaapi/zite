@@ -41,6 +41,8 @@ Rails.application.routes.draw do
   # this is the route for viewing
   get '(:seite)' => "seite#index", as: 'seite'
 
+  get 'beckman' => "seite#beckman", as: 'beckman'
+
   root "seite#index", as: "root"
   
 end
