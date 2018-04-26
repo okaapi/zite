@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   match '_search/(:term)' => 'seite#search', as: 'search', via: [:get, :post] 
 
   # temporary for alexa
-  match 'beckman' => "alexa#beckman", as: 'beckman', via: [:get, :post] 
+  match 'beckman' => "alexa#index", via: [:get, :post] 
   
   # this is the route for viewing
   get '(:seite)' => "seite#index", as: 'seite'
