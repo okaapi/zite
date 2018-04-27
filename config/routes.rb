@@ -39,7 +39,9 @@ Rails.application.routes.draw do
   match '_search/(:term)' => 'seite#search', as: 'search', via: [:get, :post] 
 
   # temporary for alexa
-  match 'alexa' => "alexa#index", via: [:get, :post] 
+  match 'alexa' => "alexa#index", as: 'alexa', via: [:get, :post] 
+  get 'dashboard' => "alexa#dashboard", as: 'dashboard' 
+  get 'dashboard_partial' => "alexa#dashboard_partial", as: 'dashboard_partial'   
   
   # this is the route for viewing
   get '(:seite)' => "seite#index", as: 'seite'

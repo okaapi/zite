@@ -24,6 +24,21 @@ class AlexaController < ApplicationController
     render json: response
     
   end
+  
+  def dashboard
+    @intent = Alexa.last.intent       
+    session[:last_intent] = @intent   
+    render layout: 'dashboard'  
+  end
+  
+  def dashboard_partial
+    @intent = Alexa.last.intent       
+    session[:last_intent] = @intent
+    render partial: 'dashboard'        
+  end  
+    
+  
+private
 
   def launch_request_response
     output = AlexaRubykit::Response.new
