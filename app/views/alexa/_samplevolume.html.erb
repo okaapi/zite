@@ -1,0 +1,62 @@
+
+<h2>Sample Volume</h2>
+
+  <div id="chart_div2"></div>
+
+<script>
+  google.charts.load('current', {packages: ['corechart', 'bar']});
+google.charts.setOnLoadCallback(drawAxisTickColors);
+
+function drawAxisTickColors() {
+      var data = google.visualization.arrayToDataTable([
+        ['Assay', 'Today', 'Yesterday'],
+        ['TSH', 8175000, 8008000],
+        ['Troponin', 3792000, 3694000],
+        ['CK.MB', 2695000, 2896000],
+        ['Calcium', 2099000, 1953000],
+        ['Potassium', 1526000, 1517000],    
+        <% if t_vol %>
+        ['Grapes', 2175000, 2008000],
+        ['Banana', 7792000, 7694000],
+        ['Avocado', 3695000, 3896000],
+        ['Cranberry', 4099000, 4953000],
+        ['Orange', 7526000, 7517000]
+        <% end %>        
+      ]);
+
+      var options = {
+        title: 'Assay Sample Volume',
+        chartArea: {width: '50%', height: <%= t_height%>},
+        hAxis: {
+          title: 'Sample Volume',
+          minValue: 0,
+          textStyle: {
+            bold: true,
+            fontSize: 12,
+            color: '#4d4d4d'
+          },
+          titleTextStyle: {
+            bold: true,
+            fontSize: 18,
+            color: '#4d4d4d'
+          }
+        },
+        vAxis: {
+          title: 'Assay',
+          textStyle: {
+            fontSize: 14,
+            bold: true,
+            color: '#848484'
+          },
+          titleTextStyle: {
+            fontSize: 14,
+            bold: true,
+            color: '#848484'
+          }
+        }
+      };
+      var chart = new google.visualization.BarChart(document.getElementById('chart_div2'));
+      chart.draw(data, options);
+    }
+    
+</script>

@@ -1,0 +1,20 @@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+setInterval(function(){
+  $.ajax({
+    type: "GET",
+    url: "/dashboard_partial",
+    dataType: 'html',    
+    success: function(data) {
+    $('#dashboard').html(data);  
+                        }
+  });
+}, 3000);
+</script>
+
+<% link_to 'refresh html', dashboard_path %><br>
+<% link_to 'refresh ajax', dashboard_path, remote: true %><br>
+
+<div id="dashboard">
+  <%= render 'dashboard' %>
+</div>

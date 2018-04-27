@@ -1,0 +1,41 @@
+
+  
+<%= Time.now %><br>
+
+<center>
+
+
+  <% if @intent == 'Overview' %>
+	<h1>Beckman Dashboard Overview1</h1>
+	
+	<table width=50%>
+	  <tr>
+	    <td >
+	      <%= render partial: 'turnaround', locals: {t_height: 150}%>
+	    </td>
+	    <td valign=top>
+	      <h2> Staff on Duty </h2>
+	      <ul>
+	      <li>Laure
+	      <li>Vincent
+	      <li>Xavier      
+	      <li>Sylvain	      
+	      </ul>
+	    </td>	    
+	  </tr>
+	  <tr>
+	    <td>
+	      <%= render partial: 'samplevolume', locals: {t_vol: false,t_height: 150} %>
+	    </td>
+	    <td>
+	      <%= render 'pie' %>
+	    </td>
+	  </tr>
+	</table>
+  <% elsif @intent == 'Turnaround' %>
+    <%= render partial: 'turnaround', locals: {t_height: 500} %>
+  <% elsif @intent == 'Samplevolume' %>
+    <%= render partial: 'samplevolume', locals: {t_vol: true,t_height: 600} %>    
+  <% end %>
+	
+</center>
