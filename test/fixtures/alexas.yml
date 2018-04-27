@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  intent: MyString
+  slot: MyString
+  aux: MyString
+
+two:
+  intent: MyString
+  slot: MyString
+  aux: MyString
