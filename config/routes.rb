@@ -40,6 +40,7 @@ Rails.application.routes.draw do
 
   # temporary for alexa
   match 'alexa' => "alexa#index", as: 'alexa', via: [:get, :post] 
+  match 'shopping' => "alexa#shopping", as: 'shopping', via: [:get, :post] 
   get 'dashboard' => "alexa#dashboard", as: 'dashboard' 
   get 'dashboard_partial' => "alexa#dashboard_partial", as: 'dashboard_partial'   
   
