@@ -1,3 +1,5 @@
+
+
 class AlexaController < ApplicationController
 
   skip_before_action :verify_authenticity_token
@@ -22,6 +24,12 @@ class AlexaController < ApplicationController
   end
 
   def shopping
+
+    (1..10).each {|x| logger.info('*')}
+    logger.info( params )
+    (1..10).each {|x| logger.info('*')}
+    logger.info( params['request'] )
+    (1..10).each {|x| logger.info('*')}
 
     if params['request']     
       case params['request']['type']
@@ -56,9 +64,13 @@ class AlexaController < ApplicationController
 private
 
   def launch_request_response(speech)
-    output = AlexaRubykit::Response.new
-    output.add_speech(speech)
-    output.build_response(false)
+    { version: "1.0",
+      response: {
+        outputSpeech: {
+          type: "PlainText",
+          text: speech },
+        shouldEndSession: "false" }
+    }        
   end
 
   def intent_request_response_beckman( intent )
@@ -93,18 +105,25 @@ private
 
   def intent_request_response_shopping( intent )
       intent_name = intent['name']
+      intent_confirmed = intent['confirmationStatus']
       logger.info( intent_name )
+      logger.info( intent_confirmed )
+      
       stop_interaction = false
+      confirm_clear = false
       case intent_name
       when 'add'
-        item = intent['slots']['Items']['value']
-        Alexa.create(intent: intent_name, slot: item)
-        p = Page.get_latest('blackberry_hill' )
-        p.content = p.content + '<br>'+ item
-        p.save
-        speech = 'Adding ' + item + ' to the Blackberry Hill List'
+        if ( item = intent['slots']['Items']['value'] )
+          logger.info( item )
+          p = Page.get_latest('blackberry_hill' )
+          p.content = p.content + '<br>'+ item
+          p.save
+          speech = 'Adding ' + item + ' to the Blackberry Hill List'          
+          p.uncache( SiteMap.by_internal( p.site )  )
+        else
+          speech = 'Sorry, that did not work.'
+        end          
       when 'list'
-        Alexa.create(intent: intent_name)
         p = Page.get_latest('blackberry_hill' )
         sp = p.speech
         if sp == ''
@@ -113,11 +132,17 @@ private
           speech = 'Here is what is on the Blackberry Hill List : ' + sp
         end
       when 'clear'
-        Alexa.create(intent: intent_name)
-        p = Page.get_latest('blackberry_hill' )
-        p.content = ''
-        p.save
-        speech = 'Clearing Blackberry Hill List                   '
+        if intent_confirmed == 'CONFIRMED'
+          p = Page.get_latest('blackberry_hill' )
+          p.content = ''
+          p.save
+          speech = 'Clearing Blackberry Hill List'
+          p.uncache( SiteMap.by_internal( p.site )  )
+        elsif intent_confirmed == 'DENIED'
+          speech = 'Ok, I will not touch the list'
+        else
+          confirm_clear = true
+        end
       when 'AMAZON.HelpIntent'
         speech = 'You can add items, like: add eggs, and you can use list and clear as commands'
       when 'AMAZON.StopIntent'
@@ -130,9 +155,30 @@ private
         speech = 'I did not understand that.'
       end
 
-      output = AlexaRubykit::Response.new
-      output.add_speech(speech)
-      output.build_response(stop_interaction)
+      if !confirm_clear
+        { version: "1.0",
+          response: {
+            outputSpeech: {
+              type: "PlainText",
+              text: speech },
+            shouldEndSession: stop_interaction ? "true" : "false" }
+        }        
+      else
+        { version: "1.0",
+          response: {
+            directives: [
+              {
+                type: "Dialog.Delegate",
+                updatedIntent: {
+                  name: "clear",
+                  slots: {}
+                }
+              }
+            ],
+            shouldEndSession: stop_interaction ? "true" : "false" }
+        }        
+      end
+     
   end
   
 end
