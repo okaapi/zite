@@ -91,9 +91,10 @@ while true
   end
   puts "REQUEST #{json}"
   
-  uri = URI('http://localhost:3000/shopping')
+  #uri = URI('http://localhost:3000/shopping')
+  uri = URI('https://www.menhardt.com/shopping') 
   http = Net::HTTP.new(uri.host, uri.port)
-  #http.use_ssl = true
+  http.use_ssl = true
   req = Net::HTTP::Post.new(uri.path, 'Content-Type' => 'application/json')
   req.body = json.to_json
   res = http.request(req)
