@@ -241,5 +241,11 @@ search_user:
   content: xylophone
   site: testsite45A67
   visibility: user  
+
+alexa_shopping:
+  name: blackberry_hill
+  content: eggs <br>avocados
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>     
+  site: testsite45A67
   
   

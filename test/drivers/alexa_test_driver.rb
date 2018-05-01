@@ -1,4 +1,4 @@
-require "../config/environment" unless defined?(::Rails.root)
+require "../../config/environment" unless defined?(::Rails.root)
 
 require 'net/http'
 require 'json'
@@ -89,9 +89,7 @@ while true
   else
     json = {nothing: 'when'}
   end
-  puts json
-  puts
-  
+  puts "REQUEST #{json}"
   
   uri = URI('http://localhost:3000/shopping')
   http = Net::HTTP.new(uri.host, uri.port)
@@ -100,9 +98,15 @@ while true
   req.body = json.to_json
   res = http.request(req)
 
+  puts "RESPONSE #{res.body}"  
   puts
-  puts "response #{res.body}"
-  puts
-  puts
+  res = eval(res.body)
+  if res[:response][:outputSpeech]
+    puts res[:response][:outputSpeech][:text]
+  elsif res[:response][:directives]
+    puts res[:response][:directives][0][:type]
+  end
+  
+  puts 
 
 end
