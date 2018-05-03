@@ -134,17 +134,6 @@ class Page < ZiteActiveRecord
     return parse_content( role )    
     
   end
-#-----------------------------------------------------------------------------------------
-#
-# for alexa
-#  
-  def speech( role = 'user' )
-    sp = self.display( role )
-    sp = sp.gsub(/\A<br>/,'')
-    sp = sp.gsub(/<br>\Z/,'')
-    sp = sp.gsub(/<br>/,' and ')
-    return sp
-  end
   
 #-----------------------------------------------------------------------------------------
 #

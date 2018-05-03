@@ -36,14 +36,8 @@ Rails.application.routes.draw do
   get 'camera_directory_delete/(:filter)/(:date)/(:page)' => 'seite#camera_directory_delete', as: 'camera_directory_delete'
   
   # route for searching
-  match '_search/(:term)' => 'seite#search', as: 'search', via: [:get, :post] 
-
-  # temporary for alexa
-  match 'alexa' => "alexa#index", as: 'alexa', via: [:get, :post] 
-  match 'shopping' => "alexa#shopping", as: 'shopping', via: [:get, :post] 
-  get 'dashboard' => "alexa#dashboard", as: 'dashboard' 
-  get 'dashboard_partial' => "alexa#dashboard_partial", as: 'dashboard_partial'   
-  
+  match '_search/(:term)' => 'seite#search', as: 'search', via: [:get, :post]   
+    
   # this is the route for viewing
   get '(:seite)' => "seite#index", as: 'seite'
 

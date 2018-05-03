@@ -1,6 +1,6 @@
 class SeiteController < ApplicationController
   #skip_before_action :verify_authenticity_token #, only: :file_upload
-  
+     
   def index
         
     @seiten_name = params[:seite] || 'index'	

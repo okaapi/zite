@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
       redirect_to '/', notice: "must be admin"
     end
   end
-  
+    
   private
   
   def set_current_user_session_and_create_action

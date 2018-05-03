@@ -57,3 +57,4 @@ pages.each do |page|
    VALUES( \"#{page_name}\", \"#{Mysql.escape_string(content)}\", #{ME_USERID}, \"#{ME_SITE}\" );"
 
 end
+eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjEifQ
