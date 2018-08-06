@@ -15,9 +15,11 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
         page.save!
       end  
     end
-    # not sure why request has to be called first, but it won't work without
-    request
-    open_session.host! "testhost45A67"
+    # this is what worked for Rails 5.0
+    #request
+    #open_session.host! "testhost45A67"
+	# this is what works for Rails 5.2
+	host! "testhost45A67"
 	
     if (Rails.configuration.respond_to? 'page_caching') and Rails.configuration.page_caching            
       delete_cache_directories_with_content
@@ -27,9 +29,12 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
 
 
   test "different site" do
-
-
-    open_session.host! "othersite45A67"
+	
+	# Rails 5.0
+    #open_session.host! "othersite45A67"
+	# Rails 5.2
+	host! "othersite45A67"
+	
     get "/"    
     assert_response :success
     assert_select '.center', ''      
@@ -37,6 +42,7 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
     # should get the right "talks" page (exists in both othersite and testsite)
     get "/talks"
     assert_response :success
+	#puts @response.body
     assert_select '.center', 'Talks On Othersite'  
 
     # should NOT get "talks_books" page (exists only in testsite)
@@ -85,8 +91,11 @@ class SeiteUserStoriesTest < ActionDispatch::IntegrationTest
 
   test "viewing a page not logged in from othersite (no site_map)" do
      
-    request
-    open_session.host! "othersite45A67"
+    # Rails 5.0
+	#request
+    #open_session.host! "othersite45A67"
+	# Rails 5.2
+	host! "othersite45A67"
     ZiteActiveRecord.site( "othersite45A67" )
     assert_equal ZiteActiveRecord.site?, "othersite45A67"
     

@@ -1,8 +1,8 @@
 
 source 'https://rubygems.org'
 
-gem 'rails', '5.0.0'
-gem 'mysql2', '~> 0.3.18'
+gem 'rails', '5.2.0'
+gem 'mysql2' #, '~> 0.3.18'
 
 gem 'rails-controller-testing'
 gem 'jquery-rails'
@@ -17,9 +17,8 @@ gem 'bcrypt'
 gem 'tzinfo-data'
 gem 'simplecov'
 
-gem 'unicorn'
+#gem 'unicorn'
 
 gem 'minitest', '5.10.1'
 
 
-gem 'alexa_rubykit'

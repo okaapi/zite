@@ -123,7 +123,8 @@ class AuthenticateControllerTest < ActionController::TestCase
 	      assert_response :success
 	      assert_select '.form-horizontal'       
 	      assert_select '.control-label', /username/  
-	      assert_select '.control-label', /email/        
+	      assert_select '.control-label', /email/       
+	      assert_select '.control-label', /how much/  		  
 
 
   end
@@ -136,7 +137,7 @@ class AuthenticateControllerTest < ActionController::TestCase
         jim.destroy if jim
               
 
-	      post :about_urself, params: { username: "jim", email: "jim@gmail.com" }
+	      post :about_urself, params: { username: "jim", email: "jim@gmail.com", qa: 3, qb: 7, answer: 21 }
 
 	    assert_root_path_redirect  
 	    assert_nil flash[:alert]
@@ -146,9 +147,43 @@ class AuthenticateControllerTest < ActionController::TestCase
        
   end
      
+  test "about_urself correct credentials incorrect quiz answer" do
+        
+        #because we run this twice...
+        jim = User.by_email_or_username('jim')
+        jim.destroy if jim
+              
+	    post :about_urself, params: { username: "jim", email: "jim@gmail.com", qa: 3, qb: 7, answer: 20 }
+
+	    assert_response :success
+	    assert_nil flash[:alert]
+	    assert_nil flash[:notice]
+	    assert_select '.form-horizontal'       
+	    assert_select '.control-label', /username/  
+	    assert_select '.control-label', /email/   		
+       
+  end
+  
+  test "about_urself correct credentials bad quiz answer" do
+        
+        #because we run this twice...
+        jim = User.by_email_or_username('jim')
+        jim.destroy if jim
+              
+	    post :about_urself, params: { username: "jim", email: "jim@gmail.com", qa: 3, qb: 7, answer: 'something' }
+
+	    assert_response :success
+	    assert_nil flash[:alert]
+	    assert_nil flash[:notice]
+	    assert_select '.form-horizontal'       
+	    assert_select '.control-label', /username/  
+	    assert_select '.control-label', /email/   		
+       
+  end  
+  
   test "about_urself correct credentials email send failure" do
 
-    post :about_urself, params: { username: "jim", email: "jim@gmail.com", ab47hk: "ab47hk" }
+    post :about_urself, params: { username: "jim", email: "jim@gmail.com", ab47hk: "ab47hk", qa: 3, qb: 7, answer: 21 }
         
     assert_root_path_redirect  
     assert flash[:alert] =~ /it failed/
@@ -157,7 +192,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 
   test "about_urself incorrect credentials - duplicate" do
 
-	      post :about_urself, params: { username: "john", email: "john@mmm.com" }
+	      post :about_urself, params: { username: "john", email: "john@mmm.com", qa: 3, qb: 7, answer: 21 }
 	      assert_response :success
 	      assert_select '.form-horizontal' 
 	      assert_select '.control-label', /username/           
@@ -171,7 +206,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 
   test "about_urself incorrect credentials - bad email" do
 
-	      post :about_urself, params: { username: "john17", email: "whatever" }
+	      post :about_urself, params: { username: "john17", email: "whatever", qa: 3, qb: 7, answer: 21 }
 	      assert_response :success
 	      assert_select '.form-horizontal' 
 	      assert_select '.control-label', /username/           
@@ -185,7 +220,7 @@ class AuthenticateControllerTest < ActionController::TestCase
   test "about_urself duplicate credentials other site" do
     ZiteActiveRecord.site( 'othersite45A67' )
     request.host = 'othersite45A67'		         
-	post :about_urself, params: { username: "john", email: "john@mmm.com" }
+	post :about_urself, params: { username: "john", email: "john@mmm.com", qa: 3, qb: 7, answer: 21 }
 	assert_equal assigns(:current_user).errors.count, 0 
   end
        

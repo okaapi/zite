@@ -1,5 +1,5 @@
 # This migration comes from auth (originally 20141008210341)
-class CreateUserActions < ActiveRecord::Migration
+class CreateUserActions < ActiveRecord::Migration[5.0]
   def change
     create_table :user_actions do |t|
       t.belongs_to :user_session, index: true

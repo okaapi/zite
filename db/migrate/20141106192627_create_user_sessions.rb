@@ -1,4 +1,4 @@
-class CreateUserSessions < ActiveRecord::Migration
+class CreateUserSessions < ActiveRecord::Migration[5.0]
   def change
     create_table :user_sessions do |t|
       t.belongs_to :user, index: true

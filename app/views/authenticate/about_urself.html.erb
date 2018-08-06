@@ -23,11 +23,19 @@
 	    <%= text_field_tag :email, @email, class: 'col-sm-3 form-control'  %>
 	  </div>	
 	  
+	  <div class="form-group">
+	    <%= label_tag :quiz, "how much is #{@qa} times #{@qb}:", class: 'control-label' %>
+		<small class="text-muted">(to show you're human)</small>
+	    <%= text_field_tag :answer, "", class: 'col-sm-3 form-control'  %>
+	  </div>	
+	  
 	  <! 
 	    submit
 	  >   
 	  <div class="form-group">
 	    <%= hidden_field_tag :user_id, @current_user.id if @current_user %>  
+		<%= hidden_field_tag :qa, @qa %>
+		<%= hidden_field_tag :qb, @qb %>		
 	    <%= submit_tag 'Send registration email', class: "btn btn-default", 
 	                        :onclick => "$('#spinner').show(); ".html_safe %>
 	    <small class="text-muted"><%= link_to 'cancel', see_u_path %> </small>
