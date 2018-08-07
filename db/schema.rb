@@ -10,16 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180501022722) do
-
-  create_table "alexas", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.string   "intent"
-    t.string   "slot"
-    t.string   "aux"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string   "skill"
-  end
+ActiveRecord::Schema.define(version: 20150916012017) do
 
   create_table "pages", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
     t.string   "name"
