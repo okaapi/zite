@@ -7,9 +7,12 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     ZiteActiveRecord.site( 'testsite45A67' )
     @user_arnaud = users(:arnaud)                    
     @user_francois = users(:francois)    
-    # not sure why request has to be called first, but it won't work without
-    request
-    open_session.host! "testhost45A67"
+    # Rails 5.0
+	# not sure why request has to be called first, but it won't work without
+    #request
+    #open_session.host! "testhost45A67"
+	# Rails 5.2
+	host! "testhost45A67"
   end
 
   #
@@ -79,10 +82,11 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
       post "/_about_urself"
       assert_response :success
       assert_select '.control-label', /username/
-      assert_select '.control-label', /email/        
+      assert_select '.control-label', /email/       
+      assert_select '.control-label', /how much/ 	  
 
     # user enters proper username / email combo
-      post "/_about_urself", params: { username: "jim", email: "jim@gmail.com" }
+      post "/_about_urself", params: { username: "jim", email: "jim@gmail.com", qa: 3, qb: 7, answer: 21 }
     assert_equal flash[:notice], 
         "Please check your email jim@gmail.com (including your SPAM folder) for an email to verify it's you and set your password!"
     assert_root_path_redirect  
@@ -176,8 +180,11 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '#authentication_launchpad', /arnaud/
 	
 	ZiteActiveRecord.site( 'otherhost' )
-    request
-    open_session.host! "otherhost"
+	# Rails 5.0
+    #request
+    #open_session.host! "otherhost"
+	# Rails 5.2
+	host! "otherhost"
 	
     get "/_who_are_u"
     post "/_prove_it", params: { claim: "benoit" }
@@ -189,8 +196,12 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
     assert_select '#authentication_launchpad', /benoit/	
           
 	ZiteActiveRecord.site( 'testsite45A67' )
-    request
-    open_session.host! "testhost45A67"
+	# Rails 5.0
+    #request
+    #open_session.host! "testhost45A67"
+	# Rails 5.2
+	host! "testhost45A67"
+	
     get "/"
     assert_response :success
     assert_select '#authentication_launchpad', /arnaud/	
@@ -227,7 +238,7 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
 	assert_equal flash[:alert], 'arnaud already logged in'
 		 	    
   end
-    
+
   private
      
     def root_path

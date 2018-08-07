@@ -238,20 +238,26 @@ class AuthenticateController < ApplicationController
     
     @username = params[:username]
     @email = params[:email] 
+	if params[:answer].to_i != 0
+		quiz = (params[:answer].to_i == params[:qa].to_i * params[:qb].to_i)
+	else
+	  quiz = false
+	end
+	
     # this is for testing email failure exception code
     @eft = params[:ab47hk]
     
     # if we're already logged in
     if @current_user
       redirect_to_action_html( { alert: "#{@current_user.username} already logged in" } )
-     authentication_logger("about_urself but #{@current_user.username} already logged in")   
+      authentication_logger("about_urself but #{@current_user.username} already logged in")   
           
-    # if email and username are given... otherwise this is the empty dialogue (first time)
-    elsif @email and @username
+    # if email and username are given...iotherwise this is the empty dialogue (first time)
+    elsif @email and @username and quiz
       # create this new user, but in unconfirmed status
       @current_user = User.new_unconfirmed( @email, @username )
       @current_user.token = nil if @eft == 'ab47hk'
-      if @current_user.save  
+      if @current_user.save 
         begin  
           AuthenticationNotifier.registration(@current_user,request,User.admin_emails).deliver_now  
           redirect_to_action_html notice: "Please check your email #{@email} (including your SPAM folder) for an email to verify it's you and set your password!"
@@ -260,6 +266,9 @@ class AuthenticateController < ApplicationController
           redirect_to_action_html alert: "we sent an activation email, but it failed 1 (#{e})."
         end
       end
+	else
+		@qa = rand(4)+1
+		@qb = rand(4)+1
     end
     
   end
@@ -323,11 +332,11 @@ class AuthenticateController < ApplicationController
         user.suspend_and_save
         AuthenticationNotifier.reset(user, request, User.admin_emails).deliver_now        
         redirect_to_root_html notice: "user #{user.username} suspended, check your email (including SPAM folder)"
-      rescue Exception => e           
+      rescue Exception => e         
         redirect_to_root_html alert: "user suspended, but email sending failed 2 #{e}"
       end        
     else
-      redirect_to_root_html
+      redirect_to_root_html alert: "user suspended, check your email"
     end
     
   end

@@ -346,7 +346,7 @@ class Page < ZiteActiveRecord
 		  end
 	    end
 	  end
-	  names
+	  names.sort
 	else
 	  []
 	end
