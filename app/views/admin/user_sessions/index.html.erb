@@ -37,8 +37,8 @@
 <%= link_to 'Back', '/' %>
 
 <script>
-function getgeoip( element ) {
-  $.getJSON("https://freegeoip.net/json/"+$("#"+element).html() +"?callback=?",
+  function getgeoip( element ) {
+  $.getJSON("http://api.ipstack.com/"+$("#"+element).html() +"?access_key=9dd93f34a53afd13ed6692d04aa5eb4a&output=json&legacy=1",
     function(result){
       $("#"+element).append(' '+result.city+' '+result.country_name);           
  
