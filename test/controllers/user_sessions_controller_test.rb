@@ -15,7 +15,8 @@ module Admin
       assert_response :success
       assert_not_nil assigns(:user_sessions)
     end
-    
+
+
     test "should get index ip order" do
       get :index, params: { by_ip: 'true' }
       assert_response :success
@@ -42,7 +43,6 @@ module Admin
       assert_equal assigns(:user_session).user, users(:wido)
     end
    
-  
     test "should create user_session without user" do
       @controller.session[:user_session_id] = @user_session.id
       assert_difference('UserSession.count') do
@@ -77,7 +77,10 @@ module Admin
     end
   
     test "should destroy user_session and its actions" do
-      @controller.session[:user_session_id] = @user_session.id
+	  @user_session.remember
+	  cookies.encrypted[:user_session_id] = { value: @user_session.id, expires: 1.minute.from_now.utc }
+	  cookies.encrypted[:remember_token] = { value: @user_session.remember_token, expires: 1.minute.from_now.utc }	
+	  @user_session.save!
       assert_difference('UserSession.count', -1) do
         assert_difference('UserAction.count', -2) do
           delete :destroy, params: { id: @user_session }

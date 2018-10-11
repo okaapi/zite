@@ -84,6 +84,6 @@ require 'securerandom'
     def confirm
       self.active = 'confirmed'
     end    
-    
+	          
   end
   

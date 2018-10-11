@@ -1,24 +1,17 @@
 
   class UserSession < ZiteActiveRecord
     
-    SESSION_TIMEOUT = 60*15 # seconds = 15 min
-    attr_accessor :idle
+    attr_accessor :remember_token
     belongs_to :user
     validate :id_valid
     
     has_many :user_actions, dependent: :destroy  
-  
-    def idle
-      t = ( Time.now - ( updated_at or Time.now ) )
-      return t
-    end 
 	
 	def _user	
 	  # overriding this in because it fails with scope
 	  User.by_id( user_id )
 	end
-    
-    private
+
   
     def id_valid	  
       if user_id and ! User.by_id(user_id) 
@@ -28,32 +21,46 @@
     
     def self.new_ip_and_client( user, ip, client )
       u_s = self.new( user: user, ip: ip, client: client )
+	  u_s.remember
       u_s.save!
       return u_s
     end
     
-    def self.recover( session_id )
+    def self.recover( session_id, remember_token )
       
       if !session_id
-        return nil, 0
+        return nil
       end
 
       u = self.where( id: session_id )
       usession = u[0] ? u[0] : nil   
-      if usession 
-        idle_time = usession.idle
-        if idle_time < SESSION_TIMEOUT
-          #usession.id_will_change!  # make random attribute dirty (id_will_change is not a db column)
-          #usession.save             # to update updated_at
-          return usession, idle_time
-        else 
-          return nil, 0
-        end
+      if usession and usession.remember_check( remember_token )
+        return usession
       else
-        return nil, 0
+        return nil
       end
             
-    end             
+    end      
+
+	def set_cookies(cookies)
+	  cookies.encrypted[:user_session_id] = { value: self.id, expires: 1.minute.from_now.utc }
+	  cookies.encrypted[:remember_token] = { value: self.remember_token, expires: 1.minute.from_now.utc }	
+    end  
+    def self.clear_cookies(cookies)
+	  cookies.delete :user_session_id
+	  cookies.delete :remember_token
+    end
+  
+    def remember
+      self.remember_token = SecureRandom.urlsafe_base64
+	  cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+      rd = BCrypt::Password.create(remember_token, cost: cost)	
+      self.remember_digest = rd
+    end	    
+	
+	def remember_check( remember_token )
+	  BCrypt::Password.new(self.remember_digest).is_password?(remember_token)
+	end
    
   end
 

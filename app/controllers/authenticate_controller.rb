@@ -171,6 +171,8 @@ class AuthenticateController < ApplicationController
             authentication_logger("user is confirmed")   
   	       
             create_new_user_session( @current_user )	
+			session[:password_retries] = nil
+			session[:login_from] = nil
             redirect_to_action_html( { notice: "#{@current_user.username} logged in" }, 
                                      login_from, (1+rand(10000)) )		                    
           else
@@ -197,7 +199,8 @@ class AuthenticateController < ApplicationController
             begin
               # and send him an email
               AuthenticationNotifier.reset(@current_user, request, User.admin_emails).deliver_now           
-              reset_session
+              UserSession.clear_cookies(cookies)
+			  session[:password_retries] = nil
               redirect_to_action_html( { alert: "user suspended, check your email (including SPAM folder)"},
                                              login_from )
             rescue Exception => e         
@@ -279,8 +282,9 @@ class AuthenticateController < ApplicationController
     # log out current user
     
     uncache_all
-    session[:user_session_id] = @current_user = @current_user_session = nil
-    
+	@current_user = @current_user_session = nil
+	UserSession.clear_cookies(cookies)
+	
     @user_token = params[:user_token]
     @error_messages = params[:error_messages]
     if @user_token and @user_token != '' and current_user = User.by_token( @user_token )
@@ -326,7 +330,7 @@ class AuthenticateController < ApplicationController
   def reset_mail
     
     # reset the session object and suspend the user, with email
-    reset_session  
+    UserSession.clear_cookies(cookies)
     if user = User.by_email_or_username( params[:claim] ) 
       begin
         user.suspend_and_save
@@ -348,7 +352,7 @@ class AuthenticateController < ApplicationController
 	session[:login_from] = a[a.rindex('/')+1..a.length] if a
     authentication_logger('see_u from #{session[:login_from]}')	
         
-    reset_session
+    UserSession.clear_cookies(cookies)
     redirect_to_root_html #  notice: "logged out"  if we keep this, then it shows up on the cached pages!
   end
        
@@ -361,7 +365,7 @@ class AuthenticateController < ApplicationController
   end
   
   def clear
-    reset_session
+    UserSession.clear_cookies(cookies)
 	redirect_to root_path, alert: "session reset..."
   end
          
@@ -403,12 +407,13 @@ class AuthenticateController < ApplicationController
     
     def create_new_user_session( user )   
 
-      reset_session
+      UserSession.clear_cookies(cookies)	  
       uncache_all
       user_session = UserSession.new_ip_and_client( user, request.remote_ip(),
                                                    request.env['HTTP_USER_AGENT'])
-      session[:user_session_id] = user_session.id     
-      UserAction.add_action( user_session.id, controller_name, action_name, params )            
+      user_session.set_cookies(cookies)
+      UserAction.add_action( user_session.id, controller_name, action_name, params )        
+			
     end
   
     def uncache_all

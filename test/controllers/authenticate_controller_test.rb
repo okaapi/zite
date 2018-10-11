@@ -46,10 +46,10 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    assert_root_path_redirect    
 	    assert_equal flash[:notice], 'wido logged in'
 	    assert_nil @controller.session[:password_retries]
-	    assert_equal @controller.session[:user_session_id], UserSession.last.id   	  
+	    assert_equal cookies.encrypted[:user_session_id], UserSession.last.id   	  
    
   end
-  
+
   test "prove_it with incorrect password" do
 
 	    @controller.session[:password_retries] = 0
@@ -64,7 +64,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    assert_equal @controller.session[:password_retries], 1
 
   end  
-  
+
   test "prove_it with incorrect password too often" do
     
 	    @controller.session[:password_retries] = 3
@@ -87,7 +87,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    assert flash[:alert] =~ /sending failed/
    
   end
-             
+            
   test "prove_it with suspended user" do
 	      post :prove_it, params: { claim: "john", kennwort: "secret" }  
 
@@ -128,7 +128,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 
 
   end
- 
+
   test "about_urself correct credentials" do
 
         
@@ -143,7 +143,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	    assert_nil flash[:alert]
 	    assert_equal flash[:notice], 
 	        "Please check your email jim@gmail.com (including your SPAM folder) for an email to verify it's you and set your password!"
-	    assert_equal @controller.session[:user_session_id], UserSession.last.id   
+	    assert_equal cookies.encrypted[:user_session_id], UserSession.last.id   
        
   end
      
@@ -276,7 +276,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	assert_equal flash[:alert], "wido already logged in"
 	assert_equal assigns(:current_user).username, 'wido'
   end
-     
+      
   test "ur_secrets when logged in but no token" do
     # log in first
 	post :prove_it, params: { claim: "wido", kennwort: "secret" }
@@ -319,7 +319,7 @@ class AuthenticateControllerTest < ActionController::TestCase
     post :ur_secrets, params: { user_token: 'john_token', kennwort: 'secret', confirmation: 'secret' }
 	assert_root_path_redirect
 	assert_equal flash[:notice], "password set, you are logged in!"
-	assert_equal @controller.session[:user_session_id], UserSession.last.id 
+	assert_equal cookies.encrypted[:user_session_id], UserSession.last.id 
   end 
 
 
@@ -328,32 +328,32 @@ class AuthenticateControllerTest < ActionController::TestCase
     get :reset_mail, params: { claim: "wido" }
     assert_redirected_to root_path
     assert_equal flash[:notice], "user wido suspended, check your email (including SPAM folder)"
-    assert_nil @controller.session[:user_session_id]      
+    assert_nil cookies.encrypted[:user_session_id]	
   end
   
   test "reset_mail invalid" do
     get :reset_mail, params: { claim: "wido1" }
     assert_redirected_to root_path
-    assert_nil @controller.session[:user_session_id]        
+    assert_nil cookies.encrypted[:user_session_id]	      
   end  
   
   test "see u" do
-    session[:reset_user_id] = 77
-    @controller.session[:user_session_id] = @session_wido.id
+    cookies.encrypted[:user_session_id]	 = @session_wido.id
+	@session_wido.remember
+	@session_wido.save!
     get :see_u
     assert_redirected_to root_path
     assert_not @response.body =~ /window.location/  
-    assert_nil @controller.session[:user_session_id]
-    assert_nil session[:reset_user_id]
+    assert_nil cookies.encrypted[:user_session_id]	
   end
       
   test "reset session" do
     get :who_are_u
     assert_response :success
-    assert_not_nil @controller.session[:user_session_id]	
+    assert_not_nil cookies.encrypted[:user_session_id]	
     get :clear
     assert_redirected_to '/'
-	assert_nil @controller.session[:user_session_id]	
+	assert_nil cookies.encrypted[:user_session_id]	
     assert_equal flash[:alert], 'session reset...'		
   end
   

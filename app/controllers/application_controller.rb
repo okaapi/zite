@@ -25,18 +25,16 @@ class ApplicationController < ActionController::Base
       end
 
       @title = (ZiteActiveRecord.site?).gsub( /.com/,'' ).gsub( /www./,'').split(/[\s.,_]+/).each{|x| x.capitalize!}.join(' ') 
-      #
-      #  set the current user session
-      #
-	  @current_user_session, @idle = UserSession.recover( session[:user_session_id] )
+	  
+	  @current_user_session = UserSession.recover( cookies.encrypted[:user_session_id], cookies.encrypted[:remember_token] )
 	  if @current_user_session
 	    #nothing !
 	  elsif !@current_user_session
 	    @current_user_session = UserSession.new_ip_and_client( nil, request.remote_ip(),
-	                                                               request.env['HTTP_USER_AGENT'])
-	    session[:user_session_id] = @current_user_session.id 
+	                                                               request.env['HTTP_USER_AGENT'])															   
+		@current_user_session.set_cookies(cookies)
 	  end 
-
+	  
   	  #
   	  # this can really not happen
   	  # 
@@ -49,7 +47,7 @@ class ApplicationController < ActionController::Base
 	  #
 	  @current_user = User.by_id( @current_user_session.user_id )
 	  if @current_user  and  @current_user.site != @current_user_session.site
-        reset_session
+	    User_session.clear_cookies(cookies)
 	    redirect_to '/', 
 		    alert: "site mismatch #{@current_user_session.user.site} #{@current_user_session.site}"
       end

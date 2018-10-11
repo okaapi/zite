@@ -21,14 +21,17 @@ class ActiveSupport::TestCase
   def admin_login_4_test
 	@admin = users(:admin)
 	user_session = UserSession.create( user_id: @admin.id )
+	user_session.remember
+	user_session.set_cookies(cookies)
 	user_session.save!
-	session[:user_session_id] = user_session.id
   end
   def login_4_test
 	@current_user = users(:arnaud)
 	user_session = UserSession.create( user_id: @current_user.id )
+	user_session.remember
+	user_session.set_cookies(cookies)
+	user_session.save!	
 	user_session.save!
-	session[:user_session_id] = user_session.id
   end
   def make_cache_directories( external_host )
     cachedir = File.join( Rails.root , 'public', 'cache' )    
