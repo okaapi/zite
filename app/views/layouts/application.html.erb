@@ -69,6 +69,8 @@
 	      Ruby <%= RUBY_VERSION%> Rails <%= Rails.version %> <%= Rails.env %>
 	      Site <%= ZiteActiveRecord.site? %>
 	      User <%= @current_user.username if @current_user %>
+	      Updated at  <%= Time.at(@current_user_session.updated_at).utc.strftime("%H:%M:%S") %>
+	      <%= @current_user_session.id %> 
 	      Time <%= Time.at(@idle).utc.strftime("%H:%M:%S") %>
 	      <br> <br>
 	  </small> </div>

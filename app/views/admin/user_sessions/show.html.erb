@@ -27,7 +27,11 @@
 	
 	<% @user_session.user_actions.reverse.each do |action| %>
 	  <tiny>
-	      <%= link_to ( action.controller + "#" + action.action ), action %> <br />
+	    <%= link_to ( action.controller + "#" + action.action ), action %> &nbsp;
+            <% if action.params %>
+              <%= action.params.gsub(/seite:\s*(.*);/) {$1} %>
+	    <% end %>
+	    <br />
       </tiny>	      
     <% end %>    
 	  

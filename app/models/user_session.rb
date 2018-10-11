@@ -1,7 +1,7 @@
 
   class UserSession < ZiteActiveRecord
     
-    SESSION_TIMEOUT = 60*60 # seconds
+    SESSION_TIMEOUT = 60*15 # seconds = 15 min
     attr_accessor :idle
     belongs_to :user
     validate :id_valid
