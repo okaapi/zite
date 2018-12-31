@@ -43,8 +43,8 @@
     end      
 
 	def set_cookies(cookies)
-	  cookies.encrypted[:user_session_id] = { value: self.id, expires: 1.minute.from_now.utc }
-	  cookies.encrypted[:remember_token] = { value: self.remember_token, expires: 1.minute.from_now.utc }	
+	  cookies.encrypted[:user_session_id] = { value: self.id, expires: 1.month.from_now.utc }
+	  cookies.encrypted[:remember_token] = { value: self.remember_token, expires: 1.month.from_now.utc }	
     end  
     def self.clear_cookies(cookies)
 	  cookies.delete :user_session_id
