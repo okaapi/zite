@@ -9,6 +9,7 @@ gem 'jquery-ui-rails'
 #gem 'turbolinks'  interferes with FB login
 gem 'uglifier'
 
+gem 'sassc'
 gem 'bootstrap'   
 #gem 'autoprefixer-rails' 
 gem 'jbuilder'
