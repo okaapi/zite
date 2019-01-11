@@ -16,14 +16,15 @@
       xfbml      : true,
       version    : 'v2.8'
     }); 
+	console.log( 'after FB.init' );
     FB.getLoginStatus( function(response) {
-      //console.log( response );
+      console.log( response );
       var fdiv = document.getElementById("fb_div");
       if (fdiv) {
         fdiv.style.display = 'block';
       }
       if (response.status === 'connected') {
-        //console.log( 'logged into Facebook' );
+        console.log( 'logged into Facebook' );
         FB.api('/me', { locale: 'en_US', fields: 'name, email' }, (function(response) {
           var e = document.getElementById("fb_login_info");
           if ( e ) {            
@@ -32,7 +33,7 @@
         }));
       }
       else {
-        //console.log( 'not logged into Facebook' );
+        console.log( 'not logged into Facebook' );
         var e = document.getElementById("fb_login_info");
         if ( e ) {          
           e.innerHTML = 'you seem to currently not be logged into Facebook'
@@ -43,6 +44,7 @@
 
   function fb_login_state() {
     FB.getLoginStatus(function(response) {
+      console.log( response.authResponse );	
       if( response.authResponse ) {
         top.location.href = '/_fb_login/' + response.authResponse.accessToken;          
       }
@@ -51,7 +53,7 @@
   
   function fb_logout() {    
     FB.getLoginStatus(function(response) {
-      //console.log( response.authResponse );
+      console.log( response.authResponse );
       if (response.status === 'connected') {
         FB.logout(function(response) {  
           //console.log( response.authResponse );        
@@ -62,4 +64,3 @@
   };  
     
 </script>
- 
