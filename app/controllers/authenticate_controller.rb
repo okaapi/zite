@@ -262,8 +262,9 @@ class AuthenticateController < ApplicationController
       @current_user.token = nil if @eft == 'ab47hk'
       if @current_user.save 
         begin  
-          AuthenticationNotifier.registration(@current_user,request,User.admin_emails).deliver_now  
-          redirect_to_action_html notice: "Please check your email #{@email} (including your SPAM folder) for an email to verify it's you and set your password!"
+          path = AuthenticationNotifier.registration(@current_user,request,User.admin_emails).deliver_now  
+          authentication_logger("password path #{path}")	
+		  redirect_to_action_html notice: "Please check your email #{@email} (including your SPAM folder) for an email to verify it's you and set your password!"
         rescue Exception => e
           @current_user.destroy if @current_user
           redirect_to_action_html alert: "we sent an activation email, but it failed 1 (#{e})."
@@ -334,7 +335,8 @@ class AuthenticateController < ApplicationController
     if user = User.by_email_or_username( params[:claim] ) 
       begin
         user.suspend_and_save
-        AuthenticationNotifier.reset(user, request, User.admin_emails).deliver_now        
+        path = AuthenticationNotifier.reset(user, request, User.admin_emails).deliver_now    
+        authentication_logger("password path #{path}")		
         redirect_to_root_html notice: "user #{user.username} suspended, check your email (including SPAM folder)"
       rescue Exception => e         
         redirect_to_root_html alert: "user suspended, but email sending failed 2 #{e}"
@@ -394,7 +396,7 @@ class AuthenticateController < ApplicationController
     
     def redirect_to_root_html( flash_content = nil )
         
-      authentication_logger('redirect_to_root_html')        
+      authentication_logger("redirect_to_root_html #{flash_content}")        
           
       if flash_content
         flash[ flash_content.keys[0] ] = flash_content[ flash_content.keys[0] ]

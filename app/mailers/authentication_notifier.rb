@@ -13,6 +13,7 @@ require "singleton"
       mail to: user.email, subject: "Registration information for #{@site}",
            from: request.host + ' ' + self.smtp_settings[:sender_email],
            bcc: admins
+	  @path
     end
 
     def reset( user, request, admins )   
@@ -22,6 +23,7 @@ require "singleton"
       mail to: user.email, subject: "Password reset information for #{@site}",
            from: request.host + ' ' + self.smtp_settings[:sender_email],
            bcc: admins    
+	  @path
     end
   
     def test( email, host = 'test.host' )
