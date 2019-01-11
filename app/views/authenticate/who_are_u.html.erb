@@ -20,22 +20,17 @@
         <%= text_field_tag :claim, '', autofocus: true, class: 'col-sm-3 form-control' %>	  
 	    <small class="text-muted"><%= link_to 'cancel', see_u_path %> </small>
       </div>
+
+      <! 
+	 Facebook stuff
+	 >     
+      <div class="col-sm-10">
+	<fb:login-button scope="public_profile,email" onlogin="fb_login_state();"></fb:login-button>
+	&nbsp; &nbsp; <span id='fb_login_info'></span>
+      </div>
+
     </div>  
   </div> 
  
-<! 
-  Facebook stuff
->     
-  <div class="card">
-    <div class="card-header" >
-<div class="row" id="fb_div">
-  <%= label_tag :claim, "or via Facebook:" %>
-  <div class="col-sm-10">
-	<fb:login-button scope="public_profile,email" onlogin="fb_login_state();"></fb:login-button>
-	&nbsp; &nbsp; <span id='fb_login_info'></span>
-  </div>
-</div>  
-</div>  
-</div>  
 
 <% end %>  
