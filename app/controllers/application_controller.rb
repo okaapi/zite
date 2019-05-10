@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
 	  #
 	  #  log the action
 	  #  
-      UserAction.add_action( @current_user_session.id, controller_name, action_name, params )            
+      @current_user_action = UserAction.add_action( @current_user_session.id, controller_name, action_name, params )            
 
   end
      

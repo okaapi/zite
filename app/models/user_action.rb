@@ -1,6 +1,6 @@
 
   class UserAction < ZiteActiveRecord
-    PARAMS_CLIP = 63
+    PARAMS_CLIP = 128
     belongs_to :user_session
     validates :user_session_id, :presence => true  
     validate :user_session_id_valid
@@ -23,7 +23,9 @@
       user_action.params = user_action.params[0..PARAMS_CLIP]
       
       user_action.save
-    
+
+      return user_action
+      
     end    
       
     private

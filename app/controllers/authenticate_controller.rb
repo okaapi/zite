@@ -1,4 +1,5 @@
 require 'net/http'
+require 'json'
 
 class AuthenticateController < ApplicationController
 
@@ -249,6 +250,26 @@ class AuthenticateController < ApplicationController
 	
     # this is for testing email failure exception code
     @eft = params[:ab47hk]
+
+=begin
+    if response = params[:captcha]
+
+      secret = '6Ld4c6IUAAAAABrp6qSbOeB3wo-pD1XpB90QyJc3'
+
+      uri = URI.parse("https://www.google.com/recaptcha/api/siteverify?secret=#{secret}&response=#{response}")
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+      request = Net::HTTP::Get.new(uri.request_uri)
+
+      response = http.request(request)
+      json_response = JSON.parse(response.body)
+      @captcha = json_response["score"]
+      @current_user_action.params << " score: #{@captcha}"
+      @current_user_action.save
+    end
+=end
     
     # if we're already logged in
     if @current_user
@@ -270,9 +291,9 @@ class AuthenticateController < ApplicationController
           redirect_to_action_html alert: "we sent an activation email, but it failed 1 (#{e})."
         end
       end
-	else
-		@qa = rand(4)+1
-		@qb = rand(4)+1
+    else
+      @qa = rand(4)+1
+      @qb = rand(4)+1
     end
     
   end
@@ -350,7 +371,7 @@ class AuthenticateController < ApplicationController
   def see_u
     # reset the session object, and forget the user that way
 	
-	a = request.headers['HTTP_REFERER']	
+	a = request.headers['HTTPREFERER']	
 	session[:login_from] = a[a.rindex('/')+1..a.length] if a
     authentication_logger('see_u from #{session[:login_from]}')	
         

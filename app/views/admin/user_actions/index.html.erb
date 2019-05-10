@@ -18,7 +18,7 @@
     <% @user_actions.each do |user_action| %>
       <tr>
         <td><%= user_action.id %></td>
-        <td align=right><%= user_action.user_session_id %></td>
+        <td align=right><%= link_to user_action.user_session_id, user_action.user_session %></td>
         <td><%= user_action.controller %></td>
         <td><%= user_action.action %></td>
         <td><%= user_action.params %></td>   

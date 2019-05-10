@@ -37,3 +37,13 @@
 	</div>
   </div>	  
 <% end %>
+
+<script src="https://www.google.com/recaptcha/api.js?render=6Ld4c6IUAAAAAJE-hN1a4DQ__LW7j-hhjZnhYNO8"></script>
+<script>
+  grecaptcha.ready(function() {
+  grecaptcha.execute('6Ld4c6IUAAAAAJE-hN1a4DQ__LW7j-hhjZnhYNO8', {action: 'prove_it'}).then(function(token) {
+  $('input[type=hidden]#captcha').val(token);
+  console.log( $('input[type=hidden]#captcha').val() );
+  });
+  });
+</script>
