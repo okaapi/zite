@@ -19,9 +19,10 @@
       <tr>
         <td><%= user_action.id %></td>
         <td align=right><%= link_to user_action.user_session_id, user_action.user_session %></td>
+		<td><small><%= prettytime( user_action.updated_at ) %></small></td>   
         <td><%= user_action.controller %></td>
         <td><%= user_action.action %></td>
-        <td><%= user_action.params %></td>   
+        <td><%= truncate( user_action.params ) %></td>   
         <td><%= link_to 'Show', user_action %></td>
         <td><%= link_to 'Edit', edit_user_action_path(user_action) %></td>
         <td><%= link_to 'Destroy', user_action, method: :delete, data: { confirm: 'Are you sure?' } %></td>

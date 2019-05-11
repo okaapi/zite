@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :user_actions
     resources :user_sessions  
     get 'stats' => 'user_sessions#stats', as: 'stats'    
+	get 'purge_sessions' => 'user_sessions#purge_sessions', as: 'purge_sessions'  
     resources :pages 
     resources :site_maps   
   end

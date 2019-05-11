@@ -28,13 +28,14 @@
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
 
+
 <small>
-	<h1>Sessions for User <%= @user.username %> </h1>
+    
 	
 	<% @user.user_sessions.reverse.each do |session| %>
-	  <h2> <%= link_to ( session.created_at.to_time.strftime("%m/%d %H:%M:%S") + " - " +  
+	  <h5><br><%= link_to ( session.created_at.to_time.strftime("%m/%d %H:%M:%S") + " - " +  
 	                     session.updated_at.to_time.strftime("%m/%d %H:%M:%S") ),
-	                     session %> </a></h2>
+	                     session %> </a></h5>
 	  
 	  <tiny>
 	    <% session.user_actions.reverse.each do |action| %>

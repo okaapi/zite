@@ -87,6 +87,16 @@ module Admin
 	      format.json { head :no_content }
 	    end
 	  end
+	  
+	  def purge_sessions
+	    puts '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
+	    p params
+	    puts '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'		
+	    respond_to do |format|
+	      format.html { redirect_to user_sessions_url }
+	      format.json { head :no_content }
+	    end
+	  end
 	
 	  private
 	    # Use callbacks to share common setup or constraints between actions.

@@ -21,15 +21,17 @@
       <tr>
         <td><%= user_session._user ? user_session._user.username : user_session.user_id  %></td>
         <td><%= link_to user_session.id, user_session %></td>
+		<td><small><%= prettytime( user_session.updated_at ) %></small></td>   
         <% if user_session.user_actions.count > 0 %>
           <td><%= user_session.user_actions.count %></td>
           <td><%= truncate(  user_session.user_actions.first.params.gsub(/seite:\s*(.*);/) {$1} )  %></td>
         <% end %>
 	<td><%= truncate( user_session.client ) %></td>
-        <td><small><%= prettytime( user_session.updated_at ) %></small></td>        
+             
         <td id=<%=user_session.id%> ><%= user_session.ip %></td>        
         <td><%= link_to 'Edit', edit_user_session_path(user_session) %></td>
         <td><%= link_to 'Destroy', user_session, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+		<td><%= link_to 'Purge', purge_sessions_path( id: user_session.id ), data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

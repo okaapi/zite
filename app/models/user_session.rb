@@ -3,6 +3,7 @@
     
     attr_accessor :remember_token
     belongs_to :user
+	has_many :user_actions
     validate :id_valid
     
     has_many :user_actions, dependent: :destroy  

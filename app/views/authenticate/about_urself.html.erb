@@ -1,3 +1,5 @@
+
+
 <%= form_tag about_urself_path, class: 'form-horizontal login_decor' do %>
   
   <! 
@@ -45,13 +47,4 @@
   </div>  
 	  	  
 <% end %>
-
-<script src="https://www.google.com/recaptcha/api.js?render=6Ld4c6IUAAAAAJE-hN1a4DQ__LW7j-hhjZnhYNO8"></script>
-<script>
-  grecaptcha.ready(function() {
-  grecaptcha.execute('6Ld4c6IUAAAAAJE-hN1a4DQ__LW7j-hhjZnhYNO8', {action: 'about_urself'}).then(function(token) {
-  $('input[type=hidden]#captcha').val(token);
-  console.log( $('input[type=hidden]#captcha').val() );
-  });
-  });
-</script>
+<%= render "captcha" %>

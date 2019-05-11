@@ -159,7 +159,8 @@ class AuthenticateController < ApplicationController
     # now the user has offered a password
     elsif @current_user = User.by_email_or_username( @claim ) 
 
-        authentication_logger("user #{@claim} exists")   
+        authentication_logger("coming from page '#{login_from}'")  
+		authentication_logger("user #{@claim} exists")   
 
         # if that's ok
         if @current_user.authenticate( @password )
@@ -174,6 +175,7 @@ class AuthenticateController < ApplicationController
             create_new_user_session( @current_user )	
 			session[:password_retries] = nil
 			session[:login_from] = nil
+			authentication_logger("redirecting to page '#{login_from}'")  
             redirect_to_action_html( { notice: "#{@current_user.username} logged in" }, 
                                      login_from, (1+rand(10000)) )		                    
           else
@@ -251,25 +253,9 @@ class AuthenticateController < ApplicationController
     # this is for testing email failure exception code
     @eft = params[:ab47hk]
 
-=begin
-    if response = params[:captcha]
-
-      secret = '6Ld4c6IUAAAAABrp6qSbOeB3wo-pD1XpB90QyJc3'
-
-      uri = URI.parse("https://www.google.com/recaptcha/api/siteverify?secret=#{secret}&response=#{response}")
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-      request = Net::HTTP::Get.new(uri.request_uri)
-
-      response = http.request(request)
-      json_response = JSON.parse(response.body)
-      @captcha = json_response["score"]
-      @current_user_action.params << " score: #{@captcha}"
-      @current_user_action.save
-    end
-=end
+    @captcha = Captcha.verify(params[:captcha])
+    @current_user_action.params << " score: #{@captcha}"
+    @current_user_action.save
     
     # if we're already logged in
     if @current_user
@@ -291,10 +277,9 @@ class AuthenticateController < ApplicationController
           redirect_to_action_html alert: "we sent an activation email, but it failed 1 (#{e})."
         end
       end
-    else
-      @qa = rand(4)+1
-      @qb = rand(4)+1
     end
+    @qa = rand(4)+1
+    @qb = rand(4)+1	
     
   end
   

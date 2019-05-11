@@ -30,20 +30,13 @@
 	    <%= hidden_field_tag :claim, @claim %>
 	    <%= label_tag :kennwort, "password:", class: 'control-label' %>
 	    <%= password_field_tag :kennwort, '', autofocus: true, class: 'col-sm-3 form-control' %>
+		<small class="text-muted"><%= link_to 'forgot password', reset_mail_path(:claim => @claim)  %></small>		
+      </div>		
+	  <div class="form-group">
+	    <%= submit_tag 'Submit', class: "btn btn-primary" %>		
 	    <small class="text-muted"><%= link_to 'cancel', see_u_path %> </small>
-	    <br>
-		<small class="text-muted"><%= link_to 'forgot password', reset_mail_path(:claim => @claim)  %></small>
 	  </div>
 	</div>
   </div>	  
 <% end %>
-
-<script src="https://www.google.com/recaptcha/api.js?render=6Ld4c6IUAAAAAJE-hN1a4DQ__LW7j-hhjZnhYNO8"></script>
-<script>
-  grecaptcha.ready(function() {
-  grecaptcha.execute('6Ld4c6IUAAAAAJE-hN1a4DQ__LW7j-hhjZnhYNO8', {action: 'prove_it'}).then(function(token) {
-  $('input[type=hidden]#captcha').val(token);
-  console.log( $('input[type=hidden]#captcha').val() );
-  });
-  });
-</script>
+<%= render "captcha" %>
