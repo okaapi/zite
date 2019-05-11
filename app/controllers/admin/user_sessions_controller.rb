@@ -16,7 +16,11 @@ module Admin
           @user_sessions = UserSession.all.order( updated_at: :desc )
 	    end
 		@user_sessions.each do |u|
-		  u.ip += ' ' + ( GeoIp.getgeo(u.ip) or '' )
+		  if u.ip
+            u.ip += ' ' + GeoIp.getcountryandorg(u.ip) 
+		  else 
+		    u.ip = GeoIp.getcountryandorg(u.ip) 
+		  end
 		end
 	  end
 

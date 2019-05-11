@@ -135,8 +135,12 @@ class AuthenticateController < ApplicationController
     
     # if we're already logged in
     if @current_user
-      redirect_to_action_html( { alert: "#{@current_user.username} already logged in" }, 
+	  if login_from != '_prove_it' 
+        redirect_to_action_html( { alert: "#{@current_user.username} already logged in" }, 
                                        login_from)  
+      else
+	    redirect_to_action_html( { alert: "#{@current_user.username} already logged in" } )
+	  end
       authentication_logger("prove_it but #{@current_user.username} already logged in")   
       
     # this is the first time we come here
