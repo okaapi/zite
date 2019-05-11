@@ -42,18 +42,4 @@
 <%= link_to 'New User session', new_user_session_path %> |
 <%= link_to 'Back', '/' %>
 
-<script>
-  function getgeoip( element ) {
-  $.getJSON("http://api.ipstack.com/"+$("#"+element).html() +"?access_key=9dd93f34a53afd13ed6692d04aa5eb4a&output=json&legacy=1",
-    function(result){
-      $("#"+element).append(' '+result.city+' '+result.country_name);           
- 
-    }
-  );
-};
 
-<% @user_sessions.each do |user_session| %>
-getgeoip('<%=user_session.id%>');
-
-<% end %>
-</script>

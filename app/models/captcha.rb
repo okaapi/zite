@@ -1,5 +1,6 @@
 
-
+require 'net/http'
+require 'json'
 class Captcha
 
   def self.verify(token)

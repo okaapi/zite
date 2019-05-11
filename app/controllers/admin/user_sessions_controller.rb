@@ -15,6 +15,9 @@ module Admin
 	    else
           @user_sessions = UserSession.all.order( updated_at: :desc )
 	    end
+		@user_sessions.each do |u|
+		  u.ip += ' ' + ( GeoIp.getgeo(u.ip) or '' )
+		end
 	  end
 
 	  def stats
