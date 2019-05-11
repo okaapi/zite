@@ -5,6 +5,10 @@ class GeoIp
 
   def self.getcountryandorg(ip)
   
+      if !ip
+	    return ''
+	  end
+  
       uri = URI.parse("http://ip-api.com/json/#{ip}")
       http = Net::HTTP.new(uri.host, uri.port)
       http.read_timeout = 1  # set this to zero to check time out... or 'http://httpstat.us/200?sleep=3000'

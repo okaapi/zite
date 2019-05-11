@@ -38,7 +38,7 @@
 	    <%= hidden_field_tag :user_id, @current_user.id if @current_user %>  
 		<%= hidden_field_tag :qa, @qa %>
 		<%= hidden_field_tag :qb, @qb %>
-		<%= hidden_field_tag :captcha, 314 %> 
+		<%= hidden_field_tag :captcha %> 
 	    <%= submit_tag 'Send registration email', class: "btn btn-primary", 
 	                        :onclick => "$('#spinner').show(); ".html_safe %>
 	    <small class="text-muted"><%= link_to 'cancel', see_u_path %> </small>

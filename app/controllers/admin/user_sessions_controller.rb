@@ -96,9 +96,12 @@ module Admin
 	  end
 	  
 	  def purge_sessions
-	    puts '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'
-	    p params
-	    puts '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@'		
+        purge_id = params[:id]	
+		user_sessions = UserSession.where("id <= ? ", params[:id] )
+		user_sessions.each do |u|
+		  u.delete
+		end
+	
 	    respond_to do |format|
 	      format.html { redirect_to user_sessions_url }
 	      format.json { head :no_content }

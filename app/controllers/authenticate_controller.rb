@@ -246,9 +246,13 @@ class AuthenticateController < ApplicationController
     # this is for testing email failure exception code
     @eft = params[:ab47hk]
 
-    @captcha = Captcha.verify(params[:captcha])
-    @current_user_action.params << " score: #{@captcha}"
-    @current_user_action.save
+    if params[:captcha]
+      @captcha = Captcha.verify(params[:captcha])
+	  if @captcha
+        @current_user_action.params << " score: #{@captcha}"
+        @current_user_action.save
+	  end
+	end
     
     # if we're already logged in
     if @current_user
