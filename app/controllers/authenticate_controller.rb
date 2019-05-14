@@ -246,21 +246,23 @@ class AuthenticateController < ApplicationController
     # this is for testing email failure exception code
     @eft = params[:ab47hk]
 
-    if params[:captcha]
+    # 1) there is no :captcha parameter (when about_urself is first called up)
+	# 2) else check with Google captcha what the score is (-1 if error)
+    if !params[:captcha]
+	  @captcha = 0.0
+	else
       @captcha = Captcha.verify(params[:captcha])
-	  if @captcha
-        @current_user_action.params << " score: #{@captcha}"
-        @current_user_action.save
-	  end
+      @current_user_action.params = @current_user_action.params + 'captcha: ' + @captcha.to_s + '; '
+      @current_user_action.save  
 	end
-    
+	
     # if we're already logged in
     if @current_user
       redirect_to_action_html( { alert: "#{@current_user.username} already logged in" } )
       authentication_logger("about_urself but #{@current_user.username} already logged in")   
           
     # if email and username are given...iotherwise this is the empty dialogue (first time)
-    elsif @email and @username and quiz
+    elsif @email and @username and quiz and @captcha > 0.1
       # create this new user, but in unconfirmed status
       @current_user = User.new_unconfirmed( @email, @username )
       @current_user.token = nil if @eft == 'ab47hk'

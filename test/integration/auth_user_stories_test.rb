@@ -86,7 +86,8 @@ class AuthUserStoriesTest < ActionDispatch::IntegrationTest
       assert_select '.control-label', /how much/ 	  
 
     # user enters proper username / email combo
-      post "/_about_urself", params: { username: "jim", email: "jim@gmail.com", qa: 3, qb: 7, answer: 21 }
+    post "/_about_urself", params: { username: "jim", email: "jim@gmail.com", 
+	                 qa: 3, qb: 7, answer: 21, captcha: Rails.configuration.captcha_good_test_token }
     assert_equal flash[:notice], 
         "Please check your email jim@gmail.com (including your SPAM folder) for an email to verify it's you and set your password!"
     assert_root_path_redirect  
