@@ -14,7 +14,7 @@
       user_action.params = ""
       parameters.each do |k,v|           
         case k
-        when "action", "controller", "kennwort", "confirmation", "authenticity_token", "utf8", "captcha"
+        when "action", "controller", "kennwort", "confirmation", "authenticity_token", "utf8", "captcha", "fb_token"
           ;
         else
           user_action.params += "#{k}: #{v.to_s}; "
