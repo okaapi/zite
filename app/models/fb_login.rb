@@ -13,7 +13,6 @@ class FbLogin
       
       resp = http.start() {|http| http.get(url) }
       
-      authentication_logger('   ...done')      
       return JSON.parse(resp.body)
 	  
   end
