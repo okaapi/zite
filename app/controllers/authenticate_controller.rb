@@ -19,7 +19,7 @@ class AuthenticateController < ApplicationController
     # 
     begin
     
-	  parsed_resp = FbLogin.check_token( params[:fb_token] )
+      parsed_resp = FbLogin.check_token( params[:fb_token] )
 
       if ! parsed_resp['error']
       
