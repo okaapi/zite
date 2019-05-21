@@ -8,6 +8,7 @@
     grecaptcha.execute('6Ld4c6IUAAAAAJE-hN1a4DQ__LW7j-hhjZnhYNO8', {action: '<%= controller.action_name %>'}).then(function(token) {
       if( document.getElementById('captcha') ){
 	    document.getElementById('captcha').value = token;
+		console.log('token :' + token)
 	  }
 	  document.getElementById('cap').innerHTML = '..';
     });
