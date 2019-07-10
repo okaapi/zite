@@ -9,19 +9,19 @@ module Admin
 	  # GET /user_sessions.json
 	  def index	 
 	    if params[:by_name]
-          @user_sessions = UserSession.all.order( user_id: :asc )
+              @user_sessions = UserSession.all.order( user_id: :asc )
 	    elsif params[:by_ip]
-          @user_sessions = UserSession.all.order( ip: :asc )          
+              @user_sessions = UserSession.all.order( ip: :asc )          
 	    else
-          @user_sessions = UserSession.all.order( updated_at: :desc )
+              @user_sessions = UserSession.all.order( updated_at: :desc )
 	    end
-		@user_sessions.each do |u|
-		  if u.ip
-            u.ip += ' ' + GeoIp.getcountryandorg(u.ip) 
-		  else 
-		    u.ip = GeoIp.getcountryandorg(u.ip) 
-		  end
-		end
+            @user_sessions[0..20].each do |u|
+              if u.ip
+                u.ip += ' ' + GeoIp.getcountryandorg(u.ip)
+              else 
+                u.ip = GeoIp.getcountryandorg(u.ip) 
+              end
+	    end
 	  end
 
 	  def stats
