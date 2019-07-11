@@ -3,10 +3,8 @@
     
     attr_accessor :remember_token
     belongs_to :user
-	has_many :user_actions
+	has_many :user_actions, dependent: :destroy
     validate :id_valid
-    
-    has_many :user_actions, dependent: :destroy  
 	
 	def _user	
 	  # overriding this in because it fails with scope

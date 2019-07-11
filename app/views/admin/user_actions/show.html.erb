@@ -1,5 +1,12 @@
 
 <% if @user_action %>
+
+
+	<p>
+	  <strong>ID:</strong>
+	  <%= @user_action.id %>
+	</p>
+	
 	<p>
 	  <strong>User session id:</strong>
 	  <%= @user_action.user_session.id if @user_action %>
@@ -28,5 +35,5 @@
 	</p>
 <% end %>
 
-<%= link_to 'Back', user_actions_path %>
+<%= link_to 'Actions', user_actions_path %>
 

@@ -15,6 +15,29 @@ module Auth
 	  assert( us.remember_check( us.remember_token ) )
 	end
 	
+	test 'user_session cascade delete' do
+
+	  assert User
+	  u = User.first
+	  us = UserSession.create( user_id: u.id )
+	  us.save!
+	  ua1 = UserAction.create( user_session_id: us.id )
+	  ua1.save!
+	  ua2 = UserAction.create( user_session_id: us.id )	  
+	  ua2.save!
+	  
+	  assert_not_nil UserSession.find( us.id )
+	  assert_not_nil UserAction.find( ua1.id )
+	  assert_not_nil UserAction.find( ua2.id )	  
+	  
+	  us.destroy
+	  assert !UserSession.exists?( us.id )
+	  assert !UserAction.exists?( ua1.id )
+	  assert !UserAction.exists?( ua2.id )	  
+	  
+	  
+	end
+	
 	#
 	#  this is a bug in rails where user_session.user may not fetch the right user 
 	#  object depending on the "site" scope

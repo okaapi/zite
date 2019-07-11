@@ -11,13 +11,13 @@ class HttpsRequest
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 	  http.read_timeout = 1  # set this to zero to check time out... or 'http://httpstat.us/200?sleep=3000'
       http.open_timeout = 1
-
+	  
       begin  
-	response = http.start() {|http| http.get(url) }
+	  response = http.start() {|http| http.get(url) }
         json_response = JSON.parse(response.body) 
         return json_response
       rescue Exception => e
-        return {}
+        return {"exception" => e}
       end
 	  
   end

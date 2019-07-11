@@ -1,6 +1,11 @@
 
 <% if @user_session %>
-  
+
+	<p>
+	  <strong>ID:</strong>
+	  <%= @user_session.id %>
+	</p>
+	
 	<p>
 	  <strong>User:</strong>
 	  <%= @user_session._user.username if @user_session._user %>
@@ -28,7 +33,7 @@
 	</p>
 <% end %>
 
-<%= link_to 'Back', user_sessions_path %>
+<%= link_to 'Sessions', user_sessions_path %>
 
 <small>
 

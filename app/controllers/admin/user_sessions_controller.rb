@@ -45,6 +45,11 @@ module Admin
 	  # GET /user_sessions/1
 	  # GET /user_sessions/1.json
 	  def show
+        if @user_session and @user_session.ip
+          @user_session.ip += ' ' + GeoIp.getcountryandorg(@user_session.ip)
+        else 
+          @user_session.ip = GeoIp.getcountryandorg(@user_session.ip) 
+        end
 	  end
 	
 	  # GET /user_sessions/new
@@ -99,7 +104,7 @@ module Admin
         purge_id = params[:id]	
 		user_sessions = UserSession.where("id <= ? ", params[:id] )
 		user_sessions.each do |u|
-		  u.delete
+		  u.destroy
 		end
 	
 	    respond_to do |format|

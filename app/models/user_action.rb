@@ -1,5 +1,6 @@
 
   class UserAction < ZiteActiveRecord
+  
     PARAMS_CLIP = 128
     belongs_to :user_session
     validates :user_session_id, :presence => true  
