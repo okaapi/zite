@@ -1,7 +1,7 @@
 <% if @current_user && @current_user.errors.any? %>
   <div class="alert alert-danger" >
     <% @current_user.errors.full_messages.each do |msg| %>
-      <span class="glyphicon glyphicon-exclamation-sign"></span>
+      <span class="fas fa-exclamation-circle"></span>
       <%= msg %><br>
     <% end %>
   </div>

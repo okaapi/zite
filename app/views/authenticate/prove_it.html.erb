@@ -12,7 +12,7 @@
   > 
   <% if @retries %>
     <div class="alert alert-danger" role="alert">
-      <span class="glyphicon glyphicon-exclamation-sign"></span>
+      <span class="fas fa-exclamation-circle"></span>
       The password does not match!
 	  <ul>
 	    <li><%= @retries.ordinalize %> attempt of <%= @max_retries %></li>
