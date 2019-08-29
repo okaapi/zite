@@ -78,12 +78,14 @@ module Admin
   
     test "should destroy user_session and its actions" do
 	  @user_session.remember
-	  cookies.encrypted[:user_session_id] = { value: @user_session.id, expires: 1.minute.from_now.utc }
-	  cookies.encrypted[:remember_token] = { value: @user_session.remember_token, expires: 1.minute.from_now.utc }	
+	  @user_session.set_cookies(cookies)
 	  @user_session.save!
+	  u_id = @user_session.id
+	  
       assert_difference('UserSession.count', -1) do
         assert_difference('UserAction.count', -2) do
-          delete :destroy, params: { id: @user_session }
+          get :destroy, params: { id: u_id }
+		  #same: delete :destroy, params: { id: u_id }
         end
       end
   

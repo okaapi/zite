@@ -13,4 +13,5 @@ action_two:
   controller: MyString
   action: MyString
   updated_at: <%= Time.now - 100010 %>
+  params: these are more parameters!  
   site: testsite45A67

@@ -27,6 +27,7 @@
     
     def self.recover( session_id, remember_token )
       
+	  puts "recover user_session"
       if !session_id
         return nil
       end
