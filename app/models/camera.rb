@@ -13,7 +13,8 @@ class Camera
     directory = File.join( Rails.root , '../okaapi', 'public', 'camera')
     if Dir.exists? directory    
       
-      datelist = Dir.entries(directory).reject{|entry| entry =~ /^\.{1,2}$/}.sort #_by { |a| File.stat(File.join(directory,a)).mtime }.reverse
+      datelist = Dir.entries(directory).reject{|entry| entry =~ /^\.{1,2}$/}.sort.reverse 
+          #_by { |a| File.stat(File.join(directory,a)).mtime }.reverse
       
       datelist.each do |date|
         datedirectory = File.join( directory, date )  
@@ -40,11 +41,40 @@ class Camera
     end
     return out
   end
+  
+  def self.launch_last( operands )
+
+    operand_list = operands.split
+    filter = operand_list[0]
+    
+    out = ""
+
+    directory = File.join( Rails.root , '../okaapi', 'public', 'camera')
+    if Dir.exists? directory    
+      
+      datelist = Dir.entries(directory).reject{|entry| entry =~ /^\.{1,2}$/}.sort.reverse
+        #_by { |a| File.stat(File.join(directory,a)).mtime }.reverse
+      date = datelist.first
+      datedirectory = File.join( directory, date )  
+      imagefiles = Dir.entries(datedirectory).sort.reverse
+      imagefiles.each do |imagefile|
+        if imagefile.include? filter and !imagefile.include? 'avi'
+          t = imagefile.gsub(/#{filter}/,'').gsub(/.jpg/,'')
+          out << "<img src='/camera/#{date}/#{imagefile}' title='#{t}' >"
+          break
+        end
+      end
+    end
+
+    return out
+  end
+
   def self.engarble( str )
     o = ""; 
     str.each_char { |c| o << (c.ord+30).chr }; 
     o
   end   
+
   def self.degarble( str )
     o = ""; 
     str.each_char { |c| o << (c.ord-30).chr }; 

@@ -316,6 +316,8 @@ class Page < ZiteActiveRecord
         # look for these in the lib folder          
         when 'camera'
           Camera.launch operands
+        when 'camera_last'
+          Camera.launch_last operands
         when 'questions'
           eval 'Questions::questions ' + operands          
         else
