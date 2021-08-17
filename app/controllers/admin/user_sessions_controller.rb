@@ -15,19 +15,28 @@ module Admin
 	    else
               @user_sessions = UserSession.all.order( updated_at: :desc )
 	    end
-            @user_sessions[0..20].each do |u|
-              if u.ip
-                u.ip += ' ' + GeoIp.getcountryandorg(u.ip)
-              else 
-                u.ip = GeoIp.getcountryandorg(u.ip) 
+
+            i_requests = 0            
+            @user_sessions.each do |u|
+
+              if !u.isp 
+                i_requests = i_requests + 1
+                u.isp = GeoIp.getcountryandorg(u.ip)
+                if u.isp
+                  u.save
+                end
               end
-	    end
+              
+              break if i_requests > 20
+
+            end
+
 	  end
 
 	  def stats
 	    user_actions = UserAction.all
 		actions = {}
-        user_actions.each do |u_action|
+                user_actions.each do |u_action|
 		  if u_action.action == 'index'
 		    if u_action.params =~ /seite: (.*);/
 			  h = $1
@@ -45,11 +54,6 @@ module Admin
 	  # GET /user_sessions/1
 	  # GET /user_sessions/1.json
 	  def show
-        if @user_session and @user_session.ip
-          @user_session.ip += ' ' + GeoIp.getcountryandorg(@user_session.ip)
-        else 
-          @user_session.ip = GeoIp.getcountryandorg(@user_session.ip) 
-        end
 	  end
 	
 	  # GET /user_sessions/new
@@ -101,11 +105,14 @@ module Admin
 	  end
 	  
 	  def purge_sessions
-        purge_id = params[:id]	
-		user_sessions = UserSession.where("id <= ? ", params[:id] )
-		user_sessions.each do |u|
-		  u.destroy
-		end
+            purge_id = params[:id]
+            while us = UserSession.where("id <= ? ", params[:id] ).last
+              us.destroy
+            end
+	    #user_sessions = UserSession.where("id <= ? ", params[:id] )
+	    #user_sessions.each do |u|
+	    #  u.destroy
+	    #end
 	
 	    respond_to do |format|
 	      format.html { redirect_to user_sessions_url }

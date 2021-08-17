@@ -427,7 +427,7 @@ class AuthenticateController < ApplicationController
     def authentication_logger( str )
       #
       #  uncomment to turn on logging
-      logger.info( 'AUTHENTICATE_CONTROLLER ' + str ) if str
+      logger.info( 'Logging AUTHENTICATE_CONTROLLER ' + str ) if str
       #
     end
 

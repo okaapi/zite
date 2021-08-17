@@ -13,7 +13,7 @@ class HttpsRequest
       http.open_timeout = 1
 	  
       begin  
-	  response = http.start() {|http| http.get(url) }
+        response = http.start() {|http| http.get(url) }
         json_response = JSON.parse(response.body) 
         return json_response
       rescue Exception => e

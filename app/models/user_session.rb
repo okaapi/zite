@@ -19,15 +19,13 @@
     end
     
     def self.new_ip_and_client( user, ip, client )
-      u_s = self.new( user: user, ip: ip, client: client )
+      u_s = self.new( user: user, ip: ip, client: client[0..254] )
 	  u_s.remember
       u_s.save!
       return u_s
     end
     
     def self.recover( session_id, remember_token )
-      
-	  puts "recover user_session"
       if !session_id
         return nil
       end

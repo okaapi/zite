@@ -88,7 +88,6 @@ module Admin
 		  #same: delete :destroy, params: { id: u_id }
         end
       end
-  
       assert_redirected_to user_sessions_path
     end
   

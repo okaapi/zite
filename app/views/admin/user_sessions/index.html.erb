@@ -10,7 +10,7 @@
       <th>first action</th>
       <th>Client</th>
       
-      <th><u><%= link_to 'IP', user_sessions_path( by_ip: 'true' )%></u></th>     
+      <th><u><%= link_to 'ISP/IP', user_sessions_path( by_ip: 'true' )%></u></th>     
       <th></th>
       <th></th>
       <th></th>
@@ -25,11 +25,15 @@
 		<td><small><%= prettytime( user_session.updated_at ) %></small></td>   
         <% if user_session.user_actions.count > 0 %>
           <td><%= user_session.user_actions.count %></td>
-          <td><%= truncate(  user_session.user_actions.first.params.gsub(/seite:\s*(.*);/) {$1} )  %></td>
+          <td><%= user_session.user_actions.first.action %> &nbsp; <%= truncate(  user_session.user_actions.first.params.gsub(/seite:\s*(.*);/) {$1} )  %></td>
         <% end %>
-	    <td title='<%= user_session.client %>'> <%= truncate( user_session.client ) %></td>
+        <td title='<%= user_session.client %>'> <%= truncate( user_session.client ) %></td>
              
-        <td title='<%= user_session.ip %>'> <%= truncate(user_session.ip) %></td>        
+        <% if user_session.isp %>
+          <td title='<%= user_session.ip + ' ' + user_session.isp %>'> <%= truncate(user_session.isp) %></td>    
+        <% else %>
+          <td> <%= user_session.ip %></td>    
+        <% end %>
         <td><%= link_to 'Edit', edit_user_session_path(user_session) %></td>
         <td><%= link_to 'Destroy', user_session, method: :delete, data: { confirm: 'Are you sure?' } %></td>
 		<td><%= link_to 'Purge', purge_sessions_path( id: user_session.id ), data: { confirm: 'Are you sure?' } %></td>

@@ -26,6 +26,11 @@
 	  <%= @user_session.ip %>
 	</p>
 
+	<p>
+	  <strong>ISP country:</strong>
+	  <%= @user_session.isp %>
+	</p>
+
 	<%= link_to 'Edit', edit_user_session_path(@user_session) %> |
 <% else %>
 	<p>

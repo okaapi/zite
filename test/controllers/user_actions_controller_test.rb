@@ -88,12 +88,12 @@ module Admin
 	  test "should collect parameters but not kennwort or confirmation or utf" do
 	    get :index, params: { kennwort: "kennw.", confirmation: "conf.", utf8: "utf" }
 	    actions = UserAction.order( updated_at: :desc ).first
-		assert_equal actions.params, ''
+            assert_equal actions.params, ''
 	  end
 	  	  
 	  test "params" do
-		assert_equal user_actions(:action_one).params, "these are the parameters!"
-		assert_nil user_actions(:action_two).params		
+            assert_equal user_actions(:action_one).params, "these are the parameters!"
+            assert_equal user_actions(:action_two).params, "these are more parameters!"
 	  end
 	  
 	end
