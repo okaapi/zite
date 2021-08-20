@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Geni
+module Zite
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -26,9 +26,11 @@ module Geni
       mail_config["server"].merge(mail_config["credentials"]).symbolize_keys
     config.action_mailer.raise_delivery_errors = true
     captcha_config = (YAML::load( File.open(config.root + 'config/captcha_config.yml') ))
-	config.captcha_secret = captcha_config["secret"]	
-	config.captcha_good_test_token = captcha_config["good-test-token"]
-	config.captcha_bad_test_token = captcha_config["bad-test-token"]
+    config.captcha_secret = captcha_config["secret"]	
+    config.captcha_good_test_token = captcha_config["good-test-token"]
+    config.captcha_bad_test_token = captcha_config["bad-test-token"]
+
+    config.active_storage.service = :local
 	
   end
 end

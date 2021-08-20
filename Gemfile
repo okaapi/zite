@@ -8,7 +8,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'uglifier'
 
-gem 'sassc'
+gem 'sassc', '2.1.0'
 gem 'bootstrap', '5.1.0'
 
 gem 'bcrypt'
