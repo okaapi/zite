@@ -124,21 +124,20 @@ class PageTest < ActiveSupport::TestCase
     assert_equal page.display, "INCLUDE <h1> Index Page </h1>"
   end
   
-
   test 'test pagelink' do
      
     page = Page.get_latest( 'pagelink')
-    assert_equal page.content, "PAGELINK <%= pagelink index %>"
-    assert_equal page.display, "PAGELINK <a href=\"/index\" class=\"pagelink\">index</a>" 
+    assert_equal page.content, "PAGELINK <%= pagelink index%>"
+    assert_equal page.display, "PAGELINK <a href=\"/index\" class=\"\">index</a>" 
   
     page = Page.get_latest( 'pagelink2')
-    assert_equal page.content, "PAGELINK2 <%= pagelink index, link to index... %>"
-    assert_equal page.display, "PAGELINK2 <a href=\"/index\" class=\"pagelink\"> link to index...</a>"
+    assert_equal page.content, "PAGELINK2 <%= pagelink index, link to index..., pagelink %>"
+    assert_equal page.display, "PAGELINK2 <a href=\"/index\" class=\"pagelink\">link to index...</a>"
     
     page = Page.get_latest( 'pagelink3')
     assert_equal page.content, 
          "PAGELINK3 <%= pagelink index %> SOME TEXT <%= pagelink index, link to index %>"
-    assert_equal page.display, "PAGELINK3 <a href=\"/index\" class=\"pagelink\">index</a> SOME TEXT <a href=\"/index\" class=\"pagelink\"> link to index</a>"    
+    assert_equal page.display, "PAGELINK3 <a href=\"/index\" class=\"\">index</a> SOME TEXT <a href=\"/index\" class=\"\">link to index</a>"    
     
          
     page = Page.get_latest( 'adminlink')
@@ -147,13 +146,18 @@ class PageTest < ActiveSupport::TestCase
         
     page = Page.get_latest( 'adminlink')
     assert_equal page.content, "ADMINLINK <%= adminlink admin %>"
-    assert_equal page.display('admin'), "ADMINLINK <a href=\"/admin\" class=\"adminlink\">admin</a>"   
+    assert_equal page.display('admin'), "ADMINLINK <a href=\"/admin\" class=\"\">admin</a>"   
     
     page = Page.get_latest( 'adminlink2')
     assert_equal page.content, "ADMINLINK2 <%= adminlink admin, stuff... %>"
-    assert_equal page.display('admin'), "ADMINLINK2 <a href=\"/admin\" class=\"adminlink\"> stuff...</a>"      
+    assert_equal page.display('admin'), "ADMINLINK2 <a href=\"/admin\" class=\"\">stuff...</a>"      
         
-  end  
+
+    page = Page.get_latest( 'httplink')
+    assert_equal page.content, "HTTPLINK <%= httplink http://google.com %>"
+    assert_equal page.display, "HTTPLINK <a href=\"http://google.com\" class=\"\">http://google.com</a>"
+
+  end
 
   test 'test roles' do
     

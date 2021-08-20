@@ -234,7 +234,7 @@ class SeiteControllerTest < ActionController::TestCase
     login_4_test
     post :search, params: { term: 'e' }
     assert_response :success 
-	assert_equal assigns(:array_of_names).count, 19
+	assert_equal assigns(:array_of_names).count, 20
   end  
   
   test "search as regular in page name" do

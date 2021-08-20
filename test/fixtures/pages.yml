@@ -154,13 +154,13 @@ imagelink2:
     
 pagelink:
   name: pagelink
-  content: "PAGELINK <#= pagelink index #>"
+  content: "PAGELINK <#= pagelink index#>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
   site: testsite45A67
   
 pagelink2:
   name: pagelink2
-  content: "PAGELINK2 <#= pagelink index, link to index... #>"
+  content: "PAGELINK2 <#= pagelink index, link to index..., pagelink #>"
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
   site: testsite45A67
 
@@ -188,6 +188,12 @@ adminlink2:
   user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>      
   site: testsite45A67
     
+httplink:
+  name: httplink
+  content: "HTTPLINK <#= httplink http://google.com #>"
+  user_id: <%= ActiveRecord::FixtureSet.identify(:wido) %>   
+  site: testsite45A67
+  
 editor:
   name: editor
   content: "EDITOR <#= editor  <h1> Editor Heading</h1> to 'editor stuff' #>"
