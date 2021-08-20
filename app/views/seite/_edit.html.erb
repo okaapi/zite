@@ -1,5 +1,5 @@
   
-<div class="text-right">
+<div class="edit_icon">
   <% if editable( seite, @current_user )  %>
     <%= link_to image_tag("edit.gif"), page_update_path( seite: seite.name ) %>
   <% end %>

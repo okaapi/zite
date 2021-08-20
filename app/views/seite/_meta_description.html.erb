@@ -1,19 +1,24 @@
 
-<div class="card" >
+<div class="card">
   <div class="card-header" >
-    <h4 class="card-title">
-      <a class="collapsed" data-toggle="collapse" href="#collapseMetaDescription">
-        Meta Description
-      </a>
-    </h4>
-  </div>
-  <div id="collapseMetaDescription" class="collapse">
-    <div class="card-body">
-      <div id="meta_description_partial">
-        <div class="field form-group">
-          <%= label_tag :claim, "Description for search engines:" %>
-          <%= text_field_tag :meta_desc, @page.meta_desc, class: 'form-control' %>    
-        </div>
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+	    data-bs-target="#collapseMeta" aria-expanded="false"
+	    aria-controls="collapseMeta">
+      Meta
+    </button>
+
+    <div id="collapseMeta" class="collapse" >
+      <div><br></div>
+      <div class="card">
+        <div class="card-body">      
+          <div id="meta_description_partial">
+            <div class="field form-group">
+              <%= label_tag :claim, "Description for search engines:" %>
+              <%= text_field_tag :meta_desc, @page.meta_desc,
+		  class: 'form-control' %>    
+            </div>
+          </div>
+        </div>   
       </div>
     </div>   
   </div>

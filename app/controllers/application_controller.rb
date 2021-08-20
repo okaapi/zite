@@ -30,8 +30,9 @@ class ApplicationController < ActionController::Base
 	  if @current_user_session
 	    #nothing !
 	  elsif !@current_user_session
-	    @current_user_session = UserSession.new_ip_and_client( nil, request.remote_ip(),
-	                                                               request.env['HTTP_USER_AGENT'])															   
+	    @current_user_session = UserSession.new_ip_and_client( nil,
+                                    request.remote_ip(),
+	                            request.env['HTTP_USER_AGENT'])															   
 		@current_user_session.set_cookies(cookies)
 	  end 
 	  

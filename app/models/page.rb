@@ -285,14 +285,17 @@ class Page < ZiteActiveRecord
         when 'include'
           page = Page.get_latest( operands )
           page ? page.display( role ) : ( '<% include ' + operands + ': not found %>' )
-        when 'pagelink', 'adminlink'
+        when 'pagelink', 'adminlink', 'httplink'
           link = operands.split(',')
-          link.each {|l| l[0].strip!}
+          link.each {|l| l.strip!}
           linktarget = link[0]
-          linkdisplay = link[1] ? link[1] : linktarget     
+          linkdisplay = link[1] ? link[1] : linktarget
           linkdisplay.gsub!(/"/,'')
+          linkclass = link[2] ? link[2] : ""
           if ( func == 'adminlink' and role == 'admin' ) or func == 'pagelink'            
-            "<a href=\"/#{linktarget}\" class=\"#{func}\">#{linkdisplay}</a>"
+            "<a href=\"/#{linktarget}\" class=\"#{linkclass}\">#{linkdisplay}</a>"
+          elsif func == 'httplink'
+            "<a href=\"#{linktarget}\" class=\"#{linkclass}\">#{linkdisplay}</a>"
           else
             ''
           end

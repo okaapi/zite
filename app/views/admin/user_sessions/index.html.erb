@@ -29,7 +29,7 @@
         <% end %>
         <td title='<%= user_session.client %>'> <%= truncate( user_session.client ) %></td>
              
-        <% if user_session.isp %>
+        <% if user_session.ip and user_session.isp %>
           <td title='<%= user_session.ip + ' ' + user_session.isp %>'> <%= truncate(user_session.isp) %></td>    
         <% else %>
           <td> <%= user_session.ip %></td>    

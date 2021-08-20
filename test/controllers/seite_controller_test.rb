@@ -175,12 +175,12 @@ class SeiteControllerTest < ActionController::TestCase
          
     # upload the file
     post :file_upload, params: { seite: 'test',
-      file: fixture_file_upload('files/test.txt','text/txt')  }
+      file: fixture_file_upload('test.txt','text/txt')  }
     assert File.exists? path + '/test.txt'  
       
     # upload the file again
     post :file_upload, params: { seite: 'test',
-      file: fixture_file_upload('files/test.txt','text/txt') }
+      file: fixture_file_upload('test.txt','text/txt') }
     directory = Dir.glob( path + '/test.*.txt')
     assert_equal directory.count, 1
     assert File.exists?( directory[0] )      

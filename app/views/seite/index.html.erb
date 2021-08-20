@@ -1,64 +1,63 @@
 
 <div id="seite">   
 
-  <div class="row">
+  <div class="row" style="border: 0px red dotted">
 	<div class="header col-sm-12" >
 	  <%= render partial: "seite", locals: { seite: @header } %>
 	</div>	
 	
 	<div class="menu col-sm-12" >
-	  <%= render partial: "seite", locals: { seite: @menu } %>	
+          <%= render partial: "seite", locals: { seite: @menu } %>	
 	</div>
   </div>
 	
-  <div class="row">		
+
+  <div class="row" style="border: 0px red double">
   
     <!--  -center-  -->
     <% if !@left and !@right %>
-	  <div class="center col-sm-12" >
-	    <%= render partial: "seite", locals: { seite: @center } %>
-	  </div>
+      <div class="center col-sm-12" >
+        <%= render partial: "seite", locals: { seite: @center } %>
+      </div>
 	  
-	<!--  left-center-right  -->
-	<% elsif @left and @right %>
-	  <div class="left col-sm-2">
-	    <%= render partial: "seite", locals: { seite: @left } %>	
-	  </div>		
-	  <div class="center col-sm-8" >
-	    <%= render partial: "seite", locals: { seite: @center } %>
-	  </div>	 	  
-	  <div class="right col-sm-2">
-	    <%= render partial: "seite", locals: { seite: @right } %>
-	  </div> 	  
+    <!--  left-center-right  -->
+    <% elsif @left and @right %>
+      <div class="left col-sm-2">
+        <%= render partial: "seite", locals: { seite: @left } %>	
+      </div>		
+      <div class="center col-sm-8" >
+        <%= render partial: "seite", locals: { seite: @center } %>
+      </div>	 	  
+      <div class="right col-sm-2">
+        <%= render partial: "seite", locals: { seite: @right } %>
+      </div> 	  
 	  
 	<!--  left-center  -->
     <% elsif @left %>
-	  <div class="left col-sm-2" >
-	    <%= render partial: "seite", locals: { seite: @left } %>	
-	  </div>	
-	  <div class="center col-sm-10" >
-	    <%= render partial: "seite", locals: { seite: @center } %>
-	  </div>	
-	 
+      <div class="left col-sm-2" >
+        <%= render partial: "seite", locals: { seite: @left } %>	
+      </div>	
+      <div class="center col-sm-10" >
+        <%= render partial: "seite", locals: { seite: @center } %>
+      </div>	
 
     <!--  center-right  -->
     <% elsif @right %>
-	  <div class="center col-sm-10 " >
-	    <%= render partial: "seite", locals: { seite: @center } %>
-	  </div>	
-	  <div class="right col-sm-2">
-	    <%= render partial: "seite", locals: { seite: @right } %>	
-	  </div>
+      <div class="center col-sm-10 " >
+        <%= render partial: "seite", locals: { seite: @center } %>
+      </div>	
+      <div class="right col-sm-2">
+        <%= render partial: "seite", locals: { seite: @right } %>	
+      </div>
 	  	  	  	  	  
-	<% end %>
+    <% end %>
 	
   </div>
 
-  <div class="row">	
-	<div class="footer col-sm-12" >
-	  <%= render partial: "seite", locals: { seite: @footer } %>
-	</div>
+  <div class="row">
+    <div class="footer col-sm-12" >
+      <%= render partial: "seite", locals: { seite: @footer } %>
+    </div>
   </div>
   	
 </div> 
-

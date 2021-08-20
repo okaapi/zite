@@ -25,8 +25,6 @@ module Geni
     config.action_mailer.smtp_settings = 
       mail_config["server"].merge(mail_config["credentials"]).symbolize_keys
     config.action_mailer.raise_delivery_errors = true
-    fb_config = (YAML::load( File.open(config.root + 'config/fb_config.yml') ))
-	config.fb_app_id = fb_config["appId"]
     captcha_config = (YAML::load( File.open(config.root + 'config/captcha_config.yml') ))
 	config.captcha_secret = captcha_config["secret"]	
 	config.captcha_good_test_token = captcha_config["good-test-token"]

@@ -19,8 +19,9 @@
     end
     
     def self.new_ip_and_client( user, ip, client )
-      u_s = self.new( user: user, ip: ip, client: client[0..254] )
-	  u_s.remember
+      u_s = self.new( user: user, ip: ip,
+                      client: client ? client[0..254] : "unknown client"  )
+      u_s.remember
       u_s.save!
       return u_s
     end

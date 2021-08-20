@@ -15,24 +15,30 @@
   >   
   <div class="card">
     <div class="card-header" >      
-	  <div class="form-group">  
-	    <%= label_tag :kennwort, "password:", class: 'control-label' %>
-	    <%= password_field_tag :kennwort, '', autofocus: true, class: 'col-sm-3 form-control' %>
-	  </div>
+      <div class="form-group">  
+        <%= label_tag :kennwort, "password:", class: 'control-label' %>
+        <%= password_field_tag :kennwort, '', autofocus: true,
+	    class: 'col-sm-3 form-control  width-auto' %>
+      </div>
+      <div class="login_spacer"></div>
+
+      <div class="form-group">
+        <%= label_tag :confirmation, "confirmation:", class: 'control-label' %>
+        <%= password_field_tag :confirmation, '',
+	    class: 'col-sm-3 form-control  width-auto'%>
+      </div>
+      <div class="login_spacer"></div>
 	
-	  <div class="form-group">
-	    <%= label_tag :confirmation, "confirmation:", class: 'control-label' %>
-	    <%= password_field_tag :confirmation, '', class: 'col-sm-3 form-control'%>        
-	  </div>
-	
-	  <! 
-	    submit
-	  >  
-	  <div class="form-group">
-	    <%= hidden_field_tag :user_token, @user_token %>  
-	    <%= submit_tag 'Update!', class: 'btn btn-default', :onclick => "$('#spinner').show(); ".html_safe %>
+      <! 
+        submit
+      >  
+      <div class="form-group">
+        <%= hidden_field_tag :user_token, @user_token %>  
+        <%= submit_tag 'Update!', class: 'btn btn-default', :onclick => "$('#spinner').show(); ".html_safe %>
 	    <small class="text-muted"><%= link_to 'cancel', see_u_path %> </small>	
-	  </div>
+      </div>
+      <div class="login_spacer"></div>
+
     </div>  
   </div>  
 	

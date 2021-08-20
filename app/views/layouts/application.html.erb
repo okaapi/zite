@@ -48,34 +48,34 @@
 	  </div>
 	</div>
       </div>
+
+
+      <%= yield %>
+
       <div class="row">
-	<div class="col-sm-8 text-right">
+	<div class="col-sm-8 text-end">
 	</div>
-	<div class="col-sm-4 text-right">
+	<div class="col-sm-4 text-end">
 	  <div id="authentication_launchpad">
 	    <%= render "authenticate/launchpad" %>
 	  </div>
 	</div>
       </div>
 
-
-      <%= yield %>
-
       <div class="row" >
-	<div class="col-sm-12" style="color: #0F0F0F; margin-top:20px">
+	<div class="col-sm-12" style="color: #0F0F0F; margin-top:0px">
 	  <% if ( @current_user and @current_user.admin? ) %>
 	  <div class="cleardiv" id="version"> <small>
-	      Application <%= controller.controller_name %> / <%= controller.action_name %>
+	      &nbsp;  Application <%= controller.controller_name %> / <%= controller.action_name %>
 	      Ruby <%= RUBY_VERSION%> Rails <%= Rails.version %> <%= Rails.env %>
 	      Site <%= ZiteActiveRecord.site? %>
 	      User <%= @current_user.username if @current_user %>
 	      Updated at  <%= Time.at(@current_user_session.updated_at).utc.strftime("%H:%M:%S") %>
 	      <%= @current_user_session.id %> 
-	      <br> <br>
 	  </small> </div>
 	  <% else %>
 	  <div class="cleardiv" id="version" style="color:white"> <small>
-	      <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> <%= ZiteActiveRecord.site? %> <%= Time.now %>
+	      <%= RUBY_VERSION%> <%= Rails.version %> <%= Rails.env[0] %> <%= ZiteActiveRecord.site? %> <%= Time.now %>    &nbsp;
 	  </small> </div>
 	  <% end %>
 	</div>
@@ -85,5 +85,3 @@
 
   </body>
 </html>
-
-

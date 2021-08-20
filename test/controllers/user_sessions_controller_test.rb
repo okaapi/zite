@@ -16,7 +16,6 @@ module Admin
       assert_not_nil assigns(:user_sessions)
     end
 
-
     test "should get index ip order" do
       get :index, params: { by_ip: 'true' }
       assert_response :success
@@ -92,6 +91,6 @@ module Admin
     end
   
   end
-
+    
 end
 	    
