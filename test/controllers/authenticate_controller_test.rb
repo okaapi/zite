@@ -219,6 +219,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	      assert_select '.control-label', /username/           
 	      assert_select '.control-label', /email/  
 
+	      assert_not_nil assigns(:current_user)
 	    assert_equal assigns(:current_user).errors.count, 2
 	    assert_equal assigns(:current_user).errors.full_messages[0], "Username has already been taken"
 	    assert_equal assigns(:current_user).errors.full_messages[1], "Email has already been taken"
@@ -234,6 +235,7 @@ class AuthenticateControllerTest < ActionController::TestCase
 	      assert_select '.control-label', /username/           
 	      assert_select '.control-label', /email/  
 
+	      assert_not_nil assigns(:current_user)
 	    assert_equal assigns(:current_user).errors.count, 1
 	    assert_equal assigns(:current_user).errors.full_messages[0], "Email not a valid email address"
 	    
@@ -244,6 +246,7 @@ class AuthenticateControllerTest < ActionController::TestCase
     request.host = 'othersite45A67'		         
 	post :about_urself, params: { username: "john", email: "john@mmm.com", 
 	             qa: 3, qb: 7, answer: 21, captcha: Rails.configuration.captcha_good_test_token }
+	      assert_not_nil assigns(:current_user)
 	assert_equal assigns(:current_user).errors.count, 0 
   end
        
@@ -320,6 +323,7 @@ class AuthenticateControllerTest < ActionController::TestCase
   test "ur_secrets from mail post without passwords" do     
 	post :ur_secrets, params: { user_token: 'john_token' }
     assert_redirected_to %r(\Ahttp://testhost45A67/_from_mail)
+	      assert_not_nil assigns(:current_user)
     assert_equal assigns(:current_user).errors.count, 2
     assert_equal assigns(:current_user).errors.full_messages[0], "Password is too short (minimum is 3 characters)"
     assert_equal assigns(:current_user).errors.full_messages[1], "Password can't be blank"

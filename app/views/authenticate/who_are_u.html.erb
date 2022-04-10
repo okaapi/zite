@@ -11,15 +11,15 @@
   <! 
     labels & entry fields
   >    
-  <div class="card" style="border: 3px red solid">
+  <div class="card" style="border: 0px red solid">
     <div class="card-header" >
-      <div class="form-group" style="border: 1px red dashed"> 
+      <div class="form-group" style="border: 0px red dashed"> 
         <%= label_tag :claim, "username or email:", class: 'control-label' %>
         <%= text_field_tag :claim, '', autofocus: true,
 	    class: 'col-sm-3 form-control width-auto' %>	
       </div>		
       <div class="login_spacer"></div>
-      <div class="form-group" style="border: 1px red dotted"> 
+      <div class="form-group" style="border: 0px red dotted"> 
 	    <%= submit_tag 'Submit', class: "btn btn-primary" %>		
 	    <small class="text-muted"><%= link_to 'cancel', see_u_path %> </small>
       </div>

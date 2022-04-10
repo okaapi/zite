@@ -11,8 +11,6 @@ Rails.application.routes.draw do
   match "_ur_secrets" => "authenticate#ur_secrets", as: "ur_secrets", via: [:get, :post] 
   get "_reset_mail" => "authenticate#reset_mail", as: 'reset_mail'
   get "_see_u" => "authenticate#see_u", as: 'see_u'
-  get 'testfb' => "authenticate#testfb", as: 'testfb'  
-  get '_fb_login/:fb_token' => "authenticate#fb_login", as: 'fb_login'
   get '_check/(:code)' => 'authenticate#check', as: 'check'  
   get '_clear' => 'authenticate#clear', as: 'clear'     
     
